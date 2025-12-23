@@ -40,7 +40,7 @@ const LoginPage = () => {
                   <Label htmlFor="email">Nombre de usuario</Label>
                   <Input
                     id="email"
-                    placeholder="username"
+                    placeholder="Usuario"
                     required
                     name="email"
                     onChange={(e) => setUsername(e.target.value)}
@@ -89,8 +89,8 @@ const LoginPage = () => {
       </div>
       <div className="hidden lg:flex flex-1 items-center justify-center bg-muted">
         <img
-          src="/illustration-dashboard.webp"
-          alt="Login illustration"
+          src="/login-image.svg"
+          alt="Financial Planning and Budgeting"
           width={600}
           height={600}
           className="object-cover"
