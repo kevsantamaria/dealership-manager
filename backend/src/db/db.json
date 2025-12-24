@@ -1,0 +1,75 @@
+[
+    // users
+  {
+    "id": 1,
+    "username": "admin",
+    "passwordHash": "$2b$10$hashedpassword",
+    "role": "admin",
+    "createdAt": "2025-01-01T10:00:00Z",
+    "updatedAt": "2025-01-01T10:00:00Z"
+  },
+
+  // suppliers
+  {
+    "id": 1,
+    "name": "Global Auto Imports",
+    "contact": "sales@globalauto.com",
+    "type": "importer",
+    "country": "Japan",
+    "createdAt": "2025-01-02T09:00:00Z",
+    "updatedAt": "2025-01-02T09:00:00Z"
+  },
+
+    // brands
+  {
+    "id": 1,
+    "name": "Toyota",
+    "countryOrigin": "Japan"
+  },
+
+  // models
+  {
+    "id": 1,
+    "name": "Corolla",
+    "launchYear": 1966,
+    "brandId": 1
+  },
+
+  // trims
+  {
+    "id": 1,
+    "name": "XSE",
+    "engineSize": 2.0,
+    "horsepower": 169,
+    "engineType": "gasoline",
+    "transmission": "automatic",
+    "drivetrain": "fwd",
+    "modelId": 1
+  },
+
+    // vehicles
+  {
+    "id": 1,
+    "vin": 123456789012345,
+    "licensePlate": "ABC-123",
+    "color": "Red",
+    "mileage": 15000,
+    "arrivalDate": "2025-01-10",
+    "purchasePrice": 15000,
+    "suggestedPrice": 18000,
+    "stockStatus": "in_stock",
+    "rateCondition": "excellent",
+    "rateDescription": "Like new condition",
+    "createdAt": "2025-01-10T08:00:00Z",
+    "updatedAt": "2025-01-10T08:00:00Z",
+    "trimId": 1,
+    "supplierId": 1
+  },
+
+    // images
+  {
+    "id": 1,
+    "path": "/uploads/vehicles/1/front.jpg",
+    "vehicleId": 1
+  }
+]
