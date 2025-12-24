@@ -1,4 +1,4 @@
-import { pool } from '@/db/pool'
+import { getAllUsersService } from '@/services/user.service'
 import type { Request, Response } from 'express'
 
 export const createUser = (req: Request, res: Response) => {
@@ -6,10 +6,9 @@ export const createUser = (req: Request, res: Response) => {
 }
 
 export const getAllUsers = async (req: Request, res: Response) => {
-  const result = await pool`SELECT * FROM users`
-  console.log(result)
-
-  res.json(result)
+  const users = await getAllUsersService()
+  console.log(users)
+  res.json(users)
 }
 
 export const getUserById = (req: Request, res: Response) => {
