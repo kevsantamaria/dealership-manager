@@ -1,4 +1,5 @@
-import type { User } from '@/models/user'
+import { createUserDTO } from '@/models/dtos/user.dto'
+import type { User } from '@/models/entities/user'
 import {
   createUserService,
   deleteUserService,
@@ -9,7 +10,7 @@ import {
 import type { Request, Response } from 'express'
 
 export const createUser = async (req: Request, res: Response) => {
-  const user: User = req.body
+  const user = createUserDTO.parse(req.body)
   const createdUser = await createUserService(user)
   res.json({
     message: 'User created successfully',

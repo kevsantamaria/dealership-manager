@@ -8,3 +8,6 @@ export interface User {
   createdAt: string
   updatedAt: string
 }
+
+export type NewUser = Omit<User, 'id'> 
+export type UpdateUser = Partial<Omit<User, 'id' | 'createdAt'>>

@@ -1,5 +1,5 @@
 import { pool } from '@/db/pool'
-import type { User } from '@/models/user'
+import type { NewUser, User } from '@/models/entities/user'
 import { sql } from 'bun'
 
 export const findAllUsers = async () => {
@@ -10,7 +10,7 @@ export const findUserById = async (id: number) => {
   return await pool`SELECT * FROM users WHERE id = ${id}`
 }
 
-export const createUser = async (user: User) => {
+export const createUser = async (user: NewUser) => {
   const { username, password, role, createdAt, updatedAt } = user
   return await pool`INSERT INTO users (username, password, role, created_at, updated_at) VALUES (${username}, ${password}, ${role}, ${createdAt}, ${updatedAt}) RETURNING *`
 }

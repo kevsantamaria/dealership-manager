@@ -1,4 +1,5 @@
-import type { User } from '@/models/user'
+import type { CreateUserDTO } from '@/models/dtos/user.dto'
+import type { User } from '@/models/entities/user'
 import {
   createUser,
   deleteUser,
@@ -28,10 +29,10 @@ export const getUserByIdService = async (id: number) => {
   }
 }
 
-export const createUserService = async (user: User) => {
+export const createUserService = async (user: CreateUserDTO) => {
   try {
     const now = new Date().toISOString()
-    const userToCreate: User = {
+    const userToCreate: Omit<User, 'id'> = {
       ...user,
       createdAt: now,
       updatedAt: now,

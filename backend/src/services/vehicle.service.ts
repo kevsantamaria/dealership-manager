@@ -1,4 +1,4 @@
-import type { Vehicle } from '@/models/vehicle'
+import type { Vehicle } from '@/models/entities/vehicle'
 import { findAllVehicles } from '@/repositories/vehicle.repository'
 import { getErrorMessage } from '@/utils/getErorMessage'
 
