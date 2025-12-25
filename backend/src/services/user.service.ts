@@ -7,14 +7,13 @@ import {
   findUserById,
   updateUser,
 } from '@/repositories/user.repository'
-import { getErrorMessage } from '@/utils/getErorMessage'
 
 export const getAllUsersService = async () => {
   try {
     const users: User[] = await findAllUsers()
     return users
   } catch (error) {
-    throw new Error(`Failed to retrieve users: ${getErrorMessage(error)}`)
+    throw new Error(`Failed to retrieve users: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
 
@@ -24,7 +23,7 @@ export const getUserByIdService = async (id: number) => {
     return user
   } catch (error) {
     throw new Error(
-      `Failed to retrieve user with ID ${id}: ${getErrorMessage(error)}`
+      `Failed to retrieve user with ID ${id}: ${error instanceof Error ? error.message : 'Unknown error'}`
     )
   }
 }
@@ -41,7 +40,7 @@ export const createUserService = async (user: CreateUserDTO) => {
     const createdUser: User = await createUser(userToCreate)
     return createdUser
   } catch (error) {
-    throw new Error(`Failed to create user: ${getErrorMessage(error)}`)
+    throw new Error(`Failed to create user: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
 
@@ -50,7 +49,7 @@ export const deleteUserService = async (id: number) => {
     await deleteUser(id)
   } catch (error) {
     throw new Error(
-      `Failed to delete user with ID ${id}: ${getErrorMessage(error)}`
+      `Failed to delete user with ID ${id}: ${error instanceof Error ? error.message : 'Unknown error'}`
     )
   }
 }
@@ -66,6 +65,6 @@ export const updateUserService = async (id: number, user: Partial<User>) => {
     const updatedUser = await updateUser(id, userToUpdate)
     return updatedUser[0]
   } catch (error) {
-    throw new Error(`Failed to update user: ${getErrorMessage(error)}`)
+    throw new Error(`Failed to update user: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
