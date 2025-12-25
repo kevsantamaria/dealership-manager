@@ -1,4 +1,4 @@
-import type { CreateUserDTO } from '@/models/dtos/user.dto'
+import type { CreateUserDTO, UpdateUserDTO } from '@/models/dtos/user.dto'
 import type { User } from '@/models/entities/user'
 import {
   createUser,
@@ -54,7 +54,7 @@ export const deleteUserService = async (id: number) => {
   }
 }
 
-export const updateUserService = async (id: number, user: Partial<User>) => {
+export const updateUserService = async (id: number, user: UpdateUserDTO) => {
   try {
     const now = new Date().toISOString()
     const userToUpdate: Partial<User> = {
