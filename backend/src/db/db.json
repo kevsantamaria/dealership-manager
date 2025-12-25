@@ -3,7 +3,7 @@
   {
     "id": 1,
     "username": "admin",
-    "passwordHash": "$2b$10$hashedpassword",
+    "password": "$2b$10$hashedpassword",
     "role": "admin",
     "createdAt": "2025-01-01T10:00:00Z",
     "updatedAt": "2025-01-01T10:00:00Z"
