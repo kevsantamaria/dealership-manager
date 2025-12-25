@@ -12,7 +12,7 @@ export const dtoValidator =
       if (error instanceof ZodError) {
         return res
           .status(HTTP_STATUS.BAD_REQUEST)
-          .json(error.issues.map(i => ({ message: i.message })))
+          .json(error.issues.map((i) => ({ message: i.message })))
       }
       return res
         .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)

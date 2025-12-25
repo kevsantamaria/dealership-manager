@@ -6,6 +6,8 @@ export const getAllVehiclesService = async () => {
     const vehicles: Vehicle[] = await findAllVehicles()
     return vehicles
   } catch (error) {
-    throw new Error(`Failed to retrieve vehicles: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    throw new Error(
+      `Failed to retrieve vehicles: ${error instanceof Error ? error.message : 'Unknown error'}`
+    )
   }
 }

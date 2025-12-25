@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const createImageDTO = z.object({
   path: z.string().min(1),
-  vehicleId: z.number().int()
+  vehicleId: z.number().int(),
 })
 
 export const updateImageDTO = createImageDTO.partial()

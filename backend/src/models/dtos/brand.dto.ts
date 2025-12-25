@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const createBrandDTO = z.object({
   name: z.string().min(1),
-  countryOrigin: z.string().optional()
+  countryOrigin: z.string().optional(),
 })
 
 export const updateBrandDTO = createBrandDTO.partial()

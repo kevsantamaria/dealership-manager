@@ -13,7 +13,9 @@ export const getAllUsersService = async () => {
     const users: User[] = await findAllUsers()
     return users
   } catch (error) {
-    throw new Error(`Failed to retrieve users: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    throw new Error(
+      `Failed to retrieve users: ${error instanceof Error ? error.message : 'Unknown error'}`
+    )
   }
 }
 
@@ -40,7 +42,9 @@ export const createUserService = async (user: CreateUserDTO) => {
     const createdUser: User = await createUser(userToCreate)
     return createdUser
   } catch (error) {
-    throw new Error(`Failed to create user: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    throw new Error(
+      `Failed to create user: ${error instanceof Error ? error.message : 'Unknown error'}`
+    )
   }
 }
 
@@ -65,6 +69,8 @@ export const updateUserService = async (id: number, user: UpdateUserDTO) => {
     const updatedUser = await updateUser(id, userToUpdate)
     return updatedUser[0]
   } catch (error) {
-    throw new Error(`Failed to update user: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    throw new Error(
+      `Failed to update user: ${error instanceof Error ? error.message : 'Unknown error'}`
+    )
   }
 }

@@ -12,7 +12,7 @@ export const createVehicleDTO = z.object({
   rateCondition: z.enum(['bad', 'regular', 'good', 'excellent']).optional(),
   rateDescription: z.string().optional(),
   trimId: z.number().int(),
-  supplierId: z.number().int()
+  supplierId: z.number().int(),
 })
 
 export const updateVehicleDTO = createVehicleDTO.partial()
