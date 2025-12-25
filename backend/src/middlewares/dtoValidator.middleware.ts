@@ -3,10 +3,10 @@ import type { NextFunction, Request, Response } from 'express'
 import { ZodError, type ZodType } from 'zod'
 
 export const dtoValidator =
-  (schema: ZodType, target: 'body' | 'params' | 'query' = 'body') =>
+  (dto: ZodType, target: 'body' | 'params' | 'query' = 'body') =>
   (req: Request, res: Response, next: NextFunction) => {
     try {
-      schema.parse(req[target])
+      dto.parse(req[target])
       next()
     } catch (error) {
       if (error instanceof ZodError) {
