@@ -1,18 +1,8 @@
-export type EngineType =
-  | 'gasoline'
-  | 'diesel'
-  | 'hybrid'
-  | 'electric'
+export type EngineType = 'gasoline' | 'diesel' | 'hybrid' | 'electric'
 
-export type Transmission =
-  | 'automatic'
-  | 'manual'
-  | 'cvt'
+export type Transmission = 'automatic' | 'manual' | 'cvt'
 
-export type Drivetrain =
-  | 'fwd'
-  | 'rwd'
-  | 'awd'
+export type Drivetrain = 'fwd' | 'rwd' | 'awd'
 
 export interface Trim {
   id: number

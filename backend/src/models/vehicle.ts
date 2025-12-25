@@ -1,13 +1,6 @@
-export type StockStatus =
-  | 'in_stock'
-  | 'reserved'
-  | 'sold'
+export type StockStatus = 'in_stock' | 'reserved' | 'sold'
 
-export type RateCondition =
-  | 'bad'
-  | 'regular'
-  | 'good'
-  | 'excellent'
+export type RateCondition = 'bad' | 'regular' | 'good' | 'excellent'
 
 export interface Vehicle {
   id: number
