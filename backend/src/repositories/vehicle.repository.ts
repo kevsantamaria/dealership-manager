@@ -31,7 +31,8 @@ export const createVehicle = async (vehicle: NewVehicle) => {
         suggested_price,
         stock_status,
         rate_condition,
-        rate_description created_at,
+        rate_description, 
+        created_at,
         updated_at,
         trim_id,
         supplier_id

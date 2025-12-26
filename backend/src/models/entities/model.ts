@@ -4,3 +4,6 @@ export interface Model {
   launchYear?: number | null
   brandId: number
 }
+
+export type NewModel = Omit<Model, 'id'>
+export type UpdateModel = Partial<Omit<Model, 'id'>>
