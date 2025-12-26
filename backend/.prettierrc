@@ -1,8 +1,18 @@
 {
-  "plugins": ["prettier-plugin-organize-imports"],
+  "plugins": [
+    "prettier-plugin-organize-imports",
+    "prettier-plugin-sql",
+    "prettier-plugin-embed"
+  ],
   "semi": false,
   "singleQuote": true,
   "trailingComma": "es5",
   "tabWidth": 2,
-  "printWidth": 80
+  "printWidth": 80,
+
+  "embeddedLanguageFormatting": "auto",
+  "prettierPluginSqlConfig": {
+    "language": "postgresql",
+    "keywordCase": "upper"
+  }
 }
