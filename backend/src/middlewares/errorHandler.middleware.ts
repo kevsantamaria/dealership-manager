@@ -1,0 +1,32 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { HTTP_STATUS, HTTP_STATUS_MESSAGE } from '@/constants/httpStatus'
+import type { NextFunction, Request, Response } from 'express'
+
+export const ErrorHandler = (
+  err: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  switch (err.message) {
+    case 'USER_NOT_FOUND':
+      return res
+        .status(HTTP_STATUS.NOT_FOUND)
+        .json({ message: HTTP_STATUS_MESSAGE.NOT_FOUND })
+    case 'USERNAME_ALREADY_EXISTS':
+      return res.status(HTTP_STATUS.CONFLICT).json({
+        message: 'Username already exists',
+      })
+
+    case 'NO_FIELDS_TO_UPDATE':
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({
+        message: 'No fields provided to update',
+      })
+
+    default:
+      console.error(err)
+      return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: HTTP_STATUS_MESSAGE.INTERNAL_SERVER_ERROR,
+      })
+  }
+}

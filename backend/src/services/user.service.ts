@@ -5,72 +5,62 @@ import {
   deleteUser,
   findAllUsers,
   findUserById,
+  findUserByUsername,
   updateUser,
 } from '@/repositories/user.repository'
 
-export const getAllUsersService = async () => {
-  try {
-    const users: User[] = await findAllUsers()
-    return users
-  } catch (error) {
-    throw new Error(
-      `Failed to retrieve users: ${error instanceof Error ? error.message : 'Unknown error'}`
-    )
+export const createUserService = async (user: CreateUserDTO) => {
+  const validUser = await findUserByUsername(user.username)
+  if (validUser) throw new Error('USERNAME_ALREADY_EXISTS')
+
+  const now = new Date().toISOString()
+  const userToCreate: Omit<User, 'id'> = {
+    ...user,
+    createdAt: now,
+    updatedAt: now,
   }
+
+  const createdUser: User = await createUser(userToCreate)
+  return createdUser
+}
+
+export const getAllUsersService = async () => {
+  const users: User[] = await findAllUsers()
+  return users
 }
 
 export const getUserByIdService = async (id: number) => {
-  try {
-    const user: User = await findUserById(id)
-    return user
-  } catch (error) {
-    throw new Error(
-      `Failed to retrieve user with ID ${id}: ${error instanceof Error ? error.message : 'Unknown error'}`
-    )
-  }
-}
+  const user: User = await findUserById(id)
 
-export const createUserService = async (user: CreateUserDTO) => {
-  try {
-    const now = new Date().toISOString()
-    const userToCreate: Omit<User, 'id'> = {
-      ...user,
-      createdAt: now,
-      updatedAt: now,
-    }
-
-    const createdUser: User = await createUser(userToCreate)
-    return createdUser
-  } catch (error) {
-    throw new Error(
-      `Failed to create user: ${error instanceof Error ? error.message : 'Unknown error'}`
-    )
-  }
-}
-
-export const deleteUserService = async (id: number) => {
-  try {
-    await deleteUser(id)
-  } catch (error) {
-    throw new Error(
-      `Failed to delete user with ID ${id}: ${error instanceof Error ? error.message : 'Unknown error'}`
-    )
-  }
+  if (!user) throw new Error('USER_NOT_FOUND')
+  return user
 }
 
 export const updateUserService = async (id: number, user: UpdateUserDTO) => {
-  try {
-    const now = new Date().toISOString()
-    const userToUpdate: Partial<User> = {
-      ...user,
-      updatedAt: now,
-    }
+  const existingUser = await findUserById(id)
 
-    const updatedUser = await updateUser(id, userToUpdate)
-    return updatedUser[0]
-  } catch (error) {
-    throw new Error(
-      `Failed to update user: ${error instanceof Error ? error.message : 'Unknown error'}`
-    )
+  if (typeof user.username !== 'undefined') {
+    const validUser = await findUserByUsername(user.username)
+    if (validUser && validUser.id !== id)
+      throw new Error('USERNAME_ALREADY_EXISTS')
   }
+
+  if (!existingUser) throw new Error('USER_NOT_FOUND')
+  if (Object.keys(user).length === 0) throw new Error('NO_FIELDS_TO_UPDATE')
+
+  const now = new Date().toISOString()
+  const userToUpdate: Partial<User> = {
+    ...user,
+    updatedAt: now,
+  }
+
+  const updatedUser = await updateUser(id, userToUpdate)
+  return updatedUser[0]
+}
+
+export const deleteUserService = async (id: number) => {
+  const existingUser = await findUserById(id)
+  if (!existingUser) throw new Error('USER_NOT_FOUND')
+
+  await deleteUser(id)
 }

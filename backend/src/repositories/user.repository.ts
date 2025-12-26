@@ -7,7 +7,13 @@ export const findAllUsers = async () => {
 }
 
 export const findUserById = async (id: number) => {
-  return await pool`SELECT * FROM users WHERE id = ${id}`
+  const result = await pool`SELECT * FROM users WHERE id = ${id}`
+  return result[0] ?? null
+}
+
+export const findUserByUsername = async (username: string) => {
+  const result = await pool`SELECT * FROM users WHERE username = ${username}`
+  return result[0] ?? null
 }
 
 export const createUser = async (user: NewUser) => {

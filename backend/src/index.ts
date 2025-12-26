@@ -1,3 +1,4 @@
+import { ErrorHandler } from '@/middlewares/errorHandler.middleware'
 import user from '@/routes/user.routes'
 import vehicle from '@/routes/vehicle.routes'
 import express from 'express'
@@ -11,6 +12,8 @@ app.use(express.json())
 
 app.use(user)
 app.use(vehicle)
+
+app.use(ErrorHandler)
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
