@@ -19,3 +19,6 @@ export interface Vehicle {
   trimId: number
   supplierId: number
 }
+
+export type NewVehicle = Omit<Vehicle, 'id'>
+export type UpdateVehicle = Partial<Omit<Vehicle, 'id' | 'createdAt'>>

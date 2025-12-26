@@ -1,7 +1,7 @@
 CREATE TABLE "users" (
     "id" BIGINT GENERATED ALWAYS AS IDENTITY,
     "username" VARCHAR(255) NOT NULL,
-    "password_hash" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
     "role" VARCHAR(255)
         CHECK ("role" IN ('user', 'admin'))
         NOT NULL DEFAULT 'user',

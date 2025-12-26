@@ -1,5 +1,5 @@
 import { pool } from '@/db/pool'
-import type { NewUser, User } from '@/models/entities/user'
+import type { NewUser, UpdateUser } from '@/models/entities/user'
 import { sql } from 'bun'
 
 export const findAllUsers = async () => {
@@ -25,7 +25,7 @@ export const deleteUser = async (id: number) => {
   return await pool`DELETE FROM users WHERE id = ${id} RETURNING *`
 }
 
-export const updateUser = async (id: number, user: Partial<User>) => {
+export const updateUser = async (id: number, user: UpdateUser) => {
   const { username, password, role, updatedAt } = user
   return await pool`UPDATE users SET ${sql({ username, password, role, updated_at: updatedAt })} WHERE id = ${id} RETURNING *`
 }
