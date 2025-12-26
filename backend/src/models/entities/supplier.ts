@@ -14,3 +14,6 @@ export interface Supplier {
   createdAt: string
   updatedAt: string
 }
+
+export type NewSupplier = Omit<Supplier, 'id'>
+export type UpdateSupplier = Partial<Omit<Supplier, 'id' | 'createdAt'>>
