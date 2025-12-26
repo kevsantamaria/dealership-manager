@@ -4,4 +4,5 @@ export interface Brand {
   countryOrigin?: string | null
 }
 
-export type BrandWithoutId = Omit<Brand, 'id'>
+export type NewBrand = Omit<Brand, 'id'>
+export type UpdateBrand = Partial<Omit<Brand, 'id'>>

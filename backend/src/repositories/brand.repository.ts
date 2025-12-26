@@ -1,8 +1,8 @@
 import { pool } from '@/db/pool'
 import { sql } from 'bun'
-import type { BrandWithoutId } from '@/models/entities/brand'
+import type { NewBrand, UpdateBrand } from '@/models/entities/brand'
 
-export const createBrand = async (brand: BrandWithoutId) => {
+export const createBrand = async (brand: NewBrand) => {
   const { name, countryOrigin } = brand
   return await pool`
     INSERT INTO
@@ -24,7 +24,7 @@ export const findBrandById = async (id: number) => {
   return result[0] ?? null
 }
 
-export const updateBrand = async (id: number, brand: BrandWithoutId) => {
+export const updateBrand = async (id: number, brand: UpdateBrand) => {
   const { name, countryOrigin } = brand
   return await pool`
     UPDATE brands
