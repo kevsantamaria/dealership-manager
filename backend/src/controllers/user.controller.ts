@@ -24,7 +24,6 @@ export const getAllUsers = async (req: Request, res: Response) => {
     message: HTTP_STATUS_MESSAGE.OK,
     data: users,
   })
-
 }
 
 export const getUserById = async (req: Request, res: Response) => {

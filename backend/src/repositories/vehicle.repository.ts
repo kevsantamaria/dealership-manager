@@ -85,20 +85,20 @@ export const updateVehicle = async (id: number, vehicle: UpdateVehicle) => {
     UPDATE vehicles
     SET
       ${sql({
-      vin,
-      license_plate: licensePlate,
-      color,
-      mileage,
-      arrival_date: arrivalDate,
-      purchase_price: purchasePrice,
-      suggested_price: suggestedPrice,
-      stock_status: stockStatus,
-      rate_condition: rateCondition,
-      rate_description: rateDescription,
-      trim_id: trimId,
-      supplier_id: supplierId,
-      updated_at: updatedAt,
-    })}
+        vin,
+        license_plate: licensePlate,
+        color,
+        mileage,
+        arrival_date: arrivalDate,
+        purchase_price: purchasePrice,
+        suggested_price: suggestedPrice,
+        stock_status: stockStatus,
+        rate_condition: rateCondition,
+        rate_description: rateDescription,
+        trim_id: trimId,
+        supplier_id: supplierId,
+        updated_at: updatedAt,
+      })}
     WHERE
       id = ${id} RETURNING *
   `

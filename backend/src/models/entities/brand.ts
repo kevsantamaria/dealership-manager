@@ -3,3 +3,5 @@ export interface Brand {
   name: string
   countryOrigin?: string | null
 }
+
+export type BrandWithoutId = Omit<Brand, 'id'>
