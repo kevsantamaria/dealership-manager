@@ -1,5 +1,6 @@
 import Home from '@/pages/dashboard-pages/home/Home'
 import LoginPage from '@/pages/LoginPage'
+import NotFound from '@/pages/NotFound'
 import PanelContainer from '@/pages/PanelContainer'
 import { Route, Routes } from 'react-router-dom'
 

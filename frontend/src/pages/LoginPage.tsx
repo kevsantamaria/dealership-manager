@@ -30,7 +30,7 @@ const LoginPage = () => {
   return (
     <div className="flex min-h-screen w-screen  bg-background overflow-hidden">
       <div className="flex-1 flex items-center justify-center p-4">
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleLogin} className="space-y-3">
           <Card className="w-full max-w-md">
             <CardHeader>
               <CardTitle>Iniciar sesión</CardTitle>
@@ -38,6 +38,7 @@ const LoginPage = () => {
                 Ingresa tus credenciales para acceder al panel de administración
               </CardDescription>
             </CardHeader>
+
             <CardContent>
               <div className="space-y-4">
                 <div className="space-y-2">
@@ -46,10 +47,10 @@ const LoginPage = () => {
                     id="email"
                     placeholder="Usuario"
                     required
-                    name="email"
                     onChange={(e) => setUsername(e.target.value)}
                   />
                 </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="password">Contraseña</Label>
                   <div className="relative">
@@ -58,7 +59,6 @@ const LoginPage = () => {
                       type={showPassword ? 'text' : 'password'}
                       placeholder="••••••••"
                       required
-                      name="password"
                       onChange={(e) => setPassword(e.target.value)}
                     />
                     <Button
@@ -73,28 +73,25 @@ const LoginPage = () => {
                       ) : (
                         <IconEye className="h-4 w-4 text-muted-foreground" />
                       )}
-                      <span className="sr-only">
-                        {showPassword
-                          ? 'Ocultar contraseña'
-                          : 'Mostrar contraseña'}
-                      </span>
                     </Button>
                   </div>
                 </div>
               </div>
             </CardContent>
+
             <CardFooter>
               <Button className="w-full flex gap-x-2" type="submit">
                 {isPending && <IconLoader2 className="animate-spin" />}
                 Iniciar sesión
               </Button>
-              {isError && (
-                <span className="text-destructive-foreground absolute bottom-0">
-                  {error.message}
-                </span>
-              )}
             </CardFooter>
           </Card>
+
+          {isError && (
+            <p className="text-sm text-destructive text-center">
+              {error.message}
+            </p>
+          )}
         </form>
       </div>
       <div className="hidden lg:flex flex-1 items-center justify-center bg-muted">
