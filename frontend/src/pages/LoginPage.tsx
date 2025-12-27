@@ -8,11 +8,14 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { useLogin } from '@/hooks/useAuth'
 import { Label } from '@radix-ui/react-label'
-import { IconEye, IconEyeClosed } from '@tabler/icons-react'
+import { IconEye, IconEyeClosed, IconLoader2 } from '@tabler/icons-react'
 import { type FormEvent, useState } from 'react'
 
 const LoginPage = () => {
+  const { login } = useLogin()
+  const { mutateAsync, error, isError, isPending } = login
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -21,6 +24,7 @@ const LoginPage = () => {
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault()
+    await mutateAsync({ username, password })
   }
 
   return (
@@ -80,9 +84,15 @@ const LoginPage = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button className="w-full flex gap-x-2" onClick={handleLogin}>
+              <Button className="w-full flex gap-x-2" type="submit">
+                {isPending && <IconLoader2 className="animate-spin" />}
                 Iniciar sesión
               </Button>
+              {isError && (
+                <span className="text-destructive-foreground absolute bottom-0">
+                  {error.message}
+                </span>
+              )}
             </CardFooter>
           </Card>
         </form>

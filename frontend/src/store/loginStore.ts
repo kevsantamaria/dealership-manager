@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-interface AuthState {
+interface LoginState {
   isAuthenticated: boolean
   user: string | null
   loginStore: () => void
@@ -9,8 +9,8 @@ interface AuthState {
   setUser: (user: string) => void
 }
 
-export const useAuthStore = create(
-  persist<AuthState>(
+export const useLoginStore = create(
+  persist<LoginState>(
     (set) => ({
       isAuthenticated: false,
       user: null,
