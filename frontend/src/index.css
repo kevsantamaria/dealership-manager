@@ -78,11 +78,11 @@
   --ring: oklch(65% 0.15 256);
 
   /* CHARTS – analógicos al primary */
-  --chart-1: oklch(62% 0.20 256);
+  --chart-1: oklch(62% 0.2 256);
   --chart-2: oklch(65% 0.16 230);
   --chart-3: oklch(55% 0.14 280);
   --chart-4: oklch(70% 0.12 200);
-  --chart-5: oklch(75% 0.10 180);
+  --chart-5: oklch(75% 0.1 180);
 
   /* SIDEBAR */
   --sidebar: oklch(98% 0.005 255);
