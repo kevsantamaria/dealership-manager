@@ -14,3 +14,6 @@ export interface Trim {
   drivetrain?: Drivetrain | null
   modelId: number
 }
+
+export type NewTrim = Omit<Trim, 'id'>
+export type UpdateTrim = Partial<Omit<Trim, 'id'>>
