@@ -23,7 +23,7 @@ export const ErrorHandler = (
         message: 'No fields provided to update',
       })
 
-      case 'INVALID_CREDENTIALS':
+    case 'INVALID_CREDENTIALS':
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({
         message: 'Invalid username or password',
       })
