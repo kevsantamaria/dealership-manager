@@ -11,5 +11,8 @@ export const loginService = async (user: LoginUser) => {
   const match = await bcrypt.compare(password, validUser.password)
   if (!match) throw new Error('INVALID_CREDENTIALS')
 
-  return validUser
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { password: _password, ...userWithoutPassword } = validUser
+
+  return userWithoutPassword
 }
