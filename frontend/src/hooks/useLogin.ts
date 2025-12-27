@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 
 export const useLogin = () => {
-//   const navigate = useNavigate()
+  const navigate = useNavigate()
 
   const loginStore = useLoginStore((state) => state.loginStore)
   const logoutStore = useLoginStore((state) => state.logoutStore)
@@ -22,7 +22,7 @@ export const useLogin = () => {
     },
     onSuccess: () => {
       loginStore()
-    //   navigate('/admin-panel')
+      navigate('/dashboard')
     },
   })
 

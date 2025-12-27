@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { useLogin } from '@/hooks/useAuth'
+import { useLogin } from '@/hooks/useLogin'
 import { Label } from '@radix-ui/react-label'
 import { IconEye, IconEyeClosed, IconLoader2 } from '@tabler/icons-react'
 import { type FormEvent, useState } from 'react'
