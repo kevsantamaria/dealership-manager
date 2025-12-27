@@ -1,6 +1,7 @@
-import { Route, Routes } from 'react-router-dom'
 import Home from '@/pages/dashboard-pages/home/Home'
 import LoginPage from '@/pages/LoginPage'
+import PanelContainer from '@/pages/PanelContainer'
+import { Route, Routes } from 'react-router-dom'
 
 function AppRouter() {
   return (
