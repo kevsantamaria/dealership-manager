@@ -11,3 +11,4 @@ export interface User {
 
 export type NewUser = Omit<User, 'id'>
 export type UpdateUser = Partial<Omit<User, 'id' | 'createdAt'>>
+export type LoginUser = Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'role'>

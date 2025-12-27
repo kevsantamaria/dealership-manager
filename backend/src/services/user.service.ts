@@ -8,14 +8,19 @@ import {
   findUserByUsername,
   updateUser,
 } from '@/repositories/user.repository'
+import bcrypt from 'bcryptjs'
 
 export const createUserService = async (user: CreateUserDTO) => {
-  const validUser = await findUserByUsername(user.username)
+  const { username, password } = user
+
+  const validUser = await findUserByUsername(username)
   if (validUser) throw new Error('USERNAME_ALREADY_EXISTS')
 
+  const hashPassword = await bcrypt.hash(password, 10)
   const now = new Date().toISOString()
   const userToCreate: Omit<User, 'id'> = {
     ...user,
+    password: hashPassword,
     createdAt: now,
     updatedAt: now,
   }
@@ -38,21 +43,37 @@ export const getUserByIdService = async (id: number) => {
 
 export const updateUserService = async (id: number, user: UpdateUserDTO) => {
   const existingUser = await findUserById(id)
-
-  if (typeof user.username !== 'undefined') {
-    const validUser = await findUserByUsername(user.username)
-    if (validUser && validUser.id !== id)
-      throw new Error('USERNAME_ALREADY_EXISTS')
-  }
-
   if (!existingUser) throw new Error('USER_NOT_FOUND')
+
   if (Object.keys(user).length === 0) throw new Error('NO_FIELDS_TO_UPDATE')
 
-  const now = new Date().toISOString()
-  const userToUpdate: Partial<User> = {
-    ...user,
-    updatedAt: now,
+  const { username, password } = user
+  const userToUpdate: Partial<User> = {}
+
+  // validate username
+  if (typeof username !== 'undefined') {
+    if (username.trim() === '') {
+      throw new Error('NO_FIELDS_TO_UPDATE')
+    }
+
+    const userWithSameUsername = await findUserByUsername(username)
+    if (userWithSameUsername && userWithSameUsername.id !== id) {
+      throw new Error('USERNAME_ALREADY_EXISTS')
+    }
+    userToUpdate.username = username
   }
+
+  // validate password
+  if (typeof password !== 'undefined') {
+    if (password.trim() === '') {
+      throw new Error('PASSWORD_CANNOT_BE_EMPTY')
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+    userToUpdate.password = hashedPassword
+  }
+
+  userToUpdate.updatedAt = new Date().toISOString()
 
   const updatedUser = await updateUser(id, userToUpdate)
   return updatedUser[0]
