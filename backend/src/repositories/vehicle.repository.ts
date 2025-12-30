@@ -66,6 +66,11 @@ export const findVehicleById = async (id: number) => {
   return result[0] ?? null
 }
 
+export const findVehicleByVin = async (vin: number) => {
+  const result = await pool`SELECT * FROM vehicles WHERE vin = ${vin}`
+  return result[0] ?? null
+}
+
 export const updateVehicle = async (id: number, vehicle: UpdateVehicle) => {
   const {
     vin,

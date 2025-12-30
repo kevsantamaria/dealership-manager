@@ -1,13 +1,9 @@
-import type { Vehicle } from '@/models/entities/vehicle'
-import { findAllVehicles } from '@/repositories/vehicle.repository'
+import type { CreateVehicleDTO } from "@/models/dtos/vehicle.dto";
+import { findVehicleByVin } from "@/repositories/vehicle.repository";
 
-export const getAllVehiclesService = async () => {
-  try {
-    const vehicles: Vehicle[] = await findAllVehicles()
-    return vehicles
-  } catch (error) {
-    throw new Error(
-      `Failed to retrieve vehicles: ${error instanceof Error ? error.message : 'Unknown error'}`
-    )
-  }
+export const createVehicleService = async (vehicle: CreateVehicleDTO) => {
+  const {vin} = vehicle
+
+  const validVin = await findVehicleByVin(vin)
+  if (validVin) throw new Error('VEHICLE_ALREADY_EXISTS')
 }

@@ -13,9 +13,15 @@ export const ErrorHandler = (
       return res
         .status(HTTP_STATUS.NOT_FOUND)
         .json({ message: HTTP_STATUS_MESSAGE.NOT_FOUND })
+
     case 'USERNAME_ALREADY_EXISTS':
       return res.status(HTTP_STATUS.CONFLICT).json({
         message: 'Username already exists',
+      })
+
+    case 'VEHICLE_ALREADY_EXISTS':
+      return res.status(HTTP_STATUS.CONFLICT).json({
+        message: 'Vehicle already exists',
       })
 
     case 'NO_FIELDS_TO_UPDATE':
