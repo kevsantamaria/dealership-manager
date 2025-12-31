@@ -1,5 +1,8 @@
 import { HTTP_STATUS, HTTP_STATUS_MESSAGE } from '@/constants/httpStatus'
-import type { CreateSupplierDTO, UpdateSupplierDTO } from '@/models/dtos/supplier.dto'
+import type {
+  CreateSupplierDTO,
+  UpdateSupplierDTO,
+} from '@/models/dtos/supplier.dto'
 import {
   createSupplierService,
   deleteSupplierService,
