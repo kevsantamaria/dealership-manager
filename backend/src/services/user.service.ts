@@ -37,13 +37,13 @@ export const getAllUsersService = async () => {
 export const getUserByIdService = async (id: number) => {
   const user: User = await findUserById(id)
 
-  if (!user) throw new Error('USER_NOT_FOUND')
+  if (!user) throw new Error('NOT_FOUND')
   return user
 }
 
 export const updateUserService = async (id: number, user: UpdateUserDTO) => {
   const existingUser = await findUserById(id)
-  if (!existingUser) throw new Error('USER_NOT_FOUND')
+  if (!existingUser) throw new Error('NOT_FOUND')
 
   if (Object.keys(user).length === 0) throw new Error('NO_FIELDS_TO_UPDATE')
 
@@ -81,7 +81,7 @@ export const updateUserService = async (id: number, user: UpdateUserDTO) => {
 
 export const deleteUserService = async (id: number) => {
   const existingUser = await findUserById(id)
-  if (!existingUser) throw new Error('USER_NOT_FOUND')
+  if (!existingUser) throw new Error('NOT_FOUND')
 
   await deleteUser(id)
 }

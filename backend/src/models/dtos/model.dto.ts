@@ -1,9 +1,10 @@
 import { z } from 'zod'
+import { createBrandDTO } from './brand.dto'
 
 export const createModelDTO = z.object({
   name: z.string().min(1),
   launchYear: z.number().int().optional(),
-  brandId: z.number().int(),
+  brand: createBrandDTO,
 })
 
 export const updateModelDTO = createModelDTO.partial()

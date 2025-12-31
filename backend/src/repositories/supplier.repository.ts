@@ -35,6 +35,11 @@ export const findSupplierById = async (id: number) => {
   return result[0] ?? null
 }
 
+export const findSupplierByName = async (name: string) => {
+  const result = await pool`SELECT * FROM suppliers WHERE name = ${name}`
+  return result[0] ?? null
+}
+
 export const updateSupplier = async (id: number, supplier: UpdateSupplier) => {
   const { name, type, country, contact, updatedAt } = supplier
   return await pool`

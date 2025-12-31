@@ -9,7 +9,7 @@ export const ErrorHandler = (
   next: NextFunction
 ) => {
   switch (err.message) {
-    case 'USER_NOT_FOUND':
+    case 'NOT_FOUND':
       return res
         .status(HTTP_STATUS.NOT_FOUND)
         .json({ message: HTTP_STATUS_MESSAGE.NOT_FOUND })
@@ -22,6 +22,11 @@ export const ErrorHandler = (
     case 'VEHICLE_ALREADY_EXISTS':
       return res.status(HTTP_STATUS.CONFLICT).json({
         message: 'Vehicle already exists',
+      })
+
+    case 'SUPPLIER_ALREADY_EXISTS':
+      return res.status(HTTP_STATUS.CONFLICT).json({
+        message: 'Supplier already exists',
       })
 
     case 'NO_FIELDS_TO_UPDATE':

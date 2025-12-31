@@ -5,7 +5,7 @@ export const createSupplierDTO = z.object({
   contact: z.string().optional(),
   type: z
     .enum(['private', 'dealer', 'auction', 'importer', 'fleet'])
-    .optional(),
+    .default('private'),
   country: z.string().optional(),
 })
 
