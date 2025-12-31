@@ -1,8 +1,8 @@
-import { getAllVehicles } from '@/controllers/vehicle.controller'
-import { Router } from 'express'
+// import { getAllVehicles } from '@/controllers/vehicle.controller'
+// import { Router } from 'express'
 
-const router = Router()
+// const router = Router()
 
-router.get('/vehicles', getAllVehicles)
+// router.get('/vehicles', getAllVehicles)
 
-export default router
+// export default router
