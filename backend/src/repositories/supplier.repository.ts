@@ -1,6 +1,6 @@
 import { pool } from '@/db/pool'
 import type { NewSupplier, UpdateSupplier } from '@/models/entities/supplier'
-import { sql } from 'bun'
+import { SQL, sql } from 'bun'
 
 export const createSupplier = async (supplier: NewSupplier) => {
   const { name, type, country, contact, createdAt, updatedAt } = supplier
@@ -30,8 +30,8 @@ export const findAllSuppliers = async () => {
   return await pool`SELECT * FROM suppliers`
 }
 
-export const findSupplierById = async (id: number) => {
-  const result = await pool`SELECT * FROM suppliers WHERE id = ${id}`
+export const findSupplierById = async (id: number, db: SQL = pool) => {
+  const result = await db`SELECT * FROM suppliers WHERE id = ${id}`
   return result[0] ?? null
 }
 

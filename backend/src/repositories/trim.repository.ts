@@ -1,8 +1,8 @@
 import { pool } from '@/db/pool'
 import type { NewTrim, UpdateTrim } from '@/models/entities/trim'
-import { sql } from 'bun'
+import { SQL, sql } from 'bun'
 
-export const createTrim = async (trim: NewTrim) => {
+export const createTrim = async (trim: NewTrim, db: SQL = pool) => {
   const {
     name,
     transmission,
@@ -12,7 +12,7 @@ export const createTrim = async (trim: NewTrim) => {
     drivetrain,
     modelId,
   } = trim
-  return await pool`
+  return await db`
     INSERT INTO
       trims (
         name,

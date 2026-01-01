@@ -5,9 +5,9 @@ import { createModelDTO } from './model.dto'
 
 export const createVehicleDTO = z.object({
   vin: z.string().min(5),
-  licensePlate: z.string().optional(),
+  licensePlate: z.string().nullable().optional(),
   color: z.string().min(1),
-  mileage: z.number().nonnegative().optional(),
+  mileage: z.number().nonnegative().nullable().optional(),
 
   arrivalDate: z.string(),
   purchasePrice: z.number().positive(),
@@ -18,9 +18,9 @@ export const createVehicleDTO = z.object({
   rateCondition: z
     .enum(['bad', 'regular', 'good', 'excellent'])
     .default('good'),
-  rateDescription: z.string().optional(),
+  rateDescription: z.string().nullable().optional(),
 
-  supplierId: z.string().uuid(),
+  supplierId: z.number(),
 
   brand: createBrandDTO,
   model: createModelDTO,

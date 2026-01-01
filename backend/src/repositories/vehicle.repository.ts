@@ -1,8 +1,8 @@
 import { pool } from '@/db/pool'
 import type { NewVehicle, UpdateVehicle } from '@/models/entities/vehicle'
-import { sql } from 'bun'
+import { SQL, sql } from 'bun'
 
-export const createVehicle = async (vehicle: NewVehicle) => {
+export const createVehicle = async (vehicle: NewVehicle, db: SQL = pool) => {
   const {
     vin,
     licensePlate,
@@ -19,7 +19,7 @@ export const createVehicle = async (vehicle: NewVehicle) => {
     trimId,
     supplierId,
   } = vehicle
-  return await pool`
+  return await db`
     INSERT INTO
       vehicles (
         vin,
@@ -52,7 +52,7 @@ export const createVehicle = async (vehicle: NewVehicle) => {
         ${createdAt},
         ${updatedAt},
         ${trimId},
-        ${supplierId},
+        ${supplierId}
       ) RETURNING *
   `
 }
@@ -66,7 +66,7 @@ export const findVehicleById = async (id: number) => {
   return result[0] ?? null
 }
 
-export const findVehicleByVin = async (vin: number) => {
+export const findVehicleByVin = async (vin: string) => {
   const result = await pool`SELECT * FROM vehicles WHERE vin = ${vin}`
   return result[0] ?? null
 }

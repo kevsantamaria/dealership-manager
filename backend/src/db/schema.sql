@@ -63,7 +63,7 @@ awd: tracción total';
 
 CREATE TABLE "vehicles" (
   "id" BIGINT GENERATED ALWAYS AS IDENTITY,
-  "vin" BIGINT NOT NULL,
+  "vin" VARCHAR(17) NOT NULL,
   "license_plate" VARCHAR(255) NULL,
   "color" VARCHAR(255) NOT NULL,
   "mileage" DECIMAL(8, 2) NULL,

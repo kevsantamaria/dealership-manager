@@ -4,7 +4,7 @@ export type RateCondition = 'bad' | 'regular' | 'good' | 'excellent'
 
 export interface Vehicle {
   id: number
-  vin: number
+  vin: string
   licensePlate?: string | null
   color: string
   mileage?: number | null
