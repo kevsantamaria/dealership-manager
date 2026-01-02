@@ -8,29 +8,39 @@ export const createVehicleDTO = z.object({
   licensePlate: z.string().nullable().optional(),
   color: z.string().min(1),
   mileage: z.number().nonnegative().nullable().optional(),
-
   arrivalDate: z.string(),
   purchasePrice: z.number().positive(),
   suggestedPrice: z.number().positive(),
-
   stockStatus: z.enum(['in_stock', 'reserved', 'sold']).default('in_stock'),
-
   rateCondition: z
     .enum(['bad', 'regular', 'good', 'excellent'])
     .default('good'),
   rateDescription: z.string().nullable().optional(),
-
   supplierId: z.number(),
-
   brand: createBrandDTO,
   model: createModelDTO,
-
   trim: createTrimDTO,
-
   images: z.array(z.string().url()).optional(),
 })
 
-export const updateVehicleDTO = createVehicleDTO.partial()
+export const updateVehicleDTO = z
+  .object({
+    vin: z.string().min(5).optional(),
+    licensePlate: z.string().nullable().optional(),
+    color: z.string().min(1).optional(),
+    mileage: z.number().nonnegative().nullable().optional(),
+    arrivalDate: z.string().optional(),
+    purchasePrice: z.number().positive().optional(),
+    suggestedPrice: z.number().positive().optional(),
+    stockStatus: z.enum(['in_stock', 'reserved', 'sold']).optional(),
+    rateCondition: z.enum(['bad', 'regular', 'good', 'excellent']).optional(),
+    rateDescription: z.string().nullable().optional(),
+    supplierId: z.number().optional(),
+    brandId: z.number().optional(),
+    modelId: z.number().optional(),
+    trimId: z.number().optional(),
+  })
+  .strict()
 
 export type CreateVehicleDTO = z.infer<typeof createVehicleDTO>
 export type UpdateVehicleDTO = z.infer<typeof updateVehicleDTO>

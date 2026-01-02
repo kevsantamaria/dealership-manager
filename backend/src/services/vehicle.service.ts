@@ -1,10 +1,13 @@
 import { pool } from '@/db/pool'
-import type { CreateVehicleDTO } from '@/models/dtos/vehicle.dto'
+import type {
+  CreateVehicleDTO,
+  UpdateVehicleDTO,
+} from '@/models/dtos/vehicle.dto'
 import type { Brand } from '@/models/entities/brand'
 import type { Model } from '@/models/entities/model'
 import type { Supplier } from '@/models/entities/supplier'
 import type { Trim } from '@/models/entities/trim'
-import type { NewVehicle } from '@/models/entities/vehicle'
+import type { NewVehicle, UpdateVehicle } from '@/models/entities/vehicle'
 import { createBrand, findBrandByName } from '@/repositories/brand.repository'
 import {
   createModel,
@@ -13,13 +16,17 @@ import {
 import { findSupplierById } from '@/repositories/supplier.repository'
 import {
   createTrim,
+  findTrimById,
   findTrimByNameAndModel,
 } from '@/repositories/trim.repository'
 import {
   createVehicle,
+  deleteVehicle,
   findAllVehiclesDetails,
+  findVehicleById,
   findVehicleByIdDetailed,
   findVehicleByVin,
+  updateVehicle,
 } from '@/repositories/vehicle.repository'
 
 export const createVehicleService = async (vehicle: CreateVehicleDTO) => {
@@ -92,3 +99,74 @@ export const getVehicleByIdService = async (id: number) => {
   if (!detailedVehicle) throw new Error('NOT_FOUND')
   return detailedVehicle
 }
+
+export const updateVehicleService = async (
+  id: number,
+  vehicle: UpdateVehicleDTO
+) => {
+  const existingVehicle = await findVehicleById(id)
+  if (!existingVehicle) throw new Error('NOT_FOUND')
+
+  if (Object.keys(vehicle).length === 0) throw new Error('NO_FIELDS_TO_UPDATE')
+
+  const {
+    vin,
+    color,
+    arrivalDate,
+    licensePlate,
+    mileage,
+    purchasePrice,
+    suggestedPrice,
+    rateCondition,
+    rateDescription,
+    stockStatus,
+    supplierId,
+    trimId,
+  } = vehicle
+
+  if (vin) {
+    const existingVin = await findVehicleByVin(vin)
+    if (existingVin && existingVin.id !== id) throw new Error('ALREADY_EXISTS')
+  }
+
+  if (supplierId) {
+    const supplier = await findSupplierById(supplierId)
+    if (!supplier) throw new Error('SUPPLIER_NOT_FOUND')
+  }
+
+  if (trimId) {
+    const trim = await findTrimById(trimId)
+    if (!trim) throw new Error('TRIM_NOT_FOUND')
+  }
+
+  const updateData: UpdateVehicle = {}
+
+  if (vin !== undefined) updateData.vin = vin
+  if (color !== undefined) updateData.color = color
+  if (arrivalDate !== undefined) updateData.arrivalDate = arrivalDate
+  if (licensePlate !== undefined) updateData.licensePlate = licensePlate
+  if (mileage !== undefined) updateData.mileage = mileage
+  if (purchasePrice !== undefined) updateData.purchasePrice = purchasePrice
+  if (suggestedPrice !== undefined) updateData.suggestedPrice = suggestedPrice
+  if (rateCondition !== undefined)
+    updateData.rateCondition = rateCondition
+  if (rateDescription !== undefined)
+    updateData.rateDescription = rateDescription
+  if (stockStatus !== undefined) updateData.stockStatus = stockStatus
+  if (supplierId !== undefined) updateData.supplierId = supplierId
+  if (trimId !== undefined) updateData.trimId = trimId
+
+  updateData.updatedAt = new Date().toISOString()
+
+  await updateVehicle(id, updateData)
+
+}
+
+export const deleteVehicleService = async (id: number) => {
+  const existingVehicle = await findVehicleById(id)
+  if (!existingVehicle) throw new Error('NOT_FOUND')
+
+  await deleteVehicle(id)
+}
+
+
