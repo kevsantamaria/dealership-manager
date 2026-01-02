@@ -2,7 +2,7 @@ import { ErrorHandler } from '@/middlewares/errorHandler.middleware'
 import user from '@/routes/user.routes'
 import supplier from '@/routes/supplier.routes'
 import login from '@/routes/login.routes'
-// import vehicle from '@/routes/vehicle.routes'
+import vehicle from '@/routes/vehicle.routes'
 import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
@@ -24,7 +24,7 @@ app.use(express.json())
 app.use(user)
 app.use(login)
 app.use(supplier)
-// app.use(vehicle)
+app.use(vehicle)
 
 app.use(ErrorHandler)
 
