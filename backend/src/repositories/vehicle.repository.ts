@@ -67,6 +67,77 @@ export const findVehicleById = async (id: number) => {
   return result[0] ?? null
 }
 
+export const findVehicleByIdDetailed = async (id: number) => {
+  const result = await pool`
+    SELECT
+      -- VEHICLE
+      v.id AS "vehicleId",
+      v.vin,
+      v.license_plate AS "licensePlate",
+      v.color,
+      v.mileage,
+      v.arrival_date AS "arrivalDate",
+      v.purchase_price AS "purchasePrice",
+      v.suggested_price AS "suggestedPrice",
+      v.stock_status AS "stockStatus",
+      v.rate_condition AS "rateCondition",
+      v.rate_description AS "rateDescription",
+      v.created_at AS "createdAt",
+      v.updated_at AS "updatedAt",
+      -- SUPPLIER
+      s.id AS "supplierId",
+      s.name AS "supplierName",
+      s.contact AS "supplierContact",
+      s.type AS "supplierType",
+      s.country AS "supplierCountry",
+      -- BRAND
+      b.id AS "brandId",
+      b.name AS "brandName",
+      b.country_origin AS "brandCountryOrigin",
+      -- MODEL
+      m.id AS "modelId",
+      m.name AS "modelName",
+      m.launch_year AS "modelLaunchYear",
+      -- TRIM
+      t.id AS "trimId",
+      t.name AS "trimName",
+      t.engine_size AS "engineSize",
+      t.horsepower,
+      t.engine_type AS "engineType",
+      t.transmission,
+      t.drivetrain
+    FROM
+      vehicles v
+      JOIN suppliers s ON s.id = v.supplier_id
+      JOIN trims t ON t.id = v.trim_id
+      JOIN models m ON m.id = t.model_id
+      JOIN brands b ON b.id = m.brand_id
+    WHERE
+      v.id = ${id};
+  `
+  return result[0] ?? null
+}
+
+export const findAllVehiclesDetails = async () => {
+  return await pool`
+    SELECT
+      v.color,
+      v.arrival_date AS "arrivalDate",
+      v.suggested_price AS "price",
+      v.stock_status AS "stockStatus",
+      b.name AS "brand",
+      m.name AS "model",
+      t.name AS "trim"
+    FROM
+      vehicles v
+      JOIN trims t ON t.id = v.trim_id
+      JOIN models m ON m.id = t.model_id
+      JOIN brands b ON b.id = m.brand_id
+    ORDER BY
+      v.created_at DESC;
+  `
+}
+
 export const findVehicleByVin = async (vin: string) => {
   const result = await pool`SELECT * FROM vehicles WHERE vin = ${vin}`
   return result[0] ?? null

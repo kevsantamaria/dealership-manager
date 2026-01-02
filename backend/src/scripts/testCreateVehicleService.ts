@@ -2,29 +2,29 @@ import type { CreateVehicleDTO } from '@/models/dtos/vehicle.dto'
 import { createVehicleService } from '@/services/vehicle.service'
 
 const testVehicle: CreateVehicleDTO = {
-  vin: '1HGCM82633A123456',
-  color: 'Blue',
-  arrivalDate: '2024-06-15',
-  purchasePrice: 18500,
-  suggestedPrice: 22500,
-  stockStatus: 'reserved',
-  rateCondition: 'excellent',
+  vin: '1G1ZC5E0XGF123789',
+  color: 'Black',
+  arrivalDate: '2024-09-10',
+  purchasePrice: 32000,
+  suggestedPrice: 37500,
+  stockStatus: 'in_stock',
+  rateCondition: 'bad',
   supplierId: 6,
   brand: {
-    name: 'Honda',
-    countryOrigin: 'Japan',
+    name: 'Chevrolet',
+    countryOrigin: 'USA',
   },
   model: {
-    name: 'Civic',
-    launchYear: 2022,
+    name: 'Camaro',
+    launchYear: 2021,
   },
   trim: {
-    name: 'Touring',
-    engineSize: 1.5,
-    horsepower: 180,
-    engineType: 'hybrid',
-    transmission: 'cvt',
-    drivetrain: 'fwd',
+    name: 'SS',
+    engineSize: 6.2,
+    horsepower: 455,
+    engineType: 'gasoline',
+    transmission: 'manual',
+    drivetrain: 'rwd',
   },
 }
 

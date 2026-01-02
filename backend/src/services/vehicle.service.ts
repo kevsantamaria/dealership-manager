@@ -17,6 +17,8 @@ import {
 } from '@/repositories/trim.repository'
 import {
   createVehicle,
+  findAllVehiclesDetails,
+  findVehicleByIdDetailed,
   findVehicleByVin,
 } from '@/repositories/vehicle.repository'
 
@@ -74,14 +76,19 @@ export const createVehicleService = async (vehicle: CreateVehicleDTO) => {
 
     const createdVehicle = await createVehicle(newVehicle, tx)
 
-    return createdVehicle[0]
+    return createdVehicle
   })
 }
 
-// export const getVehicleByIdService = async (id: number) => {
-//   const vehicle: Vehicle = await findVehicleById(id)
-//   const trim = await findTrimById(JSON.stringify(vehicle[0].trimId))
+export const getAllVehiclesService = async () => {
+  const vehicles = await findAllVehiclesDetails()
 
-//   if (!vehicle) throw new Error('NOT_FOUND')
+  return vehicles
+}
 
-// }
+export const getVehicleByIdService = async (id: number) => {
+  const detailedVehicle = await findVehicleByIdDetailed(id)
+
+  if (!detailedVehicle) throw new Error('NOT_FOUND')
+  return detailedVehicle
+}
