@@ -4,7 +4,7 @@ import type { NewBrand, UpdateBrand } from '@/models/entities/brand'
 
 export const createBrand = async (brand: NewBrand, db: SQL = pool) => {
   const { name, countryOrigin } = brand
-  return await db`
+  const result = await db`
     INSERT INTO
       brands (name, country_origin)
     VALUES
@@ -13,6 +13,7 @@ export const createBrand = async (brand: NewBrand, db: SQL = pool) => {
         ${countryOrigin}
       ) RETURNING *
   `
+  return result[0]
 }
 
 export const findAllBrands = async () => {
@@ -31,13 +32,14 @@ export const findBrandByName = async (name: string, db: SQL = pool) => {
 
 export const updateBrand = async (id: number, brand: UpdateBrand) => {
   const { name, countryOrigin } = brand
-  return await pool`
+  const result = await pool`
     UPDATE brands
     SET
       ${sql({ name, country_origin: countryOrigin })}
     WHERE
       id = ${id} RETURNING *
   `
+  return result[0]
 }
 
 export const deleteBrand = async (id: number) => {

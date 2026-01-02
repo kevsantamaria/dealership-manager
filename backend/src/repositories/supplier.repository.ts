@@ -4,7 +4,7 @@ import { SQL, sql } from 'bun'
 
 export const createSupplier = async (supplier: NewSupplier) => {
   const { name, type, country, contact, createdAt, updatedAt } = supplier
-  return await pool`
+  const result = await pool`
     INSERT INTO
       suppliers (
         name,
@@ -24,6 +24,7 @@ export const createSupplier = async (supplier: NewSupplier) => {
         ${updatedAt}
       ) RETURNING *
   `
+  return result[0]
 }
 
 export const findAllSuppliers = async () => {
@@ -42,13 +43,14 @@ export const findSupplierByName = async (name: string) => {
 
 export const updateSupplier = async (id: number, supplier: UpdateSupplier) => {
   const { name, type, country, contact, updatedAt } = supplier
-  return await pool`
+  const result = await pool`
     UPDATE suppliers
     SET
       ${sql({ name, type, country, contact, updated_at: updatedAt })}
     WHERE
       id = ${id} RETURNING *
   `
+  return result[0]
 }
 
 export const deleteSupplier = async (id: number) => {

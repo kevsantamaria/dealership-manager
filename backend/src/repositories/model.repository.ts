@@ -5,7 +5,7 @@ import type { NewModel, UpdateModel } from '@/models/entities/model'
 
 export const createModel = async (model: NewModel, db: SQL = pool) => {
   const { name, launchYear, brandId } = model
-  return await db`
+  const result = await db`
     INSERT INTO
       models (name, launch_year, brand_id)
     VALUES
@@ -15,6 +15,7 @@ export const createModel = async (model: NewModel, db: SQL = pool) => {
         ${brandId}
       ) RETURNING *
   `
+  return result[0]
 }
 
 export const findAllModels = async () => {
@@ -46,13 +47,14 @@ export const findModelByNameAndBrand = async (
 
 export const updateModel = async (id: number, model: UpdateModel) => {
   const { name, launchYear, brandId } = model
-  return await pool`
+  const result = await pool`
     UPDATE models
     SET
       ${sql({ name, launch_year: launchYear, brand_id: brandId })}
     WHERE
       id = ${id} RETURNING *
   `
+  return result[0]
 }
 
 export const deleteModel = async (id: number) => {

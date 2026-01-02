@@ -19,7 +19,7 @@ export const createVehicle = async (vehicle: NewVehicle, db: SQL = pool) => {
     trimId,
     supplierId,
   } = vehicle
-  return await db`
+  const result = await db`
     INSERT INTO
       vehicles (
         vin,
@@ -55,6 +55,7 @@ export const createVehicle = async (vehicle: NewVehicle, db: SQL = pool) => {
         ${supplierId}
       ) RETURNING *
   `
+  return result[0]
 }
 
 export const findAllVehicles = async () => {
@@ -87,7 +88,7 @@ export const updateVehicle = async (id: number, vehicle: UpdateVehicle) => {
     trimId,
     supplierId,
   } = vehicle
-  return await pool`
+  const result = await pool`
     UPDATE vehicles
     SET
       ${sql({
@@ -108,6 +109,7 @@ export const updateVehicle = async (id: number, vehicle: UpdateVehicle) => {
     WHERE
       id = ${id} RETURNING *
   `
+  return result[0]
 }
 
 export const deleteVehicle = async (id: number) => {

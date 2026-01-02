@@ -29,22 +29,22 @@ export const createVehicleService = async (vehicle: CreateVehicleDTO) => {
     const supplier: Supplier = await findSupplierById(supplierId, tx)
     if (!supplier) throw new Error('NOT_FOUND')
 
-    let existingBrand = await findBrandByName(brand.name, tx)
+    let existingBrand: Brand = await findBrandByName(brand.name, tx)
     if (!existingBrand) {
       existingBrand = await createBrand(brand, tx)
     }
 
-    let existingModel = await findModelByNameAndBrand(
+    let existingModel: Model = await findModelByNameAndBrand(
       model.name,
       brand.name,
       tx
     )
     if (!existingModel) {
-      const brandId = JSON.stringify(existingBrand[0].id)
+      const brandId = existingBrand.id
       existingModel = await createModel({ ...model, brandId }, tx)
     }
 
-    const modelId = JSON.stringify(existingModel[0].id)
+    const modelId = existingModel.id
     const createdTrim = await createTrim({ ...trim, modelId }, tx)
 
     const newVehicle: NewVehicle = {
@@ -60,7 +60,7 @@ export const createVehicleService = async (vehicle: CreateVehicleDTO) => {
       rateDescription: vehicle.rateDescription ?? null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      trimId: JSON.stringify(createdTrim[0].id),
+      trimId: createdTrim.id,
       supplierId,
     }
 
@@ -69,3 +69,11 @@ export const createVehicleService = async (vehicle: CreateVehicleDTO) => {
     return createdVehicle[0]
   })
 }
+
+// export const getVehicleByIdService = async (id: number) => {
+//   const vehicle: Vehicle = await findVehicleById(id)
+//   const trim = await findTrimById(JSON.stringify(vehicle[0].trimId)) 
+
+//   if (!vehicle) throw new Error('NOT_FOUND')
+  
+// }

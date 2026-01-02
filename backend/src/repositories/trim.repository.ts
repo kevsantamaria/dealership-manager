@@ -12,7 +12,7 @@ export const createTrim = async (trim: NewTrim, db: SQL = pool) => {
     drivetrain,
     modelId,
   } = trim
-  return await db`
+  const result = await db`
     INSERT INTO
       trims (
         name,
@@ -34,6 +34,7 @@ export const createTrim = async (trim: NewTrim, db: SQL = pool) => {
         ${modelId}
       ) RETURNING *
   `
+  return result[0]
 }
 
 export const findAllTrims = async () => {
@@ -55,7 +56,7 @@ export const updateTrim = async (id: number, trim: UpdateTrim) => {
     drivetrain,
     modelId,
   } = trim
-  return await pool`
+  const result = await pool`
     UPDATE trims
     SET
       ${sql({
@@ -70,6 +71,7 @@ export const updateTrim = async (id: number, trim: UpdateTrim) => {
     WHERE
       id = ${id} RETURNING *
   `
+  return result[0]
 }
 
 export const deleteTrim = async (id: number) => {

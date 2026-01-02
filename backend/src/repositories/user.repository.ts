@@ -4,7 +4,7 @@ import { sql } from 'bun'
 
 export const createUser = async (user: NewUser) => {
   const { username, password, role, createdAt, updatedAt } = user
-  return await pool`
+  const result = await pool`
     INSERT INTO
       users (username, password, role, created_at, updated_at)
     VALUES
@@ -16,6 +16,7 @@ export const createUser = async (user: NewUser) => {
         ${updatedAt}
       ) RETURNING *
   `
+  return result[0]
 }
 
 export const findAllUsers = async () => {
@@ -34,13 +35,14 @@ export const findUserByUsername = async (username: string) => {
 
 export const updateUser = async (id: number, user: UpdateUser) => {
   const { username, password, role, updatedAt } = user
-  return await pool`
+  const result = await pool`
     UPDATE users
     SET
       ${sql({ username, password, role, updated_at: updatedAt })}
     WHERE
       id = ${id} RETURNING *
   `
+  return result[0]
 }
 
 export const deleteUser = async (id: number) => {
