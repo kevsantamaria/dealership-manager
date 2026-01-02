@@ -46,6 +46,24 @@ export const findTrimById = async (id: number) => {
   return result[0] ?? null
 }
 
+export const findTrimByNameAndModel = async (
+  name: string,
+  modelName: string,
+  db: SQL = pool
+) => {
+  const result = await db`
+    SELECT
+      t.*
+    FROM
+      trims t
+      INNER JOIN models m ON t.model_id = m.id
+    WHERE
+      t.name = ${name}
+      AND m.name = ${modelName}
+  `
+  return result[0] ?? null
+}
+
 export const updateTrim = async (id: number, trim: UpdateTrim) => {
   const {
     name,

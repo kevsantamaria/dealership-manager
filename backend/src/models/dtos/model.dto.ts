@@ -5,7 +5,6 @@ export const createModelDTO = z.object({
   launchYear: z.number().int().optional(),
 })
 
-
 export const updateModelDTO = createModelDTO.partial()
 
 export type CreateModelDTO = z.infer<typeof createModelDTO>

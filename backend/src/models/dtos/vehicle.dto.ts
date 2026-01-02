@@ -30,7 +30,6 @@ export const createVehicleDTO = z.object({
   images: z.array(z.string().url()).optional(),
 })
 
-
 export const updateVehicleDTO = createVehicleDTO.partial()
 
 export type CreateVehicleDTO = z.infer<typeof createVehicleDTO>

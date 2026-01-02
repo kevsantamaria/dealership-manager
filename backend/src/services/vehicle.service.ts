@@ -3,17 +3,18 @@ import type { CreateVehicleDTO } from '@/models/dtos/vehicle.dto'
 import type { Brand } from '@/models/entities/brand'
 import type { Model } from '@/models/entities/model'
 import type { Supplier } from '@/models/entities/supplier'
+import type { Trim } from '@/models/entities/trim'
 import type { NewVehicle } from '@/models/entities/vehicle'
-import {
-  createBrand,
-  findBrandByName,
-} from '@/repositories/brand.repository'
+import { createBrand, findBrandByName } from '@/repositories/brand.repository'
 import {
   createModel,
   findModelByNameAndBrand,
 } from '@/repositories/model.repository'
 import { findSupplierById } from '@/repositories/supplier.repository'
-import { createTrim } from '@/repositories/trim.repository'
+import {
+  createTrim,
+  findTrimByNameAndModel,
+} from '@/repositories/trim.repository'
 import {
   createVehicle,
   findVehicleByVin,
@@ -44,8 +45,15 @@ export const createVehicleService = async (vehicle: CreateVehicleDTO) => {
       existingModel = await createModel({ ...model, brandId }, tx)
     }
 
-    const modelId = existingModel.id
-    const createdTrim = await createTrim({ ...trim, modelId }, tx)
+    let existingTrim: Trim = await findTrimByNameAndModel(
+      trim.name,
+      model.name,
+      tx
+    )
+    if (!existingTrim) {
+      const modelId = existingModel.id
+      existingTrim = await createTrim({ ...trim, modelId }, tx)
+    }
 
     const newVehicle: NewVehicle = {
       vin,
@@ -60,7 +68,7 @@ export const createVehicleService = async (vehicle: CreateVehicleDTO) => {
       rateDescription: vehicle.rateDescription ?? null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      trimId: createdTrim.id,
+      trimId: existingTrim.id,
       supplierId,
     }
 
@@ -72,8 +80,8 @@ export const createVehicleService = async (vehicle: CreateVehicleDTO) => {
 
 // export const getVehicleByIdService = async (id: number) => {
 //   const vehicle: Vehicle = await findVehicleById(id)
-//   const trim = await findTrimById(JSON.stringify(vehicle[0].trimId)) 
+//   const trim = await findTrimById(JSON.stringify(vehicle[0].trimId))
 
 //   if (!vehicle) throw new Error('NOT_FOUND')
-  
+
 // }
