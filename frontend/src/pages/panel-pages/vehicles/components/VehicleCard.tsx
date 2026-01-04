@@ -19,9 +19,9 @@ function VehicleCard() {
           Disponible
         </Badge>
         <img
-          src="/Camaro.webp"
+          src="/Camaro1969.webp"
           alt="Chevrolet Camaro"
-          className="w-full h-42 object-cover"
+          className="w-full h-fit object-cover"
         />
       </div>
 
@@ -30,7 +30,7 @@ function VehicleCard() {
           <div className="space-y-2">
             <CardTitle className="text-2xl">Camaro</CardTitle>
             <div className="flex flex-wrap items-center gap-2">
-              <Badge className="rounded-sm">Chevrolet</Badge>
+              <Badge variant="secondary" className="rounded-sm">Chevrolet</Badge>
               <Badge variant="outline" className="rounded-sm">
                 SS
               </Badge>
@@ -41,14 +41,14 @@ function VehicleCard() {
         <CardContent className='flex sm:flex-row gap-4'>
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">Color:</span>
-            <div className="flex items-center gap-1.5 rounded-md bg-red-50 px-2.5 py-1 border border-red-200">
-              <div className="h-3 w-3 rounded-full bg-red-600" />
-              <span className="text-sm font-medium text-red-900">Rojo</span>
+            <div className="flex items-center gap-1.5 rounded-md bg-gray-50 px-2.5 py-1 border border-gray-200">
+              <div className="h-3 w-3 rounded-full bg-black" />
+              <span className="text-sm font-medium text-black">Negro</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">Año:</span>
-              <span className="text-sm font-medium">2024</span>
+              <span className="text-sm font-medium">1969</span>
           </div>
         </CardContent>
 
@@ -57,7 +57,7 @@ function VehicleCard() {
             <span className="text-xs font-medium uppercase text-muted-foreground">
               Precio
             </span>
-            <span className="text-2xl font-bold">$69.99</span>
+            <span className="text-2xl font-bold">$37999</span>
           </div>
           <Button>Ver Detalles</Button>
         </CardFooter>

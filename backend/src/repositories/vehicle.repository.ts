@@ -122,11 +122,11 @@ export const findAllVehiclesDetails = async () => {
   return await pool`
     SELECT
       v.color,
-      v.arrival_date AS "arrivalDate",
       v.suggested_price AS "price",
       v.stock_status AS "stockStatus",
       b.name AS "brand",
       m.name AS "model",
+      m.launch_year AS "launchYear",
       t.name AS "trim"
     FROM
       vehicles v
