@@ -20,7 +20,7 @@ export const useLoginStore = create(
     }),
     {
       name: 'auth',
-      storage: createJSONStorage(() => sessionStorage)
+      storage: createJSONStorage(() => sessionStorage),
     }
   )
 )
