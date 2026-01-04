@@ -1,5 +1,11 @@
+import VehicleCard from './components/VehicleCard'
+
 function Vehicles() {
-  return <div>Vehicles</div>
+  return (
+    <div>
+      <VehicleCard />
+    </div>
+  )
 }
 
 export default Vehicles
