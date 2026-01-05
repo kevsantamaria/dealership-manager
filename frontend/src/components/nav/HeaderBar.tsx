@@ -27,7 +27,9 @@ export const HeaderBar = () => {
       <header className="relative p-3 w-full z-999999 flex h-14 items-center gap-4 border-b bg-surface px-4 opacity-100 sm:h-auto sm:border-0 sm:px-6 justify-between backdrop-blur-md">
         <div className="md:hidden">
           <div>
-            <h1 className="text-lg font-semibold text-primary-foreground">Dealership Manager</h1>
+            <h1 className="text-lg font-semibold text-primary-foreground">
+              Dealership Manager
+            </h1>
           </div>
         </div>
 
@@ -40,7 +42,7 @@ export const HeaderBar = () => {
               size="icon"
               className="overflow-hidden rounded-full"
             >
-              <IconUserHexagon/>
+              <IconUserHexagon />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

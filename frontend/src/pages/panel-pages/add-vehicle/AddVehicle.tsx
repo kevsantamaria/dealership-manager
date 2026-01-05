@@ -1,4 +1,4 @@
-import AddVehicleForm from "@/pages/panel-pages/add-vehicle/components/AddVehicleForm"
+import AddVehicleForm from '@/pages/panel-pages/add-vehicle/components/AddVehicleForm'
 
 function AddVehicle() {
   return (

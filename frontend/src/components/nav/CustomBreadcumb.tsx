@@ -22,7 +22,10 @@ function CustomBreadcrumb() {
             return (
               <Fragment key={to}>
                 <BreadcrumbItem>
-                  <BreadcrumbLink asChild className='hover:text-primary-foreground'>
+                  <BreadcrumbLink
+                    asChild
+                    className="hover:text-primary-foreground"
+                  >
                     <Link to={to}>{translateRouter(item)}</Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
@@ -48,12 +51,12 @@ const translateRouter = (router: string) => {
       return 'Proveedores'
     case 'brands':
       return 'Marcas'
-    
+
     case 'admin':
       return 'Administración'
     case 'add-vehicle':
       return 'Agregar Vehículo'
     case 'add-supplier':
       return 'Agregar Proveedor'
-    }
+  }
 }

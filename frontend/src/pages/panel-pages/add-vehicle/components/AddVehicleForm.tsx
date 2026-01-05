@@ -61,8 +61,8 @@ function AddVehicleForm() {
       licensePlate: '',
       mileage: '',
       brand: {
-        name: ''
-      }
+        name: '',
+      },
     },
     mode: 'onChange',
   })
@@ -460,7 +460,7 @@ function AddVehicleForm() {
                     {...field}
                     id="model.launchYear"
                     aria-invalid={fieldState.invalid}
-                    type='number'
+                    type="number"
                   />
                   <FieldDescription></FieldDescription>
                   {fieldState.invalid && (
@@ -502,7 +502,7 @@ function AddVehicleForm() {
                     {...field}
                     id="trim.engineSize"
                     aria-invalid={fieldState.invalid}
-                    type='number'
+                    type="number"
                   />
                   <FieldDescription></FieldDescription>
                   {fieldState.invalid && (
@@ -610,7 +610,7 @@ function AddVehicleForm() {
                     {...field}
                     id="trim.horsepower"
                     aria-invalid={fieldState.invalid}
-                    type='number'
+                    type="number"
                   />
                   <FieldDescription></FieldDescription>
                   {fieldState.invalid && (
