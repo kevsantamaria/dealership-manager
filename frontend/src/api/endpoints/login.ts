@@ -1,12 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import api from '@/api/dealership'
-
-// Error handling
-const manageError = (error: any) => {
-  const errorMsg = error.response?.data?.message || 'Unknown error ocurred'
-  console.error(errorMsg)
-  throw new Error(errorMsg)
-}
+import { manageError } from '@/api/manageError'
 
 // Iniciar sesión
 export const fetchLogin = async (username: string, password: string) => {
@@ -31,7 +24,7 @@ export const fetchLogout = async () => {
     .then((res) => {
       return res.data
     })
-    .catch((error: any) => {
+    .catch((error) => {
       manageError(error)
     })
 }
