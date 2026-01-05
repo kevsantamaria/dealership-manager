@@ -1,7 +1,7 @@
 export interface Model {
   id: number
   name: string
-  launchYear?: number | null
+  launchYear: number
   brandId: number
 }
 

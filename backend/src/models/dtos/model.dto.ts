@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const createModelDTO = z.object({
   name: z.string().min(1),
-  launchYear: z.number().int().optional(),
+  launchYear: z.number().int(),
 })
 
 export const updateModelDTO = createModelDTO.partial()
