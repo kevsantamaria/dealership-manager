@@ -1,4 +1,4 @@
-import { fetchSuppliersWithNameAndId } from '@/api/endpoints/suppliersWithNameAndId' 
+import { fetchSuppliersWithNameAndId } from '@/api/endpoints/suppliersWithNameAndId'
 import { useQuery } from '@tanstack/react-query'
 
 export const useSuppliers = () => {

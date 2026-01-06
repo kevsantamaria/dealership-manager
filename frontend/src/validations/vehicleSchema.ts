@@ -66,11 +66,16 @@ export const vehicleSchema = z.object({
       .refine((engineSize) => !isNaN(parseFloat(engineSize))),
     engineType: z.enum(engineTypes),
     transmission: z.enum(transmissionTypes),
-    horsepower: z.string().min(1, 'Ingrese un valor válido').refine((horsepower) => !isNaN(parseInt(horsepower))),
+    horsepower: z
+      .string()
+      .min(1, 'Ingrese un valor válido')
+      .refine((horsepower) => !isNaN(parseInt(horsepower))),
     drivetrain: z.enum(driveTrains),
   }),
 
-  supplier: z.string({ error: 'El proveedor es obligatorio' }),
+  supplierId: z.string().refine((supplierId) => !isNaN(parseInt(supplierId)), {
+    error: 'Seleccione un proveedor válido',
+  }),
   image: z.string().optional(),
 })
 

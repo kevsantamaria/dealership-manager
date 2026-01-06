@@ -27,7 +27,9 @@ import {
 } from '@/components/ui/select'
 import { Spinner } from '@/components/ui/spinner'
 import { Textarea } from '@/components/ui/textarea'
+import { useSuppliers } from '@/hooks/useSuppliers'
 import { steps } from '@/pages/panel-pages/add-vehicle/components/data/formData'
+import type { Supplier } from '@/types/supplier'
 import {
   colorOptions,
   mappedColorOptions,
@@ -45,10 +47,13 @@ import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 function AddVehicleForm() {
+  const { getSuppliersWithNameAndId } = useSuppliers()
+  const { data } = getSuppliersWithNameAndId
+  const suppliers: Supplier[] = data
+
   const [currentStep, setCurrentStep] = useState(0)
 
   const currentForm = steps[currentStep]
-
   const isLastStep = currentStep === steps.length - 1
   const progress = ((currentStep + 1) / steps.length) * 100
 
@@ -63,7 +68,7 @@ function AddVehicleForm() {
       purchasePrice: '',
       suggestedPrice: '',
       rateDescription: '',
-      supplier: '',
+      supplierId: '',
       stockStatus: 'in_stock',
       rateCondition: 'good',
       color: colorOptions[0],
@@ -74,12 +79,12 @@ function AddVehicleForm() {
       trim: {
         drivetrain: 'fwd',
         engineType: 'gasoline',
-        transmission: 'automatic'
+        transmission: 'automatic',
       },
       model: {
         name: '',
-        launchYear: ''
-      }
+        launchYear: '',
+      },
     },
     mode: 'onChange',
   })
@@ -104,7 +109,6 @@ function AddVehicleForm() {
     await new Promise((resolve) => setTimeout(resolve, 1500))
 
     toast.success('Vehículo agregado satisfactoriamente')
-
     console.log(values)
   }
 
@@ -689,33 +693,31 @@ function AddVehicleForm() {
         return (
           <FieldGroup>
             <Controller
-              name="supplier"
+              name="supplierId"
               control={form.control}
               render={({ field, fieldState }) => {
-                const options = [
-                  { label: 'Proveedor Uno', value: 'supplierOne' },
-                  { label: 'Drive Motors', value: 'driveMotors' },
-                ]
-
                 return (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="supplier">Proveedor</FieldLabel>
+                    <FieldLabel htmlFor="supplierId">Proveedor</FieldLabel>
                     <Select
                       name={field.name}
                       value={field.value}
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger
-                        id="supplier"
+                        id="supplierId"
                         aria-invalid={fieldState.invalid}
                       >
                         <SelectValue />
                         <SelectContent>
                           <SelectGroup>
                             <SelectLabel>Seleccione un proveedor</SelectLabel>
-                            {options.map((item) => (
-                              <SelectItem key={item.value} value={item.value}>
-                                {item.label}
+                            {suppliers.map((supplier) => (
+                              <SelectItem
+                                key={supplier.id}
+                                value={String(supplier.id)}
+                              >
+                                {supplier.name}
                               </SelectItem>
                             ))}
                           </SelectGroup>
