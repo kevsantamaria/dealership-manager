@@ -31,6 +31,10 @@ export const findAllSuppliers = async () => {
   return await pool`SELECT * FROM suppliers`
 }
 
+export const findAllSuppliersWithNameAndId = async () => {
+  return await pool`SELECT id, name FROM suppliers`
+}
+
 export const findSupplierById = async (id: number, db: SQL = pool) => {
   const result = await db`SELECT * FROM suppliers WHERE id = ${id}`
   return result[0] ?? null

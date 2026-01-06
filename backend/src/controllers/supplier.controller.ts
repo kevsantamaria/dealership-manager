@@ -7,6 +7,7 @@ import {
   createSupplierService,
   deleteSupplierService,
   getAllSuppliersService,
+  getAllSuppliersWithNameAndIdService,
   getSupplierByIdService,
   updateSupplierService,
 } from '@/services/supplier.service'
@@ -23,6 +24,14 @@ export const createSupplier = async (req: Request, res: Response) => {
 
 export const getAllSuppliers = async (req: Request, res: Response) => {
   const suppliers = await getAllSuppliersService()
+  res.status(HTTP_STATUS.OK).json({
+    message: HTTP_STATUS_MESSAGE.OK,
+    data: suppliers,
+  })
+}
+
+export const getAllSuppliersWithNameAndId = async (req: Request, res: Response) => {
+  const suppliers = await getAllSuppliersWithNameAndIdService()
   res.status(HTTP_STATUS.OK).json({
     message: HTTP_STATUS_MESSAGE.OK,
     data: suppliers,

@@ -2,6 +2,7 @@ import {
   createSupplier,
   deleteSupplier,
   getAllSuppliers,
+  getAllSuppliersWithNameAndId,
   getSupplierById,
   updateSupplier,
 } from '@/controllers/supplier.controller'
@@ -21,6 +22,7 @@ router.post(
   createSupplier
 )
 router.get('/suppliers', getAllSuppliers)
+router.get('/suppliers/names-and-ids', getAllSuppliersWithNameAndId)
 router.get(
   '/suppliers/:id',
   dtoValidator(idParamDTO, 'params'),

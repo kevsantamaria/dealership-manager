@@ -7,6 +7,7 @@ import {
   createSupplier,
   deleteSupplier,
   findAllSuppliers,
+  findAllSuppliersWithNameAndId,
   findSupplierById,
   findSupplierByName,
   updateSupplier,
@@ -31,6 +32,11 @@ export const createSupplierService = async (supplier: CreateSupplierDTO) => {
 
 export const getAllSuppliersService = async () => {
   const suppliers: Supplier[] = await findAllSuppliers()
+  return suppliers
+}
+
+export const getAllSuppliersWithNameAndIdService = async () => {
+  const suppliers: Supplier[] = await findAllSuppliersWithNameAndId()
   return suppliers
 }
 
