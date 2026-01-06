@@ -1,5 +1,5 @@
 import {
-  colors,
+  colorOptions,
   conditions,
   driveTrains,
   engineTypes,
@@ -16,23 +16,23 @@ export const vehicleSchema = z.object({
   licensePlate: z
     .string()
     .max(10, { error: 'La matrícula no puede tener más de 10 caracteres' })
-    .optional()
-    .nullable(),
+    .optional(),
   arrivalDate: z.string().min(1, 'La fecha de importación es obligatoria'),
-  stockStatus: z.enum(stockStatusValues).default('in_stock'),
+  stockStatus: z.enum(stockStatusValues),
 
-  rateCondition: z.enum(conditions).default('good'),
+  rateCondition: z.enum(conditions),
   rateDescription: z
     .string()
     .max(255, 'La descripción de la condición no puede exceder 255 caracteres')
     .optional(),
   mileage: z
     .string()
+    .min(1, 'El kilometraje es obligatorio')
     .refine((mileage) => !isNaN(parseFloat(mileage)), {
       error: 'El kilometraje debe ser numérico',
     })
     .optional(),
-  color: z.enum(colors).default('amber'),
+  color: z.enum(colorOptions),
 
   purchasePrice: z
     .string()
@@ -53,7 +53,7 @@ export const vehicleSchema = z.object({
     name: z.string().min(1, 'El nombre del modelo es obligatorio'),
     launchYear: z
       .string()
-      .min(4)
+      .min(4, 'Ingrese un año válido')
       .refine((launchYear) => !isNaN(parseInt(launchYear)), {
         error: 'Ingrese un año válido',
       }),
@@ -62,15 +62,16 @@ export const vehicleSchema = z.object({
     name: z.string().min(1, 'El nombre de la versión es obligatorio'),
     engineSize: z
       .string()
+      .min(1, 'Ingrese un valor válido')
       .refine((engineSize) => !isNaN(parseFloat(engineSize))),
-    engineType: z.enum(engineTypes).default('gasoline'),
-    transmission: z.enum(transmissionTypes).default('automatic'),
-    horsepower: z.string().refine((horsepower) => !isNaN(parseInt(horsepower))),
-    drivetrain: z.enum(driveTrains).default('fwd'),
+    engineType: z.enum(engineTypes),
+    transmission: z.enum(transmissionTypes),
+    horsepower: z.string().min(1, 'Ingrese un valor válido').refine((horsepower) => !isNaN(parseInt(horsepower))),
+    drivetrain: z.enum(driveTrains),
   }),
 
-  supplierId: z.number({ error: 'El proveedor es obligatorio' }),
-  image: z.string().url('La URL de la imagen no es válida').optional(),
+  supplier: z.string({ error: 'El proveedor es obligatorio' }),
+  image: z.string().optional(),
 })
 
 export type VehicleSchema = z.infer<typeof vehicleSchema>

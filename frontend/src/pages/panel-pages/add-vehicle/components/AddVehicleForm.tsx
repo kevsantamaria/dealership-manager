@@ -29,7 +29,8 @@ import { Spinner } from '@/components/ui/spinner'
 import { Textarea } from '@/components/ui/textarea'
 import { steps } from '@/pages/panel-pages/add-vehicle/components/data/formData'
 import {
-  mappedColors,
+  colorOptions,
+  mappedColorOptions,
   mappedConditions,
   mappedDriveTrains,
   mappedEngineTypes,
@@ -56,13 +57,29 @@ function AddVehicleForm() {
     defaultValues: {
       vin: '',
       arrivalDate: '',
-      stockStatus: 'in_stock',
-      rateCondition: 'good',
+      image: '',
       licensePlate: '',
       mileage: '',
+      purchasePrice: '',
+      suggestedPrice: '',
+      rateDescription: '',
+      supplier: '',
+      stockStatus: 'in_stock',
+      rateCondition: 'good',
+      color: colorOptions[0],
       brand: {
         name: '',
+        countryOrigin: '',
       },
+      trim: {
+        drivetrain: 'fwd',
+        engineType: 'gasoline',
+        transmission: 'automatic'
+      },
+      model: {
+        name: '',
+        launchYear: ''
+      }
     },
     mode: 'onChange',
   })
@@ -299,6 +316,7 @@ function AddVehicleForm() {
                     <FieldLabel htmlFor="color">Color *</FieldLabel>
                     <Select
                       name={field.name}
+                      defaultValue={field.value[0]}
                       value={field.value}
                       onValueChange={field.onChange}
                     >
@@ -310,7 +328,7 @@ function AddVehicleForm() {
                         <SelectContent>
                           <SelectGroup>
                             <SelectLabel>Selecciona un color</SelectLabel>
-                            {Object.entries(mappedColors).map(
+                            {Object.entries(mappedColorOptions).map(
                               ([key, value]) => (
                                 <SelectItem key={key} value={key}>
                                   {value}
@@ -671,24 +689,24 @@ function AddVehicleForm() {
         return (
           <FieldGroup>
             <Controller
-              name="supplierId"
+              name="supplier"
               control={form.control}
               render={({ field, fieldState }) => {
                 const options = [
-                  { label: 'Juanito Pere', value: 'juanitoPere' },
+                  { label: 'Proveedor Uno', value: 'supplierOne' },
                   { label: 'Drive Motors', value: 'driveMotors' },
                 ]
 
                 return (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="supplierId">Proveedor</FieldLabel>
+                    <FieldLabel htmlFor="supplier">Proveedor</FieldLabel>
                     <Select
                       name={field.name}
                       value={field.value}
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger
-                        id="supplierId"
+                        id="supplier"
                         aria-invalid={fieldState.invalid}
                       >
                         <SelectValue />

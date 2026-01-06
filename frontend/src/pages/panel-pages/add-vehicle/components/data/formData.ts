@@ -1,4 +1,13 @@
-export const steps = [
+import type { VehicleSchema } from "@/validations/vehicleSchema"
+import type { FieldPath } from "react-hook-form"
+
+type Step = {
+  title: string,
+  description: string,
+  fields: FieldPath<VehicleSchema>[]
+}
+
+export const steps: Step[] = [
   {
     title: 'Identificación',
     description: '',
