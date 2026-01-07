@@ -1,10 +1,10 @@
-import type { VehicleSchema } from '@/validations/vehicleSchema'
+import type { FormValues } from '@/types/formDefaultValues'
 import type { FieldPath } from 'react-hook-form'
 
 type Step = {
   title: string
   description: string
-  fields: FieldPath<VehicleSchema>[]
+  fields: FieldPath<FormValues>[]
 }
 
 export const steps: Step[] = [
@@ -42,6 +42,6 @@ export const steps: Step[] = [
   {
     title: 'Origen y recursos',
     description: '',
-    fields: ['supplier', 'image'],
+    fields: ['supplierId', 'image'],
   },
 ]

@@ -1,4 +1,4 @@
-export const colorOptions = [
+export const colors = [
   'amber',
   'black',
   'blue',
@@ -10,9 +10,9 @@ export const colorOptions = [
   'yellow',
 ] as const
 
-export type ColorOptions = (typeof colorOptions)[number]
-export const mappedColorOptions: { [key in ColorOptions]: string } = {
-  amber: 'Ámbar',
+export type Colors = (typeof colors)[number]
+export const mappedColors: { [key in Colors]: string } = {
+  amber: 'Ambar',
   black: 'Negro',
   blue: 'Azul',
   gray: 'Gris',

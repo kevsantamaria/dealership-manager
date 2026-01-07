@@ -8,26 +8,37 @@ export type Vehicle = {
   trim: string
 }
 
-export type AddVehicle = {
+export type CreateVehiclePayload = {
   vin: string
-  licensePlate: string | null
-  color: string
-  mileage: number | null
+  licensePlate?: string
   arrivalDate: string
+  stockStatus: string
+  rateCondition: string
+  rateDescription?: string
+  mileage?: number
+  color: string
   purchasePrice: number
   suggestedPrice: number
-  stockStatus: 'in_stock' | 'reserved' | 'sold'
-  rateCondition: 'bad' | 'regular' | 'good' | 'excellent'
-  rateDescription: string | null
-  supplierName: string
-  brandName: string
-  brandCountryOrigin: string | null
-  modelName: string
-  modelLaunchYear: number
-  trimName: string
-  engineSize: number
-  horsepower: number
-  engineType: 'gasoline' | 'diesel' | 'hybrid' | 'electric'
-  transmission: 'automatic' | 'manual' | 'cvt'
-  drivetrain: 'fwd' | 'rwd' | 'awd'
+  supplierId: number
+
+  brand: {
+    name: string
+    countryOrigin?: string
+  }
+
+  model: {
+    name: string
+    launchYear: number
+  }
+
+  trim: {
+    name: string
+    engineSize: number
+    engineType: string
+    transmission: string
+    horsepower: number
+    drivetrain: string
+  }
+
+  image?: string
 }
