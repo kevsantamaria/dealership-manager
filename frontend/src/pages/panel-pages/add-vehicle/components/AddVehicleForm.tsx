@@ -110,6 +110,7 @@ function AddVehicleForm() {
                     id="vin"
                     aria-invalid={fieldState.invalid}
                     autoComplete="off"
+                    spellCheck="false"
                   />
                   <FieldDescription>
                     Identificador único del vehículo, debe tener 17 caracteres
@@ -128,7 +129,12 @@ function AddVehicleForm() {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="licensePlate">Matrícula</FieldLabel>
-                  <Input {...field} id="licensePlate" autoComplete="off" />
+                  <Input
+                    {...field}
+                    id="licensePlate"
+                    autoComplete="off"
+                    spellCheck="false"
+                  />
                   <FieldDescription>
                     Número de matrícula del vehículo, máximo 10 caracteres
                   </FieldDescription>
@@ -146,7 +152,12 @@ function AddVehicleForm() {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Fecha de importación *</FieldLabel>
-                  <Input type="date" {...field} autoComplete="off" />
+                  <Input
+                    type="date"
+                    {...field}
+                    autoComplete="off"
+                    spellCheck="false"
+                  />
                   {fieldState.error && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -242,6 +253,7 @@ function AddVehicleForm() {
                     {...field}
                     onChange={(e) => field.onChange(Number(e.target.value))}
                     autoComplete="off"
+                    spellCheck="false"
                   />
                   <FieldDescription>
                     Distancia total recorrida por el vehículo (si es nuevo, es
@@ -299,6 +311,7 @@ function AddVehicleForm() {
                     aria-invalid={fieldState.invalid}
                     type="number"
                     autoComplete="off"
+                    spellCheck="false"
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />
                   <FieldDescription>
@@ -326,6 +339,7 @@ function AddVehicleForm() {
                     aria-invalid={fieldState.invalid}
                     type="number"
                     autoComplete="off"
+                    spellCheck="false"
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />
                   <FieldDescription>
@@ -354,7 +368,7 @@ function AddVehicleForm() {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Marca *</FieldLabel>
-                  <Input {...field} autoComplete="off" />
+                  <Input {...field} autoComplete="off" spellCheck="false" />
                   {fieldState.error && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -369,7 +383,7 @@ function AddVehicleForm() {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>País de origen</FieldLabel>
-                  <Input {...field} autoComplete="off" />
+                  <Input {...field} autoComplete="off" spellCheck="false" />
                   {fieldState.error && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -389,7 +403,7 @@ function AddVehicleForm() {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Modelo *</FieldLabel>
-                  <Input {...field} autoComplete="off" />
+                  <Input {...field} autoComplete="off" spellCheck="false" />
                   {fieldState.error && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -413,6 +427,7 @@ function AddVehicleForm() {
                   <Input
                     type="number"
                     autoComplete="off"
+                    spellCheck="false"
                     {...field}
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />
@@ -430,12 +445,12 @@ function AddVehicleForm() {
               rules={{
                 required: 'Este campo es obligatorio',
                 minLength: 1,
-                maxLength: 10,
+                maxLength: 60,
               }}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Versión *</FieldLabel>
-                  <Input {...field} autoComplete="off" />
+                  <Input {...field} autoComplete="off" spellCheck="false" />
                   <FieldDescription>
                     Versión específica del modelo
                   </FieldDescription>
@@ -460,6 +475,7 @@ function AddVehicleForm() {
                     type="number"
                     step="0.1"
                     autoComplete="off"
+                    spellCheck="false"
                     {...field}
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />
@@ -538,6 +554,7 @@ function AddVehicleForm() {
                   <Input
                     type="number"
                     autoComplete="off"
+                    spellCheck="false"
                     {...field}
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />
@@ -617,7 +634,7 @@ function AddVehicleForm() {
               render={({ field }) => (
                 <Field>
                   <FieldLabel>URL imagen</FieldLabel>
-                  <Input {...field} autoComplete="off" />
+                  <Input {...field} autoComplete="off" spellCheck="false" />
                 </Field>
               )}
             />
