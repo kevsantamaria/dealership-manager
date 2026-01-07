@@ -121,6 +121,7 @@ export const findVehicleByIdDetailed = async (id: number) => {
 export const findAllVehiclesDetails = async () => {
   return await pool`
     SELECT
+      v.id AS "vehicleId",
       v.color,
       v.suggested_price AS "price",
       v.stock_status AS "stockStatus",
