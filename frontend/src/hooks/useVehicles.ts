@@ -19,7 +19,7 @@ export const useVehicles = () => {
     },
     onError: (error) => {
       console.error('Error adding vehicle:', error)
-    }
+    },
   })
 
   return { getVehicles, postVehicle }

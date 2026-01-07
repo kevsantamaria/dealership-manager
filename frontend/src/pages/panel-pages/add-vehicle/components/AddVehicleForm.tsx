@@ -36,11 +36,11 @@ import {
 import { useSuppliers } from '@/hooks/useSuppliers'
 import { useVehicles } from '@/hooks/useVehicles'
 import { steps } from '@/pages/panel-pages/add-vehicle/components/data/formData'
-import { defaultValues } from '@/types/formDefaultValues'
+import { defaultValues } from '@/pages/panel-pages/add-vehicle/components/data/formDefaultValues'
 import type { Supplier } from '@/types/supplier'
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
-import { useEffect, useState } from 'react'
-import { Controller, useForm, useWatch } from 'react-hook-form'
+import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 function AddVehicleForm() {
@@ -55,7 +55,7 @@ function AddVehicleForm() {
   const isLastStep = currentStep === steps.length - 1
   const progress = ((currentStep + 1) / steps.length) * 100
 
-  const { reset, handleSubmit, control, trigger, getValues } = useForm({
+  const { reset, handleSubmit, control, trigger } = useForm({
     mode: 'onChange',
     defaultValues,
     shouldUnregister: false,
@@ -92,431 +92,537 @@ function AddVehicleForm() {
   const renderCurrentStepContent = () => {
     return (
       <>
-        <FieldGroup style={{ display: currentStep === 0 ? 'block' : 'none' }}>
-          <Controller
-            name="vin"
-            control={control}
-            rules={{ required: 'Este campo es obligatorio', minLength: 17 }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="vin">VIN *</FieldLabel>
-                <Input {...field} id="vin" aria-invalid={fieldState.invalid} />
-                <FieldDescription></FieldDescription>
-                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
+        <div style={{ display: currentStep === 0 ? 'block' : 'none' }}>
+          <FieldGroup>
+            <Controller
+              name="vin"
+              control={control}
+              rules={{
+                required: 'Este campo es obligatorio',
+                minLength: 17,
+                maxLength: 17,
+              }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="vin">VIN *</FieldLabel>
+                  <Input
+                    {...field}
+                    id="vin"
+                    aria-invalid={fieldState.invalid}
+                    autoComplete="off"
+                  />
+                  <FieldDescription>
+                    Identificador único del vehículo, debe tener 17 caracteres
+                  </FieldDescription>
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="licensePlate"
-            control={control}
-            render={({ field }) => (
-              <Field>
-                <FieldLabel htmlFor="licensePlate">Matrícula</FieldLabel>
-                <Input {...field} id="licensePlate" />
-                <FieldDescription></FieldDescription>
-              </Field>
-            )}
-          />
+            <Controller
+              name="licensePlate"
+              control={control}
+              rules={{ maxLength: 10 }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="licensePlate">Matrícula</FieldLabel>
+                  <Input {...field} id="licensePlate" autoComplete="off" />
+                  <FieldDescription>
+                    Número de matrícula del vehículo, máximo 10 caracteres
+                  </FieldDescription>
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="arrivalDate"
-            control={control}
-            rules={{ required: 'Este campo es obligatorio' }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Fecha de importación *</FieldLabel>
-                <Input type="date" {...field} />
-                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
+            <Controller
+              name="arrivalDate"
+              control={control}
+              rules={{ required: 'Este campo es obligatorio' }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Fecha de importación *</FieldLabel>
+                  <Input type="date" {...field} autoComplete="off" />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="stockStatus"
-            control={control}
-            rules={{ required: 'Seleccione una opción' }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Disponibilidad *</FieldLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(mappedStockStatusValues).map(
-                      ([key, value]) => (
-                        <SelectItem key={key} value={key}>
-                          {value}
+            <Controller
+              name="stockStatus"
+              control={control}
+              rules={{ required: 'Seleccione una opción' }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Disponibilidad *</FieldLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(mappedStockStatusValues).map(
+                        ([key, value]) => (
+                          <SelectItem key={key} value={key}>
+                            {value}
+                          </SelectItem>
+                        )
+                      )}
+                    </SelectContent>
+                  </Select>
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+        </div>
+
+        <div style={{ display: currentStep === 1 ? 'block' : 'none' }}>
+          <FieldGroup>
+            <Controller
+              name="rateCondition"
+              control={control}
+              rules={{ required: 'Seleccione una opción' }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Condición *</FieldLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(mappedConditions).map(([k, v]) => (
+                        <SelectItem key={k} value={k}>
+                          {v}
                         </SelectItem>
-                      )
-                    )}
-                  </SelectContent>
-                </Select>
-                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
-        </FieldGroup>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FieldDescription>
+                    Condición general del vehículo
+                  </FieldDescription>
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-        <FieldGroup style={{ display: currentStep === 1 ? 'block' : 'none' }}>
-          <Controller
-            name="rateCondition"
-            control={control}
-            rules={{ required: 'Seleccione una opción' }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Condición *</FieldLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(mappedConditions).map(([k, v]) => (
-                      <SelectItem key={k} value={k}>
-                        {v}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
+            <Controller
+              name="rateDescription"
+              control={control}
+              rules={{ maxLength: 225 }}
+              render={({ field }) => (
+                <Field>
+                  <FieldLabel>Descripción</FieldLabel>
+                  <Textarea {...field} autoComplete="off" spellCheck="false" />
+                  <FieldDescription>
+                    Observaciones sobre la condición del vehículo
+                  </FieldDescription>
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="rateDescription"
-            control={control}
-            render={({ field }) => (
-              <Field>
-                <FieldLabel>Descripción</FieldLabel>
-                <Textarea {...field} />
-              </Field>
-            )}
-          />
+            <Controller
+              name="mileage"
+              control={control}
+              rules={{ required: 'Este campo es obligatorio', maxLength: 9 }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Kilometraje *</FieldLabel>
+                  <Input
+                    type="number"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    autoComplete="off"
+                  />
+                  <FieldDescription>
+                    Distancia total recorrida por el vehículo (si es nuevo, es
+                    cero)
+                  </FieldDescription>
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="mileage"
-            control={control}
-            rules={{ required: 'Este campo es obligatorio' }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Kilometraje *</FieldLabel>
-                <Input
-                  type="number"
-                  {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                />
-                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
+            <Controller
+              name="color"
+              control={control}
+              rules={{ required: 'Seleccione un color' }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Color *</FieldLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(mappedColors).map(([k, v]) => (
+                        <SelectItem key={k} value={k}>
+                          {v}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+        </div>
 
-          <Controller
-            name="color"
-            control={control}
-            rules={{ required: 'Seleccione un color' }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Color *</FieldLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(mappedColors).map(([k, v]) => (
-                      <SelectItem key={k} value={k}>
-                        {v}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
-        </FieldGroup>
+        <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>
+          <FieldGroup>
+            <Controller
+              name="purchasePrice"
+              control={control}
+              rules={{ required: 'Este campo es obligatorio', maxLength: 9 }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="purchasePrice">
+                    Precio de compra *
+                  </FieldLabel>
+                  <Input
+                    {...field}
+                    id="purchasePrice"
+                    aria-invalid={fieldState.invalid}
+                    type="number"
+                    autoComplete="off"
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                  <FieldDescription>
+                    Precio de compra en dólares
+                  </FieldDescription>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-        <FieldGroup style={{ display: currentStep === 2 ? 'block' : 'none' }}>
-          <Controller
-            name="purchasePrice"
-            control={control}
-            rules={{ required: 'Este campo es obligatorio' }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="purchasePrice">
-                  Precio de compra *
-                </FieldLabel>
-                <Input
-                  {...field}
-                  id="purchasePrice"
-                  aria-invalid={fieldState.invalid}
-                  type="number"
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                />
-                <FieldDescription>Precio de compra en dólares</FieldDescription>
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
+            <Controller
+              name="suggestedPrice"
+              control={control}
+              rules={{ required: 'Este campo es obligatorio', maxLength: 9 }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="suggestedPrice">
+                    Precio de venta *
+                  </FieldLabel>
+                  <Input
+                    {...field}
+                    id="suggestedPrice"
+                    aria-invalid={fieldState.invalid}
+                    type="number"
+                    autoComplete="off"
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                  <FieldDescription>
+                    Precio de venta en dólares
+                  </FieldDescription>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+        </div>
 
-          <Controller
-            name="suggestedPrice"
-            control={control}
-            rules={{ required: 'Este campo es obligatorio' }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="suggestedPrice">
-                  Precio de venta *
-                </FieldLabel>
-                <Input
-                  {...field}
-                  id="suggestedPrice"
-                  aria-invalid={fieldState.invalid}
-                  type="number"
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                />
-                <FieldDescription>Precio de venta en dólares</FieldDescription>
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-        </FieldGroup>
+        <div style={{ display: currentStep === 3 ? 'block' : 'none' }}>
+          <FieldGroup>
+            {/* BRAND */}
+            <Controller
+              name="brand.name"
+              control={control}
+              rules={{
+                required: 'Este campo es obligatorio',
+                minLength: 1,
+                maxLength: 60,
+              }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Marca *</FieldLabel>
+                  <Input {...field} autoComplete="off" />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-        <FieldGroup style={{ display: currentStep === 3 ? 'block' : 'none' }}>
-          {/* BRAND */}
-          <Controller
-            name="brand.name"
-            control={control}
-            rules={{ required: 'Este campo es obligatorio' }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Marca *</FieldLabel>
-                <Input {...field} />
-                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
+            <Controller
+              name="brand.countryOrigin"
+              control={control}
+              rules={{ maxLength: 60 }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>País de origen</FieldLabel>
+                  <Input {...field} autoComplete="off" />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="brand.countryOrigin"
-            control={control}
-            render={({ field }) => (
-              <Field>
-                <FieldLabel>País de origen</FieldLabel>
-                <Input {...field} />
-              </Field>
-            )}
-          />
+            {/* MODEL */}
+            <Controller
+              name="model.name"
+              control={control}
+              rules={{
+                required: 'Este campo es obligatorio',
+                minLength: 1,
+                maxLength: 60,
+              }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Modelo *</FieldLabel>
+                  <Input {...field} autoComplete="off" />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          {/* MODEL */}
-          <Controller
-            name="model.name"
-            control={control}
-            rules={{ required: 'Este campo es obligatorio' }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Modelo *</FieldLabel>
-                <Input {...field} />
-                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
+            <Controller
+              name="model.launchYear"
+              control={control}
+              rules={{
+                required: 'Este campo es obligatorio',
+                min: {
+                  value: 1886,
+                  message: 'Año inválido',
+                },
+              }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Año de lanzamiento *</FieldLabel>
+                  <Input
+                    type="number"
+                    autoComplete="off"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="model.launchYear"
-            control={control}
-            rules={{
-              required: 'Este campo es obligatorio',
-              min: {
-                value: 1886,
-                message: 'Año inválido',
-              },
-            }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Año de lanzamiento *</FieldLabel>
-                <Input
-                  type="number"
-                  {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                />
-                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
+            {/* TRIM */}
+            <Controller
+              name="trim.name"
+              control={control}
+              rules={{
+                required: 'Este campo es obligatorio',
+                minLength: 1,
+                maxLength: 10,
+              }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Versión *</FieldLabel>
+                  <Input {...field} autoComplete="off" />
+                  <FieldDescription>
+                    Versión específica del modelo
+                  </FieldDescription>
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          {/* TRIM */}
-          <Controller
-            name="trim.name"
-            control={control}
-            rules={{ required: 'Este campo es obligatorio' }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Versión *</FieldLabel>
-                <Input {...field} />
-                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
+            <Controller
+              name="trim.engineSize"
+              control={control}
+              rules={{
+                required: 'Este campo es obligatorio',
+                min: { value: 0.1, message: 'Debe ser mayor que 0' },
+              }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Tamaño del motor *</FieldLabel>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    autoComplete="off"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                  <FieldDescription>
+                    Cilindrada del motor, medida en litros (L)
+                  </FieldDescription>
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="trim.engineSize"
-            control={control}
-            rules={{
-              required: 'Este campo es obligatorio',
-              min: { value: 0.1, message: 'Debe ser mayor que 0' },
-            }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Tamaño del motor *</FieldLabel>
-                <Input
-                  type="number"
-                  step="0.1"
-                  {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                />
-                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
+            <Controller
+              name="trim.engineType"
+              control={control}
+              rules={{ required: 'Seleccione una opción' }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Tipo de combustible *</FieldLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(mappedEngineTypes).map(([k, v]) => (
+                        <SelectItem key={k} value={k}>
+                          {v}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="trim.engineType"
-            control={control}
-            rules={{ required: 'Seleccione una opción' }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Tipo de combustible *</FieldLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(mappedEngineTypes).map(([k, v]) => (
-                      <SelectItem key={k} value={k}>
-                        {v}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
+            <Controller
+              name="trim.transmission"
+              control={control}
+              rules={{ required: 'Seleccione una opción' }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Transmisión *</FieldLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(mappedTransmissionTypes).map(([k, v]) => (
+                        <SelectItem key={k} value={k}>
+                          {v}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="trim.transmission"
-            control={control}
-            rules={{ required: 'Seleccione una opción' }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Transmisión *</FieldLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(mappedTransmissionTypes).map(([k, v]) => (
-                      <SelectItem key={k} value={k}>
-                        {v}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
+            <Controller
+              name="trim.horsepower"
+              control={control}
+              rules={{
+                required: 'Este campo es obligatorio',
+                min: { value: 1, message: 'Debe ser mayor que 0' },
+              }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Caballos de fuerza *</FieldLabel>
+                  <Input
+                    type="number"
+                    autoComplete="off"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="trim.horsepower"
-            control={control}
-            rules={{
-              required: 'Este campo es obligatorio',
-              min: { value: 1, message: 'Debe ser mayor que 0' },
-            }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Caballos de fuerza *</FieldLabel>
-                <Input
-                  type="number"
-                  {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                />
-                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
+            <Controller
+              name="trim.drivetrain"
+              control={control}
+              rules={{ required: 'Seleccione una opción' }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Tren de potencia *</FieldLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(mappedDriveTrains).map(([k, v]) => (
+                        <SelectItem key={k} value={k}>
+                          {v}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FieldDescription>
+                    Conjunto de piezas que aplica la fuerza del motor a las
+                    ruedas para mover un vehículo
+                  </FieldDescription>
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+        </div>
 
-          <Controller
-            name="trim.drivetrain"
-            control={control}
-            rules={{ required: 'Seleccione una opción' }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Tren de potencia *</FieldLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(mappedDriveTrains).map(([k, v]) => (
-                      <SelectItem key={k} value={k}>
-                        {v}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
-        </FieldGroup>
+        <div style={{ display: currentStep === 4 ? 'contents' : 'none' }}>
+          <FieldGroup>
+            <Controller
+              name="supplierId"
+              control={control}
+              rules={{ required: 'Seleccione una opción' }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Proveedor *</FieldLabel>
+                  <Select
+                    value={String(field.value)}
+                    onValueChange={(v) => field.onChange(Number(v))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {suppliers.map((s) => (
+                        <SelectItem key={s.id} value={String(s.id)}>
+                          {s.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
-        <FieldGroup style={{ display: currentStep === 4 ? 'block' : 'none' }}>
-          <Controller
-            name="supplierId"
-            control={control}
-            rules={{ required: 'Seleccione una opción' }}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Proveedor *</FieldLabel>
-                <Select
-                  value={String(field.value)}
-                  onValueChange={(v) => field.onChange(Number(v))}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {suppliers.map((s) => (
-                      <SelectItem key={s.id} value={String(s.id)}>
-                        {s.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
-
-          <Controller
-            name="image"
-            control={control}
-            render={({ field }) => (
-              <Field>
-                <FieldLabel>URL imagen</FieldLabel>
-                <Input {...field} />
-              </Field>
-            )}
-          />
-        </FieldGroup>
+            <Controller
+              name="image"
+              control={control}
+              render={({ field }) => (
+                <Field>
+                  <FieldLabel>URL imagen</FieldLabel>
+                  <Input {...field} autoComplete="off" />
+                </Field>
+              )}
+            />
+          </FieldGroup>
+        </div>
       </>
     )
   }

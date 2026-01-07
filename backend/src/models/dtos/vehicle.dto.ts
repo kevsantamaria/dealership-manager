@@ -20,7 +20,7 @@ export const createVehicleDTO = z.object({
   brand: createBrandDTO,
   model: createModelDTO,
   trim: createTrimDTO,
-  images: z.array(z.string().url()).optional(),
+  image: z.string().optional(),
 })
 
 export const updateVehicleDTO = z
