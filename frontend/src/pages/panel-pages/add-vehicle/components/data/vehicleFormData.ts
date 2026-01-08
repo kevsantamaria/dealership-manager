@@ -1,4 +1,4 @@
-import type { FormValues } from '@/pages/panel-pages/add-vehicle/components/data/formDefaultValues'
+import type { FormValues } from '@/pages/panel-pages/add-vehicle/components/data/vehicleFormDefaultValues'
 import type { FieldPath } from 'react-hook-form'
 
 type Step = {

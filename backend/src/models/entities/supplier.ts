@@ -8,9 +8,9 @@ export type SupplierType =
 export interface Supplier {
   id: number
   name: string
-  contact?: string | null
+  contact: string
   type: SupplierType
-  country?: string | null
+  country: string
   createdAt: string
   updatedAt: string
 }

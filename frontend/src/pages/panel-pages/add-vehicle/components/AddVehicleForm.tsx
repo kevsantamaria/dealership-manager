@@ -32,11 +32,11 @@ import {
   mappedEngineTypes,
   mappedStockStatusValues,
   mappedTransmissionTypes,
-} from '@/enums/formEnums'
+} from '@/enums/vehicleFormEnums'
 import { useSuppliers } from '@/hooks/useSuppliers'
 import { useVehicles } from '@/hooks/useVehicles'
-import { steps } from '@/pages/panel-pages/add-vehicle/components/data/formData'
-import { defaultValues } from '@/pages/panel-pages/add-vehicle/components/data/formDefaultValues'
+import { steps } from '@/pages/panel-pages/add-vehicle/components/data/vehicleFormData'
+import { defaultValues } from '@/pages/panel-pages/add-vehicle/components/data/vehicleFormDefaultValues'
 import type { SupplierWithNameAndId } from '@/types/supplier'
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
 import { useState } from 'react'
@@ -57,8 +57,8 @@ function AddVehicleForm() {
   const progress = ((currentStep + 1) / steps.length) * 100
 
   const { reset, handleSubmit, control, trigger } = useForm({
-    mode: 'onChange',
     defaultValues,
+    mode: 'onChange',
     shouldUnregister: false,
   })
 
