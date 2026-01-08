@@ -37,7 +37,7 @@ import { useSuppliers } from '@/hooks/useSuppliers'
 import { useVehicles } from '@/hooks/useVehicles'
 import { steps } from '@/pages/panel-pages/add-vehicle/components/data/formData'
 import { defaultValues } from '@/pages/panel-pages/add-vehicle/components/data/formDefaultValues'
-import type { Supplier } from '@/types/supplier'
+import type { SupplierWithNameAndId } from '@/types/supplier'
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -45,7 +45,7 @@ import { toast } from 'sonner'
 
 function AddVehicleForm() {
   const { getSuppliersWithNameAndId } = useSuppliers()
-  const suppliers: Supplier[] = getSuppliersWithNameAndId.data || []
+  const suppliers: SupplierWithNameAndId[] = getSuppliersWithNameAndId.data || []
   const { postVehicle } = useVehicles()
   const { mutateAsync, error, isError, isPending } = postVehicle
 
