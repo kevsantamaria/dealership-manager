@@ -15,6 +15,7 @@ export const fetchVehicles = async () => {
     })
 }
 
+// Create vehicle
 export const addVehicle = async (vehicle: CreateVehiclePayload) => {
   return api
     .post('/vehicles', vehicle)

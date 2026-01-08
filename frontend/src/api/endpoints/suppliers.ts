@@ -1,5 +1,18 @@
 import api from '@/api/dealership'
+import type { CreateSupplierPayload } from '@/types/supplier'
 import { manageError } from '../manageError'
+
+// Create supplier
+export const addSupplier = async (supplier: CreateSupplierPayload) => {
+  return api
+    .post('/suppliers', supplier)
+    .then((res) => {
+      return res.data.data
+    })
+    .catch((error) => {
+      manageError(error)
+    })
+}
 
 // Get all suppliers
 export const fetchSuppliers = async () => {
