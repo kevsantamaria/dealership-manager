@@ -12,3 +12,10 @@ export type SupplierWithNameAndId = {
   id: number
   name: string
 }
+
+export type CreateSupplierPayload = {
+  name: string
+  contact: string
+  type: string
+  country: string
+}
