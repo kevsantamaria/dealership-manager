@@ -45,7 +45,8 @@ import { toast } from 'sonner'
 
 function AddVehicleForm() {
   const { getSuppliersWithNameAndId } = useSuppliers()
-  const suppliers: SupplierWithNameAndId[] = getSuppliersWithNameAndId.data || []
+  const suppliers: SupplierWithNameAndId[] =
+    getSuppliersWithNameAndId.data || []
   const { postVehicle } = useVehicles()
   const { mutateAsync, error, isError, isPending } = postVehicle
 

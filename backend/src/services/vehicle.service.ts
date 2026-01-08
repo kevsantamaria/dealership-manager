@@ -148,8 +148,7 @@ export const updateVehicleService = async (
   if (mileage !== undefined) updateData.mileage = mileage
   if (purchasePrice !== undefined) updateData.purchasePrice = purchasePrice
   if (suggestedPrice !== undefined) updateData.suggestedPrice = suggestedPrice
-  if (rateCondition !== undefined)
-    updateData.rateCondition = rateCondition
+  if (rateCondition !== undefined) updateData.rateCondition = rateCondition
   if (rateDescription !== undefined)
     updateData.rateDescription = rateDescription
   if (stockStatus !== undefined) updateData.stockStatus = stockStatus
@@ -159,7 +158,6 @@ export const updateVehicleService = async (
   updateData.updatedAt = new Date().toISOString()
 
   await updateVehicle(id, updateData)
-
 }
 
 export const deleteVehicleService = async (id: number) => {
@@ -168,5 +166,3 @@ export const deleteVehicleService = async (id: number) => {
 
   await deleteVehicle(id)
 }
-
-

@@ -30,7 +30,10 @@ export const getAllSuppliers = async (req: Request, res: Response) => {
   })
 }
 
-export const getAllSuppliersWithNameAndId = async (req: Request, res: Response) => {
+export const getAllSuppliersWithNameAndId = async (
+  req: Request,
+  res: Response
+) => {
   const suppliers = await getAllSuppliersWithNameAndIdService()
   res.status(HTTP_STATUS.OK).json({
     message: HTTP_STATUS_MESSAGE.OK,

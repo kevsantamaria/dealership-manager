@@ -12,10 +12,7 @@ function Vehicles() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {data?.map((vehicle: Vehicle) => (
-        <VehicleCard
-          key={vehicle.id}
-          vehicle={vehicle}
-        />
+        <VehicleCard key={vehicle.id} vehicle={vehicle} />
       ))}
     </div>
   )

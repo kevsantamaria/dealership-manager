@@ -1,4 +1,10 @@
-import { createVehicle, deleteVehicle, getAllVehicles, getVehicleById, updateVehicle } from '@/controllers/vehicle.controller'
+import {
+  createVehicle,
+  deleteVehicle,
+  getAllVehicles,
+  getVehicleById,
+  updateVehicle,
+} from '@/controllers/vehicle.controller'
 import { dtoValidator } from '@/middlewares/dtoValidator.middleware'
 import { idParamDTO } from '@/models/dtos/idParam.dto'
 import { createVehicleDTO, updateVehicleDTO } from '@/models/dtos/vehicle.dto'
@@ -15,6 +21,10 @@ router.patch(
   dtoValidator(idParamDTO, 'params'),
   updateVehicle
 )
-router.delete('/vehicles/:id', dtoValidator(idParamDTO, 'params'), deleteVehicle)
+router.delete(
+  '/vehicles/:id',
+  dtoValidator(idParamDTO, 'params'),
+  deleteVehicle
+)
 
 export default router

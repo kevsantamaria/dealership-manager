@@ -1,13 +1,23 @@
 import { HTTP_STATUS, HTTP_STATUS_MESSAGE } from '@/constants/httpStatus'
-import type { CreateVehicleDTO, UpdateVehicleDTO } from '@/models/dtos/vehicle.dto'
-import { createVehicleService, deleteVehicleService, getAllVehiclesService, getVehicleByIdService, updateVehicleService } from '@/services/vehicle.service'
+import type {
+  CreateVehicleDTO,
+  UpdateVehicleDTO,
+} from '@/models/dtos/vehicle.dto'
+import {
+  createVehicleService,
+  deleteVehicleService,
+  getAllVehiclesService,
+  getVehicleByIdService,
+  updateVehicleService,
+} from '@/services/vehicle.service'
 import type { Request, Response } from 'express'
 
 export const createVehicle = async (req: Request, res: Response) => {
-    const vehicle: CreateVehicleDTO = req.body
-    const createdVehicle = await createVehicleService(vehicle)
-    res.status(HTTP_STATUS.CREATED).json({message: HTTP_STATUS_MESSAGE.CREATED,
-        data: createdVehicle,})
+  const vehicle: CreateVehicleDTO = req.body
+  const createdVehicle = await createVehicleService(vehicle)
+  res
+    .status(HTTP_STATUS.CREATED)
+    .json({ message: HTTP_STATUS_MESSAGE.CREATED, data: createdVehicle })
 }
 
 export const getAllVehicles = async (req: Request, res: Response) => {
