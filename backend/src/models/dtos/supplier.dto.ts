@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const createSupplierDTO = z.object({
   name: z.string().min(2),
-  contact: z.string().optional().nullable(),
+  contact: z.string(),
   type: z
     .enum(['private', 'dealer', 'auction', 'importer', 'fleet'])
     .default('private'),
