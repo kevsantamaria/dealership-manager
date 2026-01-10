@@ -53,10 +53,10 @@ function AddSupplierForm() {
       <CardHeader className="space-y-4">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <CardTitle>Supplier</CardTitle>
+            <CardTitle>Proveedor</CardTitle>
           </div>
           <CardDescription>
-            Suppliersddsdddsd das sad dsad ddssadddassdaddsa sasad{' '}
+            Añade un nuevo proveedor de vehículos.
           </CardDescription>
         </div>
       </CardHeader>

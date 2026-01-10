@@ -10,22 +10,23 @@ type Step = {
 export const steps: Step[] = [
   {
     title: 'Identificación',
-    description: '',
+    description: 'Datos básicos para identificar el vehículo.',
     fields: ['vin', 'licensePlate', 'arrivalDate', 'stockStatus'],
   },
   {
     title: 'Información física y condición',
-    description: '',
+    description: 'Información sobre el estado físico del vehículo.',
     fields: ['rateCondition', 'rateDescription', 'mileage', 'color'],
   },
   {
     title: 'Información comercial',
-    description: '',
+    description: 'Información sobre el precio de compra y venta del vehículo.',
     fields: ['purchasePrice', 'suggestedPrice'],
   },
   {
     title: 'Clasificación del vehículo',
-    description: '',
+    description:
+      'Información sobre la marca, modelo y características técnicas del vehículo.',
     fields: [
       'brand.name',
       'brand.countryOrigin',
@@ -41,7 +42,7 @@ export const steps: Step[] = [
   },
   {
     title: 'Origen y recursos',
-    description: '',
+    description: 'Proveedor de procedencia e imagen asociada al vehículo.',
     fields: ['supplierId', 'image'],
   },
 ]
