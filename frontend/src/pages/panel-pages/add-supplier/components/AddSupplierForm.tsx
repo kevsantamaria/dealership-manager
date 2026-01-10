@@ -173,7 +173,7 @@ function AddSupplierForm() {
         </form>
       </CardContent>
       <CardFooter>
-        <Field className="justify-between" orientation="horizontal">
+        <Field className="justify-end" orientation="horizontal">
           <Button type="submit" form="multi-form" disabled={isPending}>
             {isPending ? <Spinner /> : 'Agregar'}
           </Button>
