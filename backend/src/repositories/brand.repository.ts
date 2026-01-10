@@ -23,8 +23,10 @@ export const findAllBrands = async () => {
 export const findAllBrandsWithVehicles = async () => {
   return await pool`
     SELECT
-      b.*,
-      COUNT(v.id) AS cantidad_vehiculos
+      b.id,
+      b.name,
+      b.country_origin AS "countryOrigin",
+      COUNT(v.id) AS "numberOfVehicles"
     FROM
       brands b
       LEFT JOIN models m ON b.id = m.brand_id
