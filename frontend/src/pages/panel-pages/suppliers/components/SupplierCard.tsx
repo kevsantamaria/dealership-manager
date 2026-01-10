@@ -10,7 +10,7 @@ function SupplierCard({ supplier }: Props) {
   const { name, country, contact, type } = supplier
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-xs h-full">
       <CardHeader>
         <div className="flex items-start justify-between">
           <CardTitle className="text-2xl font-bold">{name}</CardTitle>

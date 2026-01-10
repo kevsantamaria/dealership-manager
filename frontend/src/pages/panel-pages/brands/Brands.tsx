@@ -10,7 +10,7 @@ function Brands() {
   if (error) return <p>Error al cargar marcas</p>
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4 place-items-center">
       {data?.map((brand: Brand) => (
         <BrandCard key={brand.id} brand={brand} />
       ))}

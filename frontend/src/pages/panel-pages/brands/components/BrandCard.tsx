@@ -9,7 +9,7 @@ interface Props {
 function BrandCard({ brand }: Props) {
   const { name, countryOrigin, numberOfVehicles } = brand
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">{name}</CardTitle>
       </CardHeader>
@@ -22,7 +22,7 @@ function BrandCard({ brand }: Props) {
         </div>
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">
-            Número de vehículos
+            Cantidad de vehículos
           </span>
           <span className="text-2xl font-bold text-primary">
             {numberOfVehicles}
