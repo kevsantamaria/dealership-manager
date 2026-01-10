@@ -6,7 +6,7 @@ export const createSupplierDTO = z.object({
   type: z
     .enum(['private', 'dealer', 'auction', 'importer', 'fleet'])
     .default('private'),
-  country: z.string()
+  country: z.string(),
 })
 
 export const updateSupplierDTO = createSupplierDTO.partial()
