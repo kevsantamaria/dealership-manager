@@ -2,7 +2,7 @@ import api from '@/api/dealership'
 import { manageError } from '@/api/manageError'
 
 // Get all brands
-export const getAllBrands = async () => {
+export const fetchBrands = async () => {
   return api
     .get('/brands')
     .then((res) => {
