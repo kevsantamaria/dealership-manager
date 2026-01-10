@@ -15,6 +15,18 @@ export const fetchVehicles = async () => {
     })
 }
 
+export const fetchVehicleById = async (id: number) => {
+  return api
+    .get(`/vehicles/${id}`)
+    .then((res) => {
+      console.log(res.data)
+      return res.data.data
+    })
+    .catch((error) => {
+      manageError(error)
+    })
+}
+
 // Create vehicle
 export const addVehicle = async (vehicle: CreateVehiclePayload) => {
   return api
