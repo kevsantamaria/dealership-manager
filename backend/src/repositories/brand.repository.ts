@@ -20,6 +20,23 @@ export const findAllBrands = async () => {
   return await pool`SELECT * FROM brands`
 }
 
+export const findAllBrandsWithVehicles = async () => {
+  return await pool`
+    SELECT
+      b.*,
+      COUNT(v.id) AS cantidad_vehiculos
+    FROM
+      brands b
+      LEFT JOIN models m ON b.id = m.brand_id
+      LEFT JOIN trims t ON m.id = t.model_id
+      LEFT JOIN vehicles v ON t.id = v.trim_id
+    GROUP BY
+      b.id
+    ORDER BY
+      b.name;
+  `
+}
+
 export const findBrandById = async (id: number) => {
   const result = await pool`SELECT * FROM brands WHERE id = ${id}`
   return result[0] ?? null
