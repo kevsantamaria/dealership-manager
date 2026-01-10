@@ -17,7 +17,7 @@ type Props = {
 function VehicleCard({ vehicle }: Props) {
   const { brand, color, launchYear, model, price, stockStatus, trim } = vehicle
   return (
-    <div className="relative max-w-xs rounded-xl bg-white shadow-lg overflow-hidden">
+    <div className="relative border max-w-xs rounded-xl overflow-hidden">
       <div className="relative">
         <Badge
           className={cn(
@@ -40,7 +40,7 @@ function VehicleCard({ vehicle }: Props) {
         />
       </div>
 
-      <Card className="border-none shadow-none">
+      <Card className="border-none">
         <CardHeader>
           <div className="space-y-2">
             <CardTitle className="text-2xl">{model}</CardTitle>
