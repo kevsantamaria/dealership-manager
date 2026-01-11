@@ -184,6 +184,18 @@ export const updateVehicle = async (id: number, vehicle: UpdateVehicle) => {
   return result[0]
 }
 
+export const getVehiclesStockSummary = async () => {
+  const result = await pool`
+    SELECT 
+      COUNT(*) FILTER (WHERE stock_status = 'in_stock')::INT AS "inStock",
+      COUNT(*) FILTER (WHERE stock_status = 'reserved')::INT AS "reserved",
+      COUNT(*) FILTER (WHERE stock_status = 'sold')::INT AS "sold",
+      COUNT(*) AS "total"
+    FROM vehicles
+  `
+  return result[0]
+}
+
 export const deleteVehicle = async (id: number) => {
   return await pool`DELETE FROM vehicles WHERE id = ${id} RETURNING *`
 }
