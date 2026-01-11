@@ -49,6 +49,19 @@ export const findBrandByName = async (name: string, db: SQL = pool) => {
   return result[0] ?? null
 }
 
+export const isBrandEmpty = async (id: number) => {
+  const result = await pool`
+    SELECT count(v.id) = 0 AS "isEmpty"
+    FROM brands b
+    LEFT JOIN models m ON b.id = m.brand_id
+    LEFT JOIN trims t ON m.id = t.model_id
+    LEFT JOIN vehicles v ON t.id = v.trim_id
+    WHERE b.id = ${id}
+    GROUP BY b.id
+  `
+  return result[0]?.isEmpty ?? true 
+}
+
 export const updateBrand = async (id: number, brand: UpdateBrand) => {
   const { name, countryOrigin } = brand
   const result = await pool`
