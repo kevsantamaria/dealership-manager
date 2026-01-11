@@ -43,3 +43,43 @@ export type CreateVehiclePayload = {
 
   image?: string
 }
+
+export type VehicleDetails = {
+  vehicleId: number
+
+  vin: string
+  brandName: string
+  brandCountryOrigin: string
+
+  modelName: string
+  trimName: string
+  modelLaunchYear: number
+
+  color: string
+
+  engineType: string
+  engineSize: string
+  horsepower: number
+  transmission: string
+  drivetrain: string
+
+  mileage: string
+  licensePlate: string
+
+  purchasePrice: string
+  suggestedPrice: string
+
+  stockStatus: string
+  rateCondition: string
+  rateDescription: string
+
+  arrivalDate: string
+
+  supplierName: string
+  supplierType: string
+  supplierCountry: string
+  supplierContact: string
+
+  createdAt: string
+  updatedAt: string
+}

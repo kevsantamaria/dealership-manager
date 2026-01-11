@@ -21,10 +21,9 @@ function AppRouter() {
 
         <Route path="admin/add-vehicle" element={<AddVehicle />} />
         <Route path="admin/add-supplier" element={<AddSupplier />} />
-
       </Route>
 
-      <Route path="vehicles/:id" element={<VehicleDetails />}/>
+      <Route path="vehicles/:id" element={<VehicleDetails />} />
 
       <Route path="/dashboard/*" element={<NotFound />} />
       <Route path="*" element={<LoginPage />} />

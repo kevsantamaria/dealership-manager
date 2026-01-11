@@ -16,7 +16,16 @@ type Props = {
 }
 
 function VehicleCard({ vehicle }: Props) {
-  const { vehicleId, brand, color, launchYear, model, price, stockStatus, trim } = vehicle
+  const {
+    vehicleId,
+    brand,
+    color,
+    launchYear,
+    model,
+    price,
+    stockStatus,
+    trim,
+  } = vehicle
   return (
     <div className="relative border max-w-xs rounded-xl overflow-hidden">
       <div className="relative">
@@ -59,9 +68,12 @@ function VehicleCard({ vehicle }: Props) {
         <CardContent className="flex sm:flex-row gap-4">
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">Color:</span>
-            <div className="flex items-center gap-1.5 rounded-md bg-gray-50 px-2.5 py-1 border border-gray-200">
-              <div className="h-3 w-3 rounded-full bg-black" />
-              <span className="text-sm font-medium text-black">{color}</span>
+            <div className="flex items-center gap-1.5 rounded-md bg-gray-200 px-2.5 py-1 border border-gray-200">
+              <div
+                className="h-3 w-3 rounded-full"
+                style={{ backgroundColor: color }}
+              />
+              <span className="text-sm font-medium capitalize">{color}</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -77,7 +89,9 @@ function VehicleCard({ vehicle }: Props) {
             </span>
             <span className="text-2xl font-bold">${price}</span>
           </div>
-          <Button><Link to={`/vehicles/${vehicleId}`}>Ver Detalles</Link></Button>
+          <Button>
+            <Link to={`/vehicles/${vehicleId}`}>Ver Detalles</Link>
+          </Button>
         </CardFooter>
       </Card>
     </div>
