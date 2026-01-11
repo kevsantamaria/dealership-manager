@@ -427,10 +427,10 @@ function AddVehicleForm() {
             <Controller
               name="brand.countryOrigin"
               control={control}
-              rules={{ maxLength: 60 }}
+              rules={{ required: 'Este campo es obligatorio', maxLength: 60 }}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>País de origen</FieldLabel>
+                  <FieldLabel>País de origen *</FieldLabel>
                   <Input {...field} autoComplete="off" spellCheck="false" />
                   {fieldState.error && (
                     <FieldError errors={[fieldState.error]} />
@@ -510,6 +510,32 @@ function AddVehicleForm() {
             />
 
             <Controller
+              name="trim.engineType"
+              control={control}
+              rules={{ required: 'Seleccione una opción' }}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Tipo de combustible *</FieldLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(mappedEngineTypes).map(([k, v]) => (
+                        <SelectItem key={k} value={k}>
+                          {v}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {fieldState.error && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
               name="trim.engineSize"
               control={control}
               rules={{
@@ -530,32 +556,6 @@ function AddVehicleForm() {
                   <FieldDescription>
                     Cilindrada del motor, medida en litros (L)
                   </FieldDescription>
-                  {fieldState.error && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-
-            <Controller
-              name="trim.engineType"
-              control={control}
-              rules={{ required: 'Seleccione una opción' }}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Tipo de combustible *</FieldLabel>
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.entries(mappedEngineTypes).map(([k, v]) => (
-                        <SelectItem key={k} value={k}>
-                          {v}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
                   {fieldState.error && (
                     <FieldError errors={[fieldState.error]} />
                   )}
