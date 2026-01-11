@@ -16,6 +16,8 @@ function BrandCard({ brand }: Props) {
   const { deleteBrandById } = useBrands()
   const { mutate, isPending } = deleteBrandById
 
+  console.log(numberOfVehicles)
+
   const [openDelete, setOpenDelete] = useState(false)
   const handleDelete = () => {
     if (!id) return
@@ -45,7 +47,7 @@ function BrandCard({ brand }: Props) {
             size="sm"
             className="gap-2 text-destructive hover:text-primary-foreground hover:bg-destructive"
             onClick={() => setOpenDelete(true)}
-            disabled={isPending}
+            disabled={numberOfVehicles > 0 || isPending}
           >
             {isPending ? (
               <IconLoader2 className="animate-spin h-4 w-4" />
