@@ -34,7 +34,7 @@ function VehicleCard({ vehicle }: Props) {
             'absolute right-3 top-3 z-10 rounded-full shadow-md',
             stockStatus === 'in_stock' && 'bg-green-600',
             stockStatus === 'reserved' && 'bg-yellow-600',
-            stockStatus === 'sold' && 'bg-red-600'
+            stockStatus === 'sold' && 'bg-gray-600'
           )}
         >
           {stockStatus === 'in_stock'
@@ -67,10 +67,9 @@ function VehicleCard({ vehicle }: Props) {
 
         <CardContent className="flex sm:flex-row gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">Color:</span>
-            <div className="flex items-center gap-1.5 rounded-md bg-gray-200 px-2.5 py-1 border border-gray-200">
+            <div className="flex items-center gap-1.5 rounded-md px-2.5 py-1">
               <div
-                className="h-3 w-3 rounded-full"
+                className="h-4 w-4 rounded-full border-2 border-border"
                 style={{ backgroundColor: color }}
               />
               <span className="text-sm font-medium capitalize">{color}</span>

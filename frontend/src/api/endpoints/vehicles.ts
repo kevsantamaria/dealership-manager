@@ -15,6 +15,7 @@ export const fetchVehicles = async () => {
     })
 }
 
+// Get vehicle by ID
 export const fetchVehicleById = async (id: number) => {
   return api
     .get(`/vehicles/${id}`)
@@ -34,6 +35,19 @@ export const addVehicle = async (vehicle: CreateVehiclePayload) => {
     .then((res) => {
       console.log(res.data)
       return res.data
+    })
+    .catch((error) => {
+      manageError(error)
+    })
+}
+
+// Delete vehicle
+export const deleteVehicle = async (id: number) => {
+  return api
+    .delete(`/vehicles/${id}`)
+    .then((res) => {
+      console.log(res.status)
+      return res.status
     })
     .catch((error) => {
       manageError(error)
