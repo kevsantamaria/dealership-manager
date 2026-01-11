@@ -128,13 +128,17 @@ function VehicleDetails() {
               />
               <Badge
                 className={cn(
-                  'absolute right-4 top-4 z-10 rounded-full shadow-md',
+                  'absolute right-3 top-3 z-10 rounded-full shadow-md',
                   vehicle.stockStatus === 'in_stock' && 'bg-green-600',
                   vehicle.stockStatus === 'reserved' && 'bg-yellow-600',
-                  vehicle.stockStatus === 'sold' && 'bg-red-600'
+                  vehicle.stockStatus === 'sold' && 'bg-gray-600'
                 )}
               >
-                {vehicle.stockStatus.toUpperCase()}
+                {vehicle.stockStatus === 'in_stock'
+                  ? 'Disponible'
+                  : vehicle.stockStatus === 'reserved'
+                    ? 'Reservado'
+                    : 'Vendido'}
               </Badge>
             </div>
 
