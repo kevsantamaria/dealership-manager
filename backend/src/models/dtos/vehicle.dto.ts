@@ -4,18 +4,18 @@ import { createBrandDTO } from './brand.dto'
 import { createModelDTO } from './model.dto'
 
 export const createVehicleDTO = z.object({
-  vin: z.string().min(5),
-  licensePlate: z.string().nullable().optional(),
-  color: z.string().min(1),
-  mileage: z.number().nonnegative().nullable().optional(),
+  vin: z.string().min(17).max(17),
+  licensePlate: z.string().max(10).nullable().optional(),
+  color: z.string(),
+  mileage: z.number().max(999999).nonnegative().nullable().optional(),
   arrivalDate: z.string(),
-  purchasePrice: z.number().positive(),
-  suggestedPrice: z.number().positive(),
+  purchasePrice: z.number().min(0).max(999999.99).positive(),
+  suggestedPrice: z.number().min(0).max(999999.99).positive(),
   stockStatus: z.enum(['in_stock', 'reserved', 'sold']).default('in_stock'),
   rateCondition: z
     .enum(['bad', 'regular', 'good', 'excellent'])
     .default('good'),
-  rateDescription: z.string().nullable().optional(),
+  rateDescription: z.string().max(255).nullable().optional(),
   supplierId: z.number(),
   brand: createBrandDTO,
   model: createModelDTO,
@@ -25,13 +25,13 @@ export const createVehicleDTO = z.object({
 
 export const updateVehicleDTO = z
   .object({
-    vin: z.string().min(5).optional(),
+    vin: z.string().min(17).max(17).optional(),
     licensePlate: z.string().nullable().optional(),
     color: z.string().min(1).optional(),
-    mileage: z.number().nonnegative().nullable().optional(),
+    mileage: z.number().max(999999).nonnegative().nullable().optional(),
     arrivalDate: z.string().optional(),
-    purchasePrice: z.number().positive().optional(),
-    suggestedPrice: z.number().positive().optional(),
+    purchasePrice: z.number().min(0).max(999999.99).positive().optional(),
+    suggestedPrice: z.number().min(0).max(999999.99).positive().optional(),
     stockStatus: z.enum(['in_stock', 'reserved', 'sold']).optional(),
     rateCondition: z.enum(['bad', 'regular', 'good', 'excellent']).optional(),
     rateDescription: z.string().nullable().optional(),
