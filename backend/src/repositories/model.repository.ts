@@ -57,6 +57,14 @@ export const updateModel = async (id: number, model: UpdateModel) => {
   return result[0]
 }
 
+export const deleteModelsByBrand = async (brandId: number, db: SQL = pool) => {
+  return await db`
+    DELETE FROM models 
+    WHERE brand_id = ${brandId}
+    RETURNING *
+  `
+}
+
 export const deleteModel = async (id: number, db: SQL = pool) => {
   return await db`DELETE FROM models WHERE id = ${id}`
 }

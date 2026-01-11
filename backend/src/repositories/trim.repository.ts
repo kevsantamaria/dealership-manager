@@ -92,6 +92,16 @@ export const updateTrim = async (id: number, trim: UpdateTrim) => {
   return result[0]
 }
 
+export const deleteTrimsByBrand = async (brandId: number, db: SQL = pool) => {
+  return await db`
+    DELETE FROM trims 
+    WHERE model_id IN (
+      SELECT id FROM models WHERE brand_id = ${brandId}
+    )
+    RETURNING *
+  `
+}
+
 export const deleteTrim = async (id: number, db: SQL = pool) => {
   return await db`DELETE FROM trims WHERE id = ${id} RETURNING *`
 }
