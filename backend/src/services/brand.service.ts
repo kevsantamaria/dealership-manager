@@ -1,5 +1,13 @@
+import { pool } from '@/db/pool'
 import type { Brand } from '@/models/entities/brand'
-import { deleteBrand, findAllBrandsWithVehicles, findBrandById, isBrandEmpty } from '@/repositories/brand.repository'
+import {
+  deleteBrand,
+  findAllBrandsWithVehicles,
+  findBrandById,
+  isBrandEmpty,
+} from '@/repositories/brand.repository'
+import { deleteModelsByBrand } from '@/repositories/model.repository'
+import { deleteTrimsByBrand } from '@/repositories/trim.repository'
 
 export const getAllBrandsService = async () => {
   const brands: Brand[] = await findAllBrandsWithVehicles()
@@ -12,8 +20,14 @@ export const deleteBrandService = async (id: number) => {
     throw new Error('NOT_FOUND')
   }
   const hasVehicles = await isBrandEmpty(id)
+
   if (!hasVehicles) {
     throw new Error('NOT_EMPTY')
   }
-  await deleteBrand(id)
+
+  return await pool.transaction(async (tx) => {
+    await deleteTrimsByBrand(id, tx)
+    await deleteModelsByBrand(id, tx)
+    await deleteBrand(id, tx)
+  })
 }

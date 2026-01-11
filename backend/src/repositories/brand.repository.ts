@@ -59,7 +59,7 @@ export const isBrandEmpty = async (id: number) => {
     WHERE b.id = ${id}
     GROUP BY b.id
   `
-  return result[0]?.isEmpty ?? true 
+  return result[0]?.isEmpty ?? true
 }
 
 export const updateBrand = async (id: number, brand: UpdateBrand) => {
