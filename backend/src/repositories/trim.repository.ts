@@ -92,6 +92,6 @@ export const updateTrim = async (id: number, trim: UpdateTrim) => {
   return result[0]
 }
 
-export const deleteTrim = async (id: number) => {
-  return await pool`DELETE FROM trims WHERE id = ${id} RETURNING *`
+export const deleteTrim = async (id: number, db: SQL = pool) => {
+  return await db`DELETE FROM trims WHERE id = ${id} RETURNING *`
 }

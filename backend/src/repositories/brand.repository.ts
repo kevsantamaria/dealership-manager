@@ -74,6 +74,6 @@ export const updateBrand = async (id: number, brand: UpdateBrand) => {
   return result[0]
 }
 
-export const deleteBrand = async (id: number) => {
-  return await pool`DELETE FROM brands WHERE id = ${id}`
+export const deleteBrand = async (id: number, db: SQL = pool) => {
+  return await db`DELETE FROM brands WHERE id = ${id}`
 }
