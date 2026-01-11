@@ -207,6 +207,48 @@ export const getFinancialSummary = async () => {
   return result[0]
 }
 
+export const getMonthlyFinancialHistory = async () => {
+  return await pool`
+    SELECT 
+      to_char(mes, 'YYYY-MM') AS "month",
+      COALESCE(SUM(purchase_price), 0)::FLOAT AS "totalPurchased",
+      COALESCE(SUM(suggested_price) FILTER (WHERE stock_status = 'sold'), 0)::FLOAT AS "totalSoldRevenue"
+    FROM 
+      generate_series(
+        date_trunc('month', current_date) - interval '11 months', 
+        date_trunc('month', current_date), 
+        '1 month'
+      ) AS mes
+    LEFT JOIN vehicles ON date_trunc('month', arrival_date) = mes
+    GROUP BY mes
+    ORDER BY mes ASC;
+  `
+}
+
+export const getTopSellingQuarterly = async () => {
+  return await pool`
+    SELECT 
+      b.name AS "brand",
+      m.name AS "model",
+      t.name AS "trim",
+      COUNT(v.id)::INT AS "unitsSold",
+      SUM(v.suggested_price)::FLOAT AS "revenue"
+    FROM 
+      vehicles v
+    JOIN trims t ON v.trim_id = t.id
+    JOIN models m ON t.model_id = m.id
+    JOIN brands b ON m.brand_id = b.id
+    WHERE 
+      v.stock_status = 'sold'
+      AND v.arrival_date >= CURRENT_DATE - INTERVAL '3 months'
+    GROUP BY 
+      b.id, b.name, m.id, m.name, t.id, t.name
+    ORDER BY 
+      "unitsSold" DESC, "revenue" DESC
+    LIMIT 5
+  `
+}
+
 export const deleteVehicle = async (id: number) => {
   return await pool`DELETE FROM vehicles WHERE id = ${id} RETURNING *`
 }
