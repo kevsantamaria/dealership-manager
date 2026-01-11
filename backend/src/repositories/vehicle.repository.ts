@@ -245,7 +245,29 @@ export const getTopSellingQuarterly = async () => {
       b.id, b.name, m.id, m.name, t.id, t.name
     ORDER BY 
       "unitsSold" DESC, "revenue" DESC
-    LIMIT 5
+    LIMIT 5;
+  `
+}
+
+export const getOldInventoryReport = async () => {
+  return await pool`
+    SELECT 
+      b.name AS "brand",
+      m.name AS "model",
+      t.name AS "trim",
+      v.arrival_date AS "arrivalDate",
+      v.suggested_price::FLOAT AS "suggestedPrice",
+      (CURRENT_DATE - v.arrival_date)::INT AS "daysInStock"
+    FROM 
+      vehicles v
+    JOIN trims t ON v.trim_id = t.id
+    JOIN models m ON t.model_id = m.id
+    JOIN brands b ON m.brand_id = b.id
+    WHERE 
+      v.stock_status = 'in_stock'
+      AND v.arrival_date <= CURRENT_DATE - INTERVAL '90 days'
+    ORDER BY 
+      v.arrival_date ASC
   `
 }
 
