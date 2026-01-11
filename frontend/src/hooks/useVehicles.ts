@@ -1,5 +1,6 @@
 import {
   addVehicle,
+  deleteVehicle,
   fetchVehicleById,
   fetchVehicles,
 } from '@/api/endpoints/vehicles'
@@ -32,5 +33,17 @@ export const useVehicles = (id?: number) => {
     },
   })
 
-  return { getVehicles, getVehicleById, postVehicle }
+  const deleteVehicleById = useMutation({
+    mutationFn: (id: number) => {
+      return deleteVehicle(id)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['vehicles'] })
+    },
+    onError: (error) => {
+      console.error('Error deleting vehicle:', error)
+    },
+  })
+
+  return { getVehicles, getVehicleById, postVehicle, deleteVehicleById }
 }
