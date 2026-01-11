@@ -28,7 +28,7 @@ function VehicleCard({ vehicle }: Props) {
   } = vehicle
   return (
     <div className="relative border max-w-xs rounded-xl overflow-hidden">
-      <div className="relative">
+      <div className="relative w-full h-80">
         <Badge
           className={cn(
             'absolute right-3 top-3 z-10 rounded-full shadow-md',
@@ -44,7 +44,7 @@ function VehicleCard({ vehicle }: Props) {
               : 'Vendido'}
         </Badge>
         <img
-          src="/Camaro1969.webp"
+          src="/no-car-image.webp"
           alt="Chevrolet Camaro"
           className="w-full h-fit object-cover"
         />

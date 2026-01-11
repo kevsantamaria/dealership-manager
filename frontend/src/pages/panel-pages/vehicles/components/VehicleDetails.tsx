@@ -122,9 +122,9 @@ function VehicleDetails() {
             {/* Vehicle Image */}
             <div className="relative w-full h-64 md:h-96 bg-linear-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900">
               <img
-                src="/bmw-m3-competition-orange-sports-car-side-view.jpg"
+                src="/no-car-image.webp"
                 alt={`${vehicle.brandName} ${vehicle.modelName} ${vehicle.trimName}`}
-                className="object-cover"
+                className="object-cover w-full h-full"
               />
               <Badge
                 className={cn(
