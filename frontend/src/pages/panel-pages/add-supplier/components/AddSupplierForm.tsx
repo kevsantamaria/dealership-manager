@@ -68,8 +68,8 @@ function AddSupplierForm() {
               control={control}
               rules={{
                 required: 'Este campo es obligatorio',
-                minLength: 1,
-                maxLength: 50,
+                minLength: 2,
+                maxLength: 60,
               }}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
@@ -93,8 +93,8 @@ function AddSupplierForm() {
               control={control}
               rules={{
                 required: 'Este campo es obligatorio',
-                minLength: 1,
-                maxLength: 50,
+                minLength: 2,
+                maxLength: 100,
               }}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
@@ -121,8 +121,8 @@ function AddSupplierForm() {
               control={control}
               rules={{
                 required: 'Este campo es obligatorio',
-                minLength: 1,
-                maxLength: 50,
+                minLength: 2,
+                maxLength: 60,
               }}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
