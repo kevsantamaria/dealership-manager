@@ -1,12 +1,12 @@
 import { z } from 'zod'
 
 export const createSupplierDTO = z.object({
-  name: z.string().min(2),
-  contact: z.string(),
+  name: z.string().min(2).max(60),
+  contact: z.string().min(2).max(100),
   type: z
     .enum(['private', 'dealer', 'auction', 'importer', 'fleet'])
     .default('private'),
-  country: z.string(),
+  country: z.string().min(2).max(60),
 })
 
 export const updateSupplierDTO = createSupplierDTO.partial()
