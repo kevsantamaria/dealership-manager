@@ -160,6 +160,24 @@ export const updateVehicleService = async (
   await updateVehicle(id, updateData)
 }
 
+export const getMonthlyFinancialHistory = async () => {
+  return await pool`
+    SELECT 
+      to_char(mes, 'YYYY-MM') AS "month",
+      COALESCE(SUM(purchase_price), 0)::FLOAT AS "totalPurchased",
+      COALESCE(SUM(suggested_price) FILTER (WHERE stock_status = 'sold'), 0)::FLOAT AS "totalSoldRevenue"
+    FROM 
+      generate_series(
+        date_trunc('month', current_date) - interval '11 months', 
+        date_trunc('month', current_date), 
+        '1 month'
+      ) AS mes
+    LEFT JOIN vehicles ON date_trunc('month', arrival_date) = mes
+    GROUP BY mes
+    ORDER BY mes ASC;
+  `
+}
+
 export const deleteVehicleService = async (id: number) => {
   const existingVehicle = await findVehicleById(id)
   if (!existingVehicle) throw new Error('NOT_FOUND')
