@@ -267,7 +267,24 @@ export const getOldInventoryReport = async () => {
       v.stock_status = 'in_stock'
       AND v.arrival_date <= CURRENT_DATE - INTERVAL '90 days'
     ORDER BY 
-      v.arrival_date ASC
+      v.arrival_date ASC;
+  `
+}
+
+export const getRecentActivity = async (limit: number = 10) => {
+  return await pool`
+    SELECT 
+      b.name || ' ' || m.name || ' (' || t.name || ')' AS "vehicleName",
+      v.stock_status AS "status",
+      v.updated_at AS "date"
+    FROM 
+      vehicles v
+    JOIN trims t ON v.trim_id = t.id
+    JOIN models m ON t.model_id = m.id
+    JOIN brands b ON m.brand_id = b.id
+    ORDER BY 
+      v.updated_at DESC
+    LIMIT ${limit}
   `
 }
 
