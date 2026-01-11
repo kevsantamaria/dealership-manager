@@ -292,7 +292,7 @@ function AddVehicleForm() {
             <Controller
               name="mileage"
               control={control}
-              rules={{ required: 'Este campo es obligatorio', maxLength: 9 }}
+              rules={{ required: 'Este campo es obligatorio', max: 9, min: 0 }}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Kilometraje *</FieldLabel>
@@ -347,7 +347,11 @@ function AddVehicleForm() {
             <Controller
               name="purchasePrice"
               control={control}
-              rules={{ required: 'Este campo es obligatorio', maxLength: 9 }}
+              rules={{
+                required: 'Este campo es obligatorio',
+                maxLength: 9,
+                min: 0,
+              }}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="purchasePrice">
@@ -375,7 +379,11 @@ function AddVehicleForm() {
             <Controller
               name="suggestedPrice"
               control={control}
-              rules={{ required: 'Este campo es obligatorio', maxLength: 9 }}
+              rules={{
+                required: 'Este campo es obligatorio',
+                maxLength: 9,
+                min: 0,
+              }}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="suggestedPrice">
@@ -427,7 +435,11 @@ function AddVehicleForm() {
             <Controller
               name="brand.countryOrigin"
               control={control}
-              rules={{ required: 'Este campo es obligatorio', maxLength: 60 }}
+              rules={{
+                required: 'Este campo es obligatorio',
+                maxLength: 60,
+                minLength: 1,
+              }}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>País de origen *</FieldLabel>
@@ -466,6 +478,10 @@ function AddVehicleForm() {
                 required: 'Este campo es obligatorio',
                 min: {
                   value: 1886,
+                  message: 'Año inválido',
+                },
+                max: {
+                  value: new Date().getFullYear() + 1,
                   message: 'Año inválido',
                 },
               }}
@@ -540,7 +556,8 @@ function AddVehicleForm() {
               control={control}
               rules={{
                 required: 'Este campo es obligatorio',
-                min: { value: 0.1, message: 'Debe ser mayor que 0' },
+                min: 0,
+                max: 10,
               }}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
@@ -595,6 +612,7 @@ function AddVehicleForm() {
               rules={{
                 required: 'Este campo es obligatorio',
                 min: { value: 1, message: 'Debe ser mayor que 0' },
+                max: { value: 4000, message: 'Valor demasiado alto' },
               }}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
