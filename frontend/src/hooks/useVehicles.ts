@@ -6,7 +6,7 @@ import {
 import type { CreateVehiclePayload } from '@/types/vehicle'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-export const useVehicles = (id: number) => {
+export const useVehicles = (id?: number) => {
   const queryClient = useQueryClient()
 
   const getVehicles = useQuery({
@@ -16,7 +16,7 @@ export const useVehicles = (id: number) => {
 
   const getVehicleById = useQuery({
     queryKey: ['vehicles', id],
-    queryFn: () => fetchVehicleById(id),
+    queryFn: () => fetchVehicleById(id!),
     enabled: !!id,
   })
 

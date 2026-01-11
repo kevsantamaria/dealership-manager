@@ -9,13 +9,14 @@ import {
 } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import type { Vehicle } from '@/types/vehicle'
+import { Link } from 'react-router-dom'
 
 type Props = {
   vehicle: Vehicle
 }
 
 function VehicleCard({ vehicle }: Props) {
-  const { brand, color, launchYear, model, price, stockStatus, trim } = vehicle
+  const { vehicleId, brand, color, launchYear, model, price, stockStatus, trim } = vehicle
   return (
     <div className="relative border max-w-xs rounded-xl overflow-hidden">
       <div className="relative">
@@ -76,7 +77,7 @@ function VehicleCard({ vehicle }: Props) {
             </span>
             <span className="text-2xl font-bold">${price}</span>
           </div>
-          <Button>Ver Detalles</Button>
+          <Button><Link to={`/vehicles/${vehicleId}`}>Ver Detalles</Link></Button>
         </CardFooter>
       </Card>
     </div>

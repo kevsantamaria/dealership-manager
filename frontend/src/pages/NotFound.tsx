@@ -12,7 +12,7 @@ export default function NotFound() {
           Lo sentimos, la página que estás buscando no existe o ha sido movida.
         </p>
         <div>
-          <Button onClick={() => navigate(-1)}>Volver al inicio</Button>
+          <Button onClick={() => navigate(-1)}>Volver</Button>
         </div>
       </div>
     </div>

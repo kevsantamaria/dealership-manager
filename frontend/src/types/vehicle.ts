@@ -1,5 +1,5 @@
 export type Vehicle = {
-  id: number
+  vehicleId: number
   color: string
   price: string
   stockStatus: string

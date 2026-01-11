@@ -12,7 +12,7 @@ function Vehicles() {
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4 place-items-center">
       {data?.map((vehicle: Vehicle) => (
-        <VehicleCard key={vehicle.id} vehicle={vehicle} />
+        <VehicleCard key={vehicle.vehicleId} vehicle={vehicle} />
       ))}
     </div>
   )
