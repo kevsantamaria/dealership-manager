@@ -196,6 +196,17 @@ export const getVehiclesStockSummary = async () => {
   return result[0]
 }
 
+export const getFinancialSummary = async () => {
+  const result = await pool`
+    SELECT 
+      COALESCE(SUM(purchase_price), 0)::FLOAT AS "purchasePriceTotal",
+      COALESCE(SUM(suggested_price), 0)::FLOAT AS "suggestedPriceTotal",
+    FROM vehicles
+    WHERE stock_status != 'sold';
+  `
+  return result[0]
+}
+
 export const deleteVehicle = async (id: number) => {
   return await pool`DELETE FROM vehicles WHERE id = ${id} RETURNING *`
 }
