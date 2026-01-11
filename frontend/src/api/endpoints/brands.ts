@@ -12,3 +12,16 @@ export const fetchBrands = async () => {
       manageError(error)
     })
 }
+
+// Delete brand
+export const deleteBrand = async (id: number) => {
+  return api
+    .delete(`/brands/${id}`)
+    .then((res) => {
+      console.log(res.status)
+      return res.status
+    })
+    .catch((error) => {
+      manageError(error)
+    })
+}
