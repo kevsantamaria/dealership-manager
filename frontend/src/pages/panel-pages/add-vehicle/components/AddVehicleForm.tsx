@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
 import {
   Card,
   CardContent,
@@ -15,6 +16,11 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { Progress } from '@/components/ui/progress'
 import {
   Select,
@@ -35,10 +41,17 @@ import {
 } from '@/enums/vehicleFormEnums'
 import { useSuppliers } from '@/hooks/useSuppliers'
 import { useVehicles } from '@/hooks/useVehicles'
+import { cn } from '@/lib/utils'
 import { steps } from '@/pages/panel-pages/add-vehicle/components/data/vehicleFormData'
 import { defaultValues } from '@/pages/panel-pages/add-vehicle/components/data/vehicleFormDefaultValues'
 import type { SupplierWithNameAndId } from '@/types/supplier'
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
+import {
+  IconCalendar,
+  IconChevronLeft,
+  IconChevronRight,
+} from '@tabler/icons-react'
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -55,6 +68,11 @@ function AddVehicleForm() {
   const currentForm = steps[currentStep]
   const isLastStep = currentStep === steps.length - 1
   const progress = ((currentStep + 1) / steps.length) * 100
+
+  const parseLocalDate = (value: string) => {
+    const [year, month, day] = value.split('-').map(Number)
+    return new Date(year, month - 1, day)
+  }
 
   const { reset, handleSubmit, control, trigger } = useForm({
     defaultValues,
@@ -153,12 +171,41 @@ function AddVehicleForm() {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Fecha de importación *</FieldLabel>
-                  <Input
-                    type="date"
-                    {...field}
-                    autoComplete="off"
-                    spellCheck="false"
-                  />
+
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          'w-full justify-start text-left font-normal',
+                          !field.value && 'text-muted-foreground'
+                        )}
+                      >
+                        <IconCalendar className="mr-2 h-4 w-4" />
+                        {field.value
+                          ? format(parseLocalDate(field.value), 'PPP', {
+                              locale: es,
+                            })
+                          : 'Seleccionar fecha'}
+                      </Button>
+                    </PopoverTrigger>
+
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={
+                          field.value ? parseLocalDate(field.value) : undefined
+                        }
+                        onSelect={(date) => {
+                          field.onChange(
+                            date ? format(date, 'yyyy-MM-dd') : null
+                          )
+                        }}
+                        autoFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+
                   {fieldState.error && (
                     <FieldError errors={[fieldState.error]} />
                   )}
