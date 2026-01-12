@@ -184,7 +184,7 @@ export const updateVehicle = async (id: number, vehicle: UpdateVehicle) => {
   return result[0]
 }
 
-export const getVehiclesStockSummary = async () => {
+export const findVehiclesStockSummary = async () => {
   const result = await pool`
     SELECT 
       COUNT(*) FILTER (WHERE stock_status = 'in_stock')::INT AS "inStock",
@@ -196,7 +196,7 @@ export const getVehiclesStockSummary = async () => {
   return result[0]
 }
 
-export const getFinancialSummary = async () => {
+export const findFinancialSummary = async () => {
   const result = await pool`
     SELECT 
       COALESCE(SUM(purchase_price), 0)::FLOAT AS "purchasePriceTotal",
@@ -207,7 +207,7 @@ export const getFinancialSummary = async () => {
   return result[0]
 }
 
-export const getMonthlyFinancialHistory = async () => {
+export const findMonthlyFinancialHistory = async () => {
   return await pool`
     SELECT 
       to_char(mes, 'YYYY-MM') AS "month",
@@ -225,7 +225,7 @@ export const getMonthlyFinancialHistory = async () => {
   `
 }
 
-export const getTopSellingQuarterly = async () => {
+export const findTopSellingQuarterly = async () => {
   return await pool`
     SELECT 
       b.name AS "brand",
@@ -249,7 +249,7 @@ export const getTopSellingQuarterly = async () => {
   `
 }
 
-export const getOldInventoryReport = async () => {
+export const findOldInventoryReport = async () => {
   return await pool`
     SELECT 
       b.name AS "brand",
@@ -271,7 +271,7 @@ export const getOldInventoryReport = async () => {
   `
 }
 
-export const getRecentActivity = async (limit: number = 10) => {
+export const findRecentActivity = async (limit: number = 10) => {
   return await pool`
     SELECT 
       b.name || ' ' || m.name || ' (' || t.name || ')' AS "vehicleName",
@@ -284,7 +284,7 @@ export const getRecentActivity = async (limit: number = 10) => {
     JOIN brands b ON m.brand_id = b.id
     ORDER BY 
       v.updated_at DESC
-    LIMIT ${limit}
+    LIMIT ${limit};
   `
 }
 

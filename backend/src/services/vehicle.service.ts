@@ -26,6 +26,7 @@ import {
   findVehicleById,
   findVehicleByIdDetailed,
   findVehicleByVin,
+  findVehiclesStockSummary,
   updateVehicle,
 } from '@/repositories/vehicle.repository'
 
@@ -165,4 +166,10 @@ export const deleteVehicleService = async (id: number) => {
   if (!existingVehicle) throw new Error('NOT_FOUND')
 
   await deleteVehicle(id)
+}
+
+export const getVehiclesStockSummaryService = async () => {
+  const vehicles = await findVehiclesStockSummary()
+  
+  return vehicles
 }
