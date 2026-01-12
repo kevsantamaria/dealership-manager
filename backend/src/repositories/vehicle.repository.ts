@@ -191,7 +191,7 @@ export const findVehiclesStockSummary = async () => {
       COUNT(*) FILTER (WHERE stock_status = 'reserved')::INT AS "reserved",
       COUNT(*) FILTER (WHERE stock_status = 'sold')::INT AS "sold",
       COUNT(*) AS "total"
-    FROM vehicles
+    FROM vehicles;
   `
   return result[0]
 }
@@ -200,7 +200,7 @@ export const findFinancialSummary = async () => {
   const result = await pool`
     SELECT 
       COALESCE(SUM(purchase_price), 0)::FLOAT AS "purchasePriceTotal",
-      COALESCE(SUM(suggested_price), 0)::FLOAT AS "suggestedPriceTotal",
+      COALESCE(SUM(suggested_price), 0)::FLOAT AS "suggestedPriceTotal"
     FROM vehicles
     WHERE stock_status != 'sold';
   `
