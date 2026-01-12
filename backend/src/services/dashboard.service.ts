@@ -1,6 +1,7 @@
 import {
   findFinancialSummary,
   findMonthlyFinancialHistory,
+  findOldInventoryReport,
   findTopSellingQuarterly,
   findVehiclesStockSummary,
 } from '@/repositories/vehicle.repository'
@@ -36,4 +37,9 @@ export const getMonthlyFinancialHistoryService = async () => {
 export const getTopSellingQuarterlyService = async () => {
     const sells = await findTopSellingQuarterly()
     return sells
+}
+
+export const getOldInventoryReportService = async () => {
+    const oldInventory = await findOldInventoryReport()
+    return oldInventory
 }
