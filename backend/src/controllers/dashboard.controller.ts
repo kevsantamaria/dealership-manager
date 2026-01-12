@@ -3,6 +3,7 @@ import {
   getFinancialSummaryService,
   getMonthlyFinancialHistoryService,
   getOldInventoryReportService,
+  getRecentActivityService,
   getTopSellingQuarterlyService,
   getVehiclesStockSummaryService,
 } from '@/services/dashboard.service'
@@ -48,5 +49,13 @@ export const getOldInventoryReport = async (req: Request, res: Response) => {
   res.status(HTTP_STATUS.OK).json({
     message: HTTP_STATUS_MESSAGE.OK,
     data: oldInventory,
+  })
+}
+
+export const getRecentActivity = async (req: Request, res: Response) => {
+  const recentActivity = await getRecentActivityService()
+  res.status(HTTP_STATUS.OK).json({
+    message: HTTP_STATUS_MESSAGE.OK,
+    data: recentActivity,
   })
 }
