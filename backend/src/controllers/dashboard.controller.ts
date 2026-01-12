@@ -2,6 +2,7 @@ import { HTTP_STATUS, HTTP_STATUS_MESSAGE } from '@/constants/httpStatus'
 import {
   getFinancialSummaryService,
   getMonthlyFinancialHistoryService,
+  getTopSellingQuarterlyService,
   getVehiclesStockSummaryService,
 } from '@/services/dashboard.service'
 import type { Request, Response } from 'express'
@@ -30,5 +31,13 @@ export const getMonthlyFinancialHistory = async (
   res.status(HTTP_STATUS.OK).json({
     message: HTTP_STATUS_MESSAGE.OK,
     data: history,
+  })
+}
+
+export const getTopSellingQuarterly = async (req: Request, res: Response) => {
+  const sells = await getTopSellingQuarterlyService()
+  res.status(HTTP_STATUS.OK).json({
+    message: HTTP_STATUS_MESSAGE.OK,
+    data: sells,
   })
 }
