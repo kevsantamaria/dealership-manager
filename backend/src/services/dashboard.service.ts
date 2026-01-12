@@ -8,8 +8,8 @@ import {
 } from '@/repositories/vehicle.repository'
 
 export const getVehiclesStockSummaryService = async () => {
-  const vehicles = await findVehiclesStockSummary()
-  return vehicles
+  const summaryVehicles = await findVehiclesStockSummary()
+  return summaryVehicles
 }
 
 export const getFinancialSummaryService = async () => {
