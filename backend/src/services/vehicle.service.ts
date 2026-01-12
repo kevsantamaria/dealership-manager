@@ -166,4 +166,3 @@ export const deleteVehicleService = async (id: number) => {
 
   await deleteVehicle(id)
 }
-

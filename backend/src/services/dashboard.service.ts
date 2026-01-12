@@ -1,16 +1,17 @@
 import {
   findFinancialSummary,
+  findMonthlyFinancialHistory,
   findVehiclesStockSummary,
 } from '@/repositories/vehicle.repository'
 
 export const getVehiclesStockSummaryService = async () => {
   const vehicles = await findVehiclesStockSummary()
-
   return vehicles
 }
 
 export const getFinancialSummaryService = async () => {
-  const summary: { purchasePriceTotal: number; suggestedPriceTotal: number } = await findFinancialSummary()
+  const summary: { purchasePriceTotal: number; suggestedPriceTotal: number } =
+    await findFinancialSummary()
   if (!summary) {
     return {
       purchasePriceTotal: 0,
@@ -24,4 +25,9 @@ export const getFinancialSummaryService = async () => {
     ...summary,
     revenue,
   }
+}
+
+export const getMonthlyFinancialHistoryService = async () => {
+  const history = await findMonthlyFinancialHistory()
+  return history
 }
