@@ -34,7 +34,7 @@ function VehicleCard({ vehicle }: Props) {
             'absolute right-3 top-3 z-10 rounded-full shadow-md',
             stockStatus === 'in_stock' && 'bg-green-600',
             stockStatus === 'reserved' && 'bg-yellow-600',
-            stockStatus === 'sold' && 'bg-gray-600'
+            stockStatus === 'sold' && 'bg-purple-600'
           )}
         >
           {stockStatus === 'in_stock'
