@@ -55,7 +55,7 @@ export function FinancialCards({ data }: FinancialCardsProps) {
   return (
     <div className="grid gap-4 grid-cols-3">
       <FinancialCard
-        title="Valor de Inversión"
+        title="Monto Invertido"
         description="Valor total de compra de los vehículos en inventario"
         value={data.purchasePriceTotal}
         icon={Wallet}
@@ -69,7 +69,7 @@ export function FinancialCards({ data }: FinancialCardsProps) {
         color="text-blue-600"
       />
       <FinancialCard
-        title="Ganancia"
+        title="Margen de Ganancia"
         description="Total de ganancias estimadas"
         value={data.revenue}
         icon={TrendingUp}

@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card'
 import type { VehicleStockData } from '@/types/dashboard'
-import { getVehicleStats } from './utils/stats'
+import { getVehicleStats } from '@/pages/panel-pages/home/components/utils/stats'
 
 interface Props {
   data: VehicleStockData

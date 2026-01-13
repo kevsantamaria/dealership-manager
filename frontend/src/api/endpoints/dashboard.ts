@@ -25,7 +25,7 @@ export const fetchFinancialSummary = async () => {
 
 export const fetchMonthlyFinancialHistory = async () => {
   return api
-    .get('/dashboard/monthly-summary')
+    .get('/dashboard/monthly-history')
     .then((res) => {
       return res.data.data
     })

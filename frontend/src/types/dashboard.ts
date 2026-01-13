@@ -10,3 +10,9 @@ export type FinancialSummaryData = {
   suggestedPriceTotal: number
   revenue: number
 }
+
+export interface MonthData {
+  month: string
+  totalPurchased: number
+  totalSoldRevenue: number
+}
