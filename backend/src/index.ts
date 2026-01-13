@@ -4,6 +4,7 @@ import supplier from '@/routes/supplier.routes'
 import login from '@/routes/login.routes'
 import vehicle from '@/routes/vehicle.routes'
 import brand from '@/routes/brand.routes'
+import dashboard from '@/routes/dashboard.routes'
 import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
@@ -27,6 +28,7 @@ app.use(login)
 app.use(supplier)
 app.use(vehicle)
 app.use(brand)
+app.use(dashboard)
 
 app.use(ErrorHandler)
 
