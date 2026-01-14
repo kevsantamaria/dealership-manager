@@ -34,3 +34,16 @@ export const fetchSuppliersWithNameAndId = async () => {
     .then((res) => res.data.data)
     .catch((error) => manageError(error))
 }
+
+// Delete supplier
+export const deleteSupplier = async (id: number) => {
+  return api
+    .delete(`/suppliers/${id}`)
+    .then((res) => {
+      console.log(res.status)
+      return res.status
+    })
+    .catch((error) => {
+      manageError(error)
+    })
+}
