@@ -3,8 +3,9 @@ import { FinancialCards } from '@/pages/panel-pages/home/components/FinancialSum
 import MonthlyFinancialChart from '@/pages/panel-pages/home/components/MonthlyFinancialChart'
 import RecentActivityTable from '@/pages/panel-pages/home/components/RecentActivityTable'
 import VehiclesInStock from '@/pages/panel-pages/home/components/VehiclesInStock'
+import OldInventoryRecord from './components/OldInventoryRecord'
 import QuickActions from './components/QuickActions'
-import { TopSellingModels } from './components/TopSellingModels'
+import TopSellingModels from './components/TopSellingModels'
 
 function Home() {
   const {
@@ -28,7 +29,10 @@ function Home() {
   if (getRecentActivity.isLoading) {
     return <div>Loading...</div>
   }
-   if (getTopSellingQuarterly.isLoading) {
+  if (getTopSellingQuarterly.isLoading) {
+    return <div>Loading...</div>
+  }
+  if (getOldInventoryReport.isLoading) {
     return <div>Loading...</div>
   }
   return (
@@ -38,13 +42,14 @@ function Home() {
         <FinancialCards data={getFinancialSummary.data} />
       </div>
       <MonthlyFinancialChart data={getMonthlyFinancialHistory.data} />
-<div className='flex gap-2 items-center justify-center'>
+      <div className="flex gap-2 items-center justify-center">
         <RecentActivityTable data={getRecentActivity.data} />
-      <QuickActions />
-</div>
-<div>
-  <TopSellingModels data={getTopSellingQuarterly.data} />
-</div>
+        <QuickActions />
+      </div>
+      <div className="flex gap-2 items-baseline justify-center">
+        <OldInventoryRecord data={getOldInventoryReport.data} />
+        <TopSellingModels data={getTopSellingQuarterly.data} />
+      </div>
     </section>
   )
 }

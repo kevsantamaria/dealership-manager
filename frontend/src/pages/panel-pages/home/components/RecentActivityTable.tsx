@@ -71,7 +71,7 @@ function RecentActivityTable({ data }: RecentActivityTableProps) {
   })
 
   return (
-    <Card className='w-full'>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Actividad Reciente</CardTitle>
       </CardHeader>

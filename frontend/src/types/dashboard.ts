@@ -30,3 +30,12 @@ export type TopSellingModel = {
   unitsSold: number
   revenue: number
 }
+
+export type OldInventoryItem = {
+  brand: string
+  model: string
+  trim: string
+  arrivalDate: string
+  suggestedPrice: number
+  daysInStock: number
+}
