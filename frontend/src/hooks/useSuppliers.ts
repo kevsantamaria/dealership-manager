@@ -1,12 +1,15 @@
 import {
   addSupplier,
+  deleteSupplier,
   fetchSuppliers,
   fetchSuppliersWithNameAndId,
 } from '@/api/endpoints/suppliers'
 import type { CreateSupplierPayload } from '@/types/supplier'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useSuppliers = () => {
+  const queryClient = useQueryClient()
+
   const getSuppliers = useQuery({
     queryKey: ['suppliers'],
     queryFn: fetchSuppliers,
@@ -23,5 +26,22 @@ export const useSuppliers = () => {
     },
   })
 
-  return { getSuppliers, getSuppliersWithNameAndId, postSupplier }
+  const deleteSupplierById = useMutation({
+    mutationFn: (id: number) => {
+      return deleteSupplier(id)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['suppliers'] })
+    },
+    onError: (error) => {
+      console.error('Error deleting vehicle:', error)
+    },
+  })
+
+  return {
+    getSuppliers,
+    getSuppliersWithNameAndId,
+    postSupplier,
+    deleteSupplierById,
+  }
 }
