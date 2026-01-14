@@ -44,7 +44,7 @@ function OldInventoryRecord({ data }: OldInventoryRecordProps) {
                 </div>
 
                 <div className="text-right">
-                  <div className="text-lg font-semibold text-amber-600">
+                  <div className="text-lg font-semibold text-yellow-500">
                     {vehicle.daysInStock} días
                   </div>
                   <div className="text-sm text-muted-foreground">
