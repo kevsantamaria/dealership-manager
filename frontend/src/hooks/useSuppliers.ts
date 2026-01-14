@@ -34,7 +34,7 @@ export const useSuppliers = () => {
       queryClient.invalidateQueries({ queryKey: ['suppliers'] })
     },
     onError: (error) => {
-      console.error('Error deleting vehicle:', error)
+      console.error('Error deleting supplier:', error)
     },
   })
 
