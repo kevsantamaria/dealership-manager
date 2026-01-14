@@ -22,3 +22,11 @@ export type RecentActivity = {
   status: string
   date: string
 }
+
+export type TopSellingModel = {
+  brand: string
+  model: string
+  trim: string
+  unitsSold: number
+  revenue: number
+}

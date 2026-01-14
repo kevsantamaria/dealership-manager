@@ -4,6 +4,7 @@ import MonthlyFinancialChart from '@/pages/panel-pages/home/components/MonthlyFi
 import RecentActivityTable from '@/pages/panel-pages/home/components/RecentActivityTable'
 import VehiclesInStock from '@/pages/panel-pages/home/components/VehiclesInStock'
 import QuickActions from './components/QuickActions'
+import { TopSellingModels } from './components/TopSellingModels'
 
 function Home() {
   const {
@@ -27,6 +28,9 @@ function Home() {
   if (getRecentActivity.isLoading) {
     return <div>Loading...</div>
   }
+   if (getTopSellingQuarterly.isLoading) {
+    return <div>Loading...</div>
+  }
   return (
     <section className="flex flex-col gap-2">
       <div className="flex gap-4 justify-center">
@@ -37,6 +41,9 @@ function Home() {
 <div className='flex gap-2 items-center justify-center'>
         <RecentActivityTable data={getRecentActivity.data} />
       <QuickActions />
+</div>
+<div>
+  <TopSellingModels data={getTopSellingQuarterly.data} />
 </div>
     </section>
   )

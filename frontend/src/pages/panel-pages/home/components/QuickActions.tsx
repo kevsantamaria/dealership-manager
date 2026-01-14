@@ -18,7 +18,6 @@ function QuickActions() {
       <CardContent className="flex flex-col gap-4 items-center justify-center">
         <Button asChild className="min-w-full">
           <Link to={`/dashboard/admin/add-vehicle/`}>
-            {' '}
             <IconHexagonPlus /> Añadir Vehículo
           </Link>
         </Button>
