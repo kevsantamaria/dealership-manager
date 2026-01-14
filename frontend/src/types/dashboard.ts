@@ -11,8 +11,14 @@ export type FinancialSummaryData = {
   revenue: number
 }
 
-export interface MonthData {
+export type MonthData = {
   month: string
   totalPurchased: number
   totalSoldRevenue: number
+}
+
+export type RecentActivity = {
+  vehicleName: string
+  status: string
+  date: string
 }

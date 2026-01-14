@@ -1,22 +1,22 @@
-"use client"
+'use client'
 
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-} from "@/components/ui/card"
-import type { MonthData } from "@/types/dashboard"
+} from '@/components/ui/card'
+import type { MonthData } from '@/types/dashboard'
 import {
-  BarChart,
   Bar,
+  BarChart,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from "recharts"
+} from 'recharts'
 
 interface Props {
   data: MonthData[]
@@ -25,8 +25,8 @@ interface Props {
 export default function MonthlyFinancialChart({ data }: Props) {
   // Format “2025-02” → “Feb”
   const chartData = data.map((item) => ({
-    month: new Date(item.month + "-01").toLocaleString("default", {
-      month: "short",
+    month: new Date(item.month + '-01').toLocaleString('default', {
+      month: 'short',
     }),
     Invertido: item.totalPurchased,
     Ganado: item.totalSoldRevenue,
@@ -36,22 +36,17 @@ export default function MonthlyFinancialChart({ data }: Props) {
     <Card className="w-full">
       <CardHeader>
         <CardTitle>Resumen Financiero</CardTitle>
-        <CardDescription>
-          Monto invertido y ganado por mes
-        </CardDescription>
+        <CardDescription>Monto invertido y ganado por mes</CardDescription>
       </CardHeader>
-      <CardContent className="h-96">
+      <CardContent className="h-60">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData}>
-            <XAxis
-              dataKey="month"
-              tick={{ fill: "#4B5563", fontSize: 12 }}
-            />
-            <YAxis tick={{ fill: "#4B5563", fontSize: 12 }} />
+            <XAxis dataKey="month" tick={{ fill: '#4B5563', fontSize: 12 }} />
+            <YAxis tick={{ fill: '#4B5563', fontSize: 12 }} />
             <Tooltip
               wrapperStyle={{
-                backgroundColor: "#fff",
-                border: "1px solid #e5e7eb",
+                backgroundColor: '#fff',
+                border: '1px solid #e5e7eb',
                 borderRadius: 10,
               }}
             />
