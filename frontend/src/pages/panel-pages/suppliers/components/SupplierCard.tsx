@@ -1,5 +1,4 @@
 import DeleteModal from '@/components/modal/DeleteModal'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useSuppliers } from '@/hooks/useSuppliers'
@@ -42,22 +41,19 @@ function SupplierCard({ supplier }: Props) {
         <CardHeader>
           <div className="flex items-start justify-between">
             <CardTitle className="text-2xl font-bold">{name}</CardTitle>
-            <div className="flex items-center gap-1 justify-center">
-              <Badge variant="default">{type}</Badge>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="gap-2 text-destructive hover:text-primary-foreground hover:bg-destructive"
-                onClick={() => setOpenDelete(true)}
-                disabled={isPending}
-              >
-                {isPending ? (
-                  <IconLoader2 className="animate-spin h-4 w-4" />
-                ) : (
-                  <IconTrash className="h-4 w-4" />
-                )}
-              </Button>
-            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-2 text-destructive hover:text-primary-foreground hover:bg-destructive"
+              onClick={() => setOpenDelete(true)}
+              disabled={isPending}
+            >
+              {isPending ? (
+                <IconLoader2 className="animate-spin h-4 w-4" />
+              ) : (
+                <IconTrash className="h-4 w-4" />
+              )}
+            </Button>
           </div>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -68,6 +64,10 @@ function SupplierCard({ supplier }: Props) {
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">País:</span>
             <span className="font-medium">{country}</span>
+          </div>
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">Tipo:</span>
+            <span className="font-medium">{type}</span>
           </div>
         </CardContent>
       </Card>
