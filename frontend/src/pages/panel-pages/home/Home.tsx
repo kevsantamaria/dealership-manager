@@ -1,8 +1,9 @@
 import { useDashboard } from '@/hooks/useDashboard'
-import { FinancialCards } from './components/FinancialSummary'
-import MonthlyFinancialChart from './components/MonthlyFinancialChart'
-import RecentActivityTable from './components/RecentActivityTable'
-import VehiclesInStock from './components/VehiclesInStock'
+import { FinancialCards } from '@/pages/panel-pages/home/components/FinancialSummary'
+import MonthlyFinancialChart from '@/pages/panel-pages/home/components/MonthlyFinancialChart'
+import RecentActivityTable from '@/pages/panel-pages/home/components/RecentActivityTable'
+import VehiclesInStock from '@/pages/panel-pages/home/components/VehiclesInStock'
+import QuickActions from './components/QuickActions'
 
 function Home() {
   const {
@@ -33,7 +34,10 @@ function Home() {
         <FinancialCards data={getFinancialSummary.data} />
       </div>
       <MonthlyFinancialChart data={getMonthlyFinancialHistory.data} />
-      <RecentActivityTable data={getRecentActivity.data} />
+<div className='flex gap-2 items-center justify-center'>
+        <RecentActivityTable data={getRecentActivity.data} />
+      <QuickActions />
+</div>
     </section>
   )
 }
