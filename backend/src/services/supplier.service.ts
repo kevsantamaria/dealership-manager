@@ -56,7 +56,7 @@ export const updateSupplierService = async (
 
   if (Object.keys(supplier).length === 0) throw new Error('NO_FIELDS_TO_UPDATE')
 
-  const { name, contact, country, type } = supplier
+  const { name, ...restOfFields } = supplier
   const supplierToUpdate: Partial<Supplier> = {}
 
   // validate name
@@ -71,19 +71,11 @@ export const updateSupplierService = async (
     }
     supplierToUpdate.name = name
   }
+const cleanFields = Object.fromEntries(
+  Object.entries(restOfFields).filter(([value]) => value !== undefined)
+);
 
-  if (contact !== undefined) {
-    supplierToUpdate.contact = contact
-  }
-
-  if (country !== undefined) {
-    supplierToUpdate.country = country
-  }
-
-  if (type !== undefined) {
-    supplierToUpdate.type = type
-  }
-
+Object.assign(supplierToUpdate, cleanFields);
   supplierToUpdate.updatedAt = new Date().toISOString()
 
   const updatedSupplier = await updateSupplier(id, supplierToUpdate)
