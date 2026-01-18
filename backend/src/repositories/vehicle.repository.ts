@@ -271,7 +271,7 @@ export const findOldInventoryReport = async () => {
   `
 }
 
-export const findRecentActivity = async (limit: number = 10) => {
+export const findRecentActivity = async (limit: number = 5) => {
   return await pool`
     SELECT 
       b.name || ' ' || m.name || ' (' || t.name || ')' AS "vehicleName",
