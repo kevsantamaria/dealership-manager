@@ -1,5 +1,4 @@
 export const colors = [
-  'amber',
   'black',
   'blue',
   'gray',
@@ -8,11 +7,15 @@ export const colors = [
   'red',
   'white',
   'yellow',
+  'brown',
+  'aqua',
+  'chartreuse',
+  'crimson',
+  'pink'
 ] as const
 
 export type Colors = (typeof colors)[number]
 export const mappedColors: { [key in Colors]: string } = {
-  amber: 'Ambar',
   black: 'Negro',
   blue: 'Azul',
   gray: 'Gris',
@@ -21,6 +24,11 @@ export const mappedColors: { [key in Colors]: string } = {
   red: 'Rojo',
   white: 'Blanco',
   yellow: 'Amarillo',
+  brown: 'Café',
+  aqua: 'Aqua',
+  chartreuse: 'Chartreuse',
+  crimson: 'Crimson',
+  pink: 'Rosa'
 }
 
 export const stockStatusValues = ['in_stock', 'reserved', 'sold'] as const

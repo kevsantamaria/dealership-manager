@@ -30,7 +30,7 @@ function FinancialCard({
   }).format(value)
 
   return (
-    <Card>
+    <Card className='h-fit'>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 mb-2">
           <div className={`rounded-full bg-muted p-2 ${color}`}>
@@ -40,7 +40,7 @@ function FinancialCard({
         </CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent className="mt-auto">
+      <CardContent className="m-auto">
         <p className="text-4xl font-bold">{formattedValue}</p>
       </CardContent>
     </Card>
@@ -53,7 +53,7 @@ interface FinancialCardsProps {
 
 export function FinancialCards({ data }: FinancialCardsProps) {
   return (
-    <div className="grid gap-4 grid-cols-3">
+    <div className="grid gap-4 md:grid-cols-3 grid-cols-1">
       <FinancialCard
         title="Monto Invertido"
         description="Valor total de compra de los vehículos en inventario"

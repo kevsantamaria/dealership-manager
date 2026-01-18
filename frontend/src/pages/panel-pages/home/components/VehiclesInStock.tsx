@@ -18,15 +18,13 @@ function VehiclesInStock({ data }: Props) {
             return (
               <div
                 key={stat.label}
-                className="flex items-center gap-4 rounded-lg border bg-card p-4 transition-shadow hover:shadow-md"
+                className="flex items-center flex-col gap-4 rounded-lg border bg-card p-4 transition-shadow hover:shadow-md"
               >
-                <div className={`rounded-full bg-muted p-3 ${stat.color}`}>
+                <h3 className="text-sm font-medium text-muted-foreground">
+                  {stat.label}
+                </h3>
+                <div className={`rounded-full flex gap-4 items-center justify-between bg-muted p-3 ${stat.color}`}>
                   <Icon className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    {stat.label}
-                  </p>
                   <p className="text-2xl font-bold">{stat.value}</p>
                 </div>
               </div>

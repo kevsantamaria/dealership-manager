@@ -12,7 +12,7 @@ function TopSellingModels({ data }: TopSellingModelsProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <IconTrophy className="h-5 w-5 text-yellow-500" />
-          Top Selling Models
+          Vehículos Más Vendidos
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -33,8 +33,8 @@ function TopSellingModels({ data }: TopSellingModelsProps) {
                   ${item.revenue.toLocaleString()}
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  {item.unitsSold} {item.unitsSold === 1 ? 'unit' : 'units'}{' '}
-                  sold
+                  {item.unitsSold} {item.unitsSold === 1 ? 'unidad' : 'unidades'}{' '}
+                  vendidas
                 </div>
               </div>
             </div>
