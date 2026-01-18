@@ -1,9 +1,14 @@
 import { describe, it, expect, mock, type Mock } from 'bun:test'
-import { createVehicleService } from '@/services/vehicle.service'
+import {
+  createVehicleService,
+  deleteVehicleService,
+} from '@/services/vehicle.service'
 
 import {
   findVehicleByVin,
   createVehicle,
+  findVehicleById,
+  deleteVehicle,
 } from '@/repositories/vehicle.repository'
 import { findSupplierById } from '@/repositories/supplier.repository'
 import { findBrandByName } from '@/repositories/brand.repository'
@@ -15,6 +20,8 @@ import type { CreateVehicleDTO } from '@/models/dtos/vehicle.dto'
 mock.module('@/repositories/vehicle.repository', () => ({
   findVehicleByVin: mock(),
   createVehicle: mock(),
+  findVehicleById: mock(),
+  deleteVehicle: mock(),
 }))
 
 mock.module('@/repositories/supplier.repository', () => ({
@@ -42,7 +49,7 @@ mock.module('@/db/pool', () => ({
   },
 }))
 
-describe('Pruebas para createVehicleService', () => {
+describe('Tests for createVehicleService', () => {
   const mockVehicleData: CreateVehicleDTO = {
     vin: '9B1AB2C3D4E5F6G7H',
     color: 'Black',
@@ -64,7 +71,7 @@ describe('Pruebas para createVehicleService', () => {
     },
   }
 
-  it('debe lanzar error si el VIN ya existe', async () => {
+  it('error if vin already exists', async () => {
     ;(findVehicleByVin as Mock<typeof findVehicleByVin>).mockResolvedValue({
       id: 1,
       vin: '9B1AB2C3D4E5F6G7H',
@@ -75,8 +82,7 @@ describe('Pruebas para createVehicleService', () => {
     )
   })
 
-  it('debe crear el vehículo correctamente', async () => {
-    // Configuración de mocks
+  it('should create the vehicle correctly', async () => {
     ;(findVehicleByVin as Mock<typeof findVehicleByVin>).mockResolvedValue(null)
     ;(findSupplierById as Mock<typeof findSupplierById>).mockResolvedValue({
       id: 6,
@@ -104,5 +110,30 @@ describe('Pruebas para createVehicleService', () => {
 
     expect(result).toHaveProperty('id', 99)
     expect(createVehicle).toHaveBeenCalled()
+  })
+})
+
+describe('Tests for deleteVehicleService', () => {
+  const mockVehicleId = 1
+
+  it('error if vehicle does not exist', async () => {
+    ;(findVehicleById as Mock<typeof findSupplierById>).mockResolvedValue(null)
+
+    await expect(deleteVehicleService(mockVehicleId)).rejects.toThrow(
+      'NOT_FOUND'
+    )
+    expect(deleteVehicle).not.toHaveBeenCalled()
+  })
+
+  it('should delete the vehicle correctly', async () => {
+    ;(findVehicleById as Mock<typeof findVehicleById>).mockResolvedValue({
+      id: mockVehicleId,
+    })
+    ;(deleteVehicle as Mock<typeof deleteVehicle>).mockResolvedValue(undefined)
+
+    await deleteVehicleService(mockVehicleId)
+
+    expect(findVehicleById).toHaveBeenCalledWith(mockVehicleId)
+    expect(deleteVehicle).toHaveBeenCalledWith(mockVehicleId)
   })
 })
