@@ -135,7 +135,7 @@ export const findAllVehiclesDetails = async () => {
       JOIN models m ON m.id = t.model_id
       JOIN brands b ON b.id = m.brand_id
     ORDER BY
-      v.created_at DESC;
+      v.arrival_date DESC;
   `
 }
 

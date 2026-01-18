@@ -42,7 +42,7 @@ mock.module('@/db/pool', () => ({
   },
 }))
 
-describe('Pruebas para createVehicleService (Bun)', () => {
+describe('Pruebas para createVehicleService', () => {
   const mockVehicleData: CreateVehicleDTO = {
     vin: '9B1AB2C3D4E5F6G7H',
     color: 'Black',
