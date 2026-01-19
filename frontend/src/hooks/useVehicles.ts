@@ -3,8 +3,12 @@ import {
   deleteVehicle,
   fetchVehicleById,
   fetchVehicles,
+  updateVehicle,
 } from '@/api/endpoints/vehicles'
-import type { CreateVehiclePayload } from '@/types/vehicle'
+import type {
+  CreateVehiclePayload,
+  UpdateVehiclePayload,
+} from '@/types/vehicle'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useVehicles = (id?: number) => {
@@ -33,6 +37,24 @@ export const useVehicles = (id?: number) => {
     },
   })
 
+  const updateVehicleById = useMutation({
+    mutationFn: ({
+      id,
+      vehicle,
+    }: {
+      id: number
+      vehicle: UpdateVehiclePayload
+    }) => {
+      return updateVehicle(id, vehicle)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['vehicles'] })
+    },
+    onError: (error) => {
+      console.error('Error updating vehicle:', error)
+    },
+  })
+
   const deleteVehicleById = useMutation({
     mutationFn: (id: number) => {
       return deleteVehicle(id)
@@ -45,5 +67,11 @@ export const useVehicles = (id?: number) => {
     },
   })
 
-  return { getVehicles, getVehicleById, postVehicle, deleteVehicleById }
+  return {
+    getVehicles,
+    getVehicleById,
+    postVehicle,
+    updateVehicleById,
+    deleteVehicleById,
+  }
 }
