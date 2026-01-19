@@ -39,11 +39,15 @@ export const ErrorHandler = (
         message: 'Invalid username or password',
       })
 
-    case 'NOT_EMPTY':
+    case 'BRAND_NOT_EMPTY':
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({
         message: 'Brand has vehicles',
       })
 
+      case 'SUPPLIER_NOT_EMPTY':
+      return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+        message: 'Supplier has vehicles',
+      })
     default:
       console.error(err)
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({

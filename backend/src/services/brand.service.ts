@@ -19,10 +19,10 @@ export const deleteBrandService = async (id: number) => {
   if (!existingBrand) {
     throw new Error('NOT_FOUND')
   }
-  const hasVehicles = await isBrandEmpty(id)
+  const notHaveVehicles = await isBrandEmpty(id)
 
-  if (!hasVehicles) {
-    throw new Error('NOT_EMPTY')
+  if (!notHaveVehicles) {
+    throw new Error('BRAND_NOT_EMPTY')
   }
 
   return await pool.transaction(async (tx) => {

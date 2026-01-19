@@ -10,6 +10,7 @@ import {
   findAllSuppliersWithNameAndId,
   findSupplierById,
   findSupplierByName,
+  isSupplierNoVehicles,
   updateSupplier,
 } from '@/repositories/supplier.repository'
 
@@ -85,6 +86,11 @@ Object.assign(supplierToUpdate, cleanFields);
 export const deleteSupplierService = async (id: number) => {
   const existingSupplier = await findSupplierById(id)
   if (!existingSupplier) throw new Error('NOT_FOUND')
+
+    const notHaveVehicles = await isSupplierNoVehicles(id)
+    if (!notHaveVehicles) {
+      throw new Error('SUPPLIER_NOT_EMPTY')
+    }
 
   await deleteSupplier(id)
 }

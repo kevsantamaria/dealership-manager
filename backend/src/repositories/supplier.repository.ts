@@ -57,6 +57,17 @@ export const updateSupplier = async (id: number, supplier: UpdateSupplier) => {
   return result[0]
 }
 
+export const isSupplierNoVehicles = async (id: number) => {
+  const result = await pool`
+    SELECT count(v.id) = 0 AS "isEmpty"
+    FROM suppliers s
+    LEFT JOIN vehicles v ON s.id = v.supplier_id
+    WHERE s.id = ${id}
+    GROUP BY s.id;
+  `
+  return result[0]?.isEmpty ?? true
+}
+
 export const deleteSupplier = async (id: number) => {
   return await pool`DELETE FROM suppliers WHERE id = ${id}`
 }
