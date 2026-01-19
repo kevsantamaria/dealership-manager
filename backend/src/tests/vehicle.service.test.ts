@@ -117,7 +117,7 @@ describe('Tests for deleteVehicleService', () => {
   const mockVehicleId = 1
 
   it('error if vehicle does not exist', async () => {
-    ;(findVehicleById as Mock<typeof findSupplierById>).mockResolvedValue(null)
+    ;(findVehicleById as Mock<typeof findVehicleById>).mockResolvedValue(null)
 
     await expect(deleteVehicleService(mockVehicleId)).rejects.toThrow(
       'NOT_FOUND'
