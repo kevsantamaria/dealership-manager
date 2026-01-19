@@ -1,6 +1,9 @@
 import api from '@/api/dealership'
 import { manageError } from '@/api/manageError'
-import type { CreateVehiclePayload } from '@/types/vehicle'
+import type {
+  CreateVehiclePayload,
+  UpdateVehiclePayload,
+} from '@/types/vehicle'
 
 // Get all vehicles
 export const fetchVehicles = async () => {
@@ -39,6 +42,14 @@ export const addVehicle = async (vehicle: CreateVehiclePayload) => {
     .catch((error) => {
       manageError(error)
     })
+}
+
+// Update vehicle
+export const updateVehicle = async (
+  id: number,
+  vehicle: UpdateVehiclePayload
+) => {
+  return api.patch(`/vehicles/${id}`, vehicle)
 }
 
 // Delete vehicle
