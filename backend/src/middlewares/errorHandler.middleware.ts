@@ -44,7 +44,7 @@ export const ErrorHandler = (
         message: 'Brand has vehicles',
       })
 
-      case 'SUPPLIER_NOT_EMPTY':
+    case 'SUPPLIER_NOT_EMPTY':
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({
         message: 'Supplier has vehicles',
       })

@@ -34,11 +34,11 @@ export const findAllSuppliers = async () => {
 export const findAllSuppliersWithVehicles = async () => {
   return await pool`SELECT 
     s.*, 
-    COUNT(v.id) AS "vehicleCount"
+    COUNT(v.id) AS "numberOfVehicles"
     FROM "suppliers" s
     LEFT JOIN "vehicles" v ON s."id" = v."supplier_id"
     GROUP BY s."id"
-    ORDER BY "vehicleCount" DESC;
+    ORDER BY "numberOfVehicles" DESC;
   `
 }
 

@@ -7,7 +7,7 @@ import type { Brand } from '@/models/entities/brand'
 import type { Model } from '@/models/entities/model'
 import type { Supplier } from '@/models/entities/supplier'
 import type { Trim } from '@/models/entities/trim'
-import type { NewVehicle, UpdateVehicle } from '@/models/entities/vehicle'
+import type { NewVehicle } from '@/models/entities/vehicle'
 import { createBrand, findBrandByName } from '@/repositories/brand.repository'
 import {
   createModel,
@@ -99,7 +99,6 @@ export const getVehicleByIdService = async (id: number) => {
   if (!detailedVehicle) throw new Error('NOT_FOUND')
   return detailedVehicle
 }
-
 export const updateVehicleService = async (
   id: number,
   vehicle: UpdateVehicleDTO
@@ -109,55 +108,22 @@ export const updateVehicleService = async (
 
   if (Object.keys(vehicle).length === 0) throw new Error('NO_FIELDS_TO_UPDATE')
 
-  const {
-    vin,
-    color,
-    arrivalDate,
-    licensePlate,
-    mileage,
-    purchasePrice,
-    suggestedPrice,
-    rateCondition,
-    rateDescription,
-    stockStatus,
-    supplierId,
-    trimId,
-  } = vehicle
-
-  if (vin) {
-    const existingVin = await findVehicleByVin(vin)
+  if (vehicle.vin) {
+    const existingVin = await findVehicleByVin(vehicle.vin)
     if (existingVin && existingVin.id !== id) throw new Error('ALREADY_EXISTS')
   }
 
-  if (supplierId) {
-    const supplier = await findSupplierById(supplierId)
+  if (vehicle.supplierId) {
+    const supplier = await findSupplierById(vehicle.supplierId)
     if (!supplier) throw new Error('SUPPLIER_NOT_FOUND')
   }
 
-  if (trimId) {
-    const trim = await findTrimById(trimId)
+  if (vehicle.trimId) {
+    const trim = await findTrimById(vehicle.trimId)
     if (!trim) throw new Error('TRIM_NOT_FOUND')
   }
 
-  const updateData: UpdateVehicle = {}
-
-  if (vin !== undefined) updateData.vin = vin
-  if (color !== undefined) updateData.color = color
-  if (arrivalDate !== undefined) updateData.arrivalDate = arrivalDate
-  if (licensePlate !== undefined) updateData.licensePlate = licensePlate
-  if (mileage !== undefined) updateData.mileage = mileage
-  if (purchasePrice !== undefined) updateData.purchasePrice = purchasePrice
-  if (suggestedPrice !== undefined) updateData.suggestedPrice = suggestedPrice
-  if (rateCondition !== undefined) updateData.rateCondition = rateCondition
-  if (rateDescription !== undefined)
-    updateData.rateDescription = rateDescription
-  if (stockStatus !== undefined) updateData.stockStatus = stockStatus
-  if (supplierId !== undefined) updateData.supplierId = supplierId
-  if (trimId !== undefined) updateData.trimId = trimId
-
-  updateData.updatedAt = new Date().toISOString()
-
-  await updateVehicle(id, updateData)
+  await updateVehicle(id, vehicle)
 }
 
 export const deleteVehicleService = async (id: number) => {

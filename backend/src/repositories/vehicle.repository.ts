@@ -145,45 +145,37 @@ export const findVehicleByVin = async (vin: string) => {
 }
 
 export const updateVehicle = async (id: number, vehicle: UpdateVehicle) => {
-  const {
-    vin,
-    licensePlate,
-    color,
-    mileage,
-    arrivalDate,
-    purchasePrice,
-    suggestedPrice,
-    stockStatus,
-    rateCondition,
-    rateDescription,
-    updatedAt,
-    trimId,
-    supplierId,
-  } = vehicle
+  const rawData = {
+    vin: vehicle.vin,
+    license_plate: vehicle.licensePlate,
+    color: vehicle.color,
+    mileage: vehicle.mileage,
+    arrival_date: vehicle.arrivalDate
+      ? vehicle.arrivalDate.split('T')[0]
+      : undefined,
+    purchase_price: vehicle.purchasePrice,
+    suggested_price: vehicle.suggestedPrice,
+    stock_status: vehicle.stockStatus,
+    rate_condition: vehicle.rateCondition,
+    rate_description: vehicle.rateDescription,
+    trim_id: vehicle.trimId,
+    supplier_id: vehicle.supplierId,
+    updated_at: new Date(),
+  }
+
+  const dataToUpdate = Object.fromEntries(
+    Object.entries(rawData).filter(([_, value]) => value !== undefined)
+  )
+
   const result = await pool`
     UPDATE vehicles
-    SET
-      ${sql({
-        vin,
-        license_plate: licensePlate,
-        color,
-        mileage,
-        arrival_date: arrivalDate,
-        purchase_price: purchasePrice,
-        suggested_price: suggestedPrice,
-        stock_status: stockStatus,
-        rate_condition: rateCondition,
-        rate_description: rateDescription,
-        trim_id: trimId,
-        supplier_id: supplierId,
-        updated_at: updatedAt,
-      })}
-    WHERE
-      id = ${id} RETURNING *
+    SET ${sql(dataToUpdate)}
+    WHERE id = ${id}
+    RETURNING *
   `
+
   return result[0]
 }
-
 export const findVehiclesStockSummary = async () => {
   const result = await pool`
     SELECT 

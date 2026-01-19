@@ -72,11 +72,11 @@ export const updateSupplierService = async (
     }
     supplierToUpdate.name = name
   }
-const cleanFields = Object.fromEntries(
-  Object.entries(restOfFields).filter(([value]) => value !== undefined)
-);
+  const cleanFields = Object.fromEntries(
+    Object.entries(restOfFields).filter(([value]) => value !== undefined)
+  )
 
-Object.assign(supplierToUpdate, cleanFields);
+  Object.assign(supplierToUpdate, cleanFields)
   supplierToUpdate.updatedAt = new Date().toISOString()
 
   const updatedSupplier = await updateSupplier(id, supplierToUpdate)
@@ -87,10 +87,10 @@ export const deleteSupplierService = async (id: number) => {
   const existingSupplier = await findSupplierById(id)
   if (!existingSupplier) throw new Error('NOT_FOUND')
 
-    const notHaveVehicles = await isSupplierNoVehicles(id)
-    if (!notHaveVehicles) {
-      throw new Error('SUPPLIER_NOT_EMPTY')
-    }
+  const notHaveVehicles = await isSupplierNoVehicles(id)
+  if (!notHaveVehicles) {
+    throw new Error('SUPPLIER_NOT_EMPTY')
+  }
 
   await deleteSupplier(id)
 }
