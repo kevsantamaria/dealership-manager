@@ -11,7 +11,7 @@ interface Props {
 }
 
 function SupplierCard({ supplier }: Props) {
-  const { id, name, country, contact, type } = supplier
+  const { id, name, country, contact, type, numberOfVehicles } = supplier
   const { deleteSupplierById } = useSuppliers()
   const { mutate, isPending } = deleteSupplierById
 
@@ -46,7 +46,7 @@ function SupplierCard({ supplier }: Props) {
               size="sm"
               className="gap-2 text-destructive hover:text-primary-foreground hover:bg-destructive"
               onClick={() => setOpenDelete(true)}
-              disabled={isPending}
+              disabled={numberOfVehicles > 0 || isPending}
             >
               {isPending ? (
                 <IconLoader2 className="animate-spin h-4 w-4" />
@@ -68,6 +68,14 @@ function SupplierCard({ supplier }: Props) {
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">Tipo:</span>
             <span className="font-medium">{type}</span>
+          </div>
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">
+              Cantidad de vehículos:
+            </span>
+            <span className="text-2xl font-bold text-primary">
+              {numberOfVehicles}
+            </span>
           </div>
         </CardContent>
       </Card>

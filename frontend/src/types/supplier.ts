@@ -4,6 +4,7 @@ export type Supplier = {
   contact: string
   type: string
   country: string
+  numberOfVehicles: number
   created_at: string
   updated_at: string
 }

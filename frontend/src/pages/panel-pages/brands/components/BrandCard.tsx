@@ -16,8 +16,6 @@ function BrandCard({ brand }: Props) {
   const { deleteBrandById } = useBrands()
   const { mutate, isPending } = deleteBrandById
 
-  console.log(numberOfVehicles)
-
   const [openDelete, setOpenDelete] = useState(false)
   const handleDelete = () => {
     if (!id) return

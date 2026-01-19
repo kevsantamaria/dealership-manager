@@ -23,7 +23,9 @@ function VehiclesInStock({ data }: Props) {
                 <h3 className="text-sm font-medium text-muted-foreground">
                   {stat.label}
                 </h3>
-                <div className={`rounded-full flex gap-4 items-center justify-between bg-muted p-3 ${stat.color}`}>
+                <div
+                  className={`rounded-full flex gap-4 items-center justify-between bg-muted p-3 ${stat.color}`}
+                >
                   <Icon className="h-5 w-5" />
                   <p className="text-2xl font-bold">{stat.value}</p>
                 </div>

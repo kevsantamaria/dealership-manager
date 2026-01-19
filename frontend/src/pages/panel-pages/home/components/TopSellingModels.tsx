@@ -33,8 +33,8 @@ function TopSellingModels({ data }: TopSellingModelsProps) {
                   ${item.revenue.toLocaleString()}
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  {item.unitsSold} {item.unitsSold === 1 ? 'unidad' : 'unidades'}{' '}
-                  vendidas
+                  {item.unitsSold}{' '}
+                  {item.unitsSold === 1 ? 'unidad' : 'unidades'} vendidas
                 </div>
               </div>
             </div>

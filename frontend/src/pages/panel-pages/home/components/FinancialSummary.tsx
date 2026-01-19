@@ -30,7 +30,7 @@ function FinancialCard({
   }).format(value)
 
   return (
-    <Card className='h-fit'>
+    <Card className="h-fit">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 mb-2">
           <div className={`rounded-full bg-muted p-2 ${color}`}>

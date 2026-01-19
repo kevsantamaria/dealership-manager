@@ -11,7 +11,7 @@ export const colors = [
   'aqua',
   'chartreuse',
   'crimson',
-  'pink'
+  'pink',
 ] as const
 
 export type Colors = (typeof colors)[number]
@@ -28,7 +28,7 @@ export const mappedColors: { [key in Colors]: string } = {
   aqua: 'Aqua',
   chartreuse: 'Chartreuse',
   crimson: 'Crimson',
-  pink: 'Rosa'
+  pink: 'Rosa',
 }
 
 export const stockStatusValues = ['in_stock', 'reserved', 'sold'] as const
