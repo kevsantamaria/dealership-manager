@@ -6,8 +6,8 @@ import type { Supplier } from '@/models/entities/supplier'
 import {
   createSupplier,
   deleteSupplier,
-  findAllSuppliers,
   findAllSuppliersWithNameAndId,
+  findAllSuppliersWithVehicles,
   findSupplierById,
   findSupplierByName,
   isSupplierNoVehicles,
@@ -32,7 +32,7 @@ export const createSupplierService = async (supplier: CreateSupplierDTO) => {
 }
 
 export const getAllSuppliersService = async () => {
-  const suppliers: Supplier[] = await findAllSuppliers()
+  const suppliers: Supplier[] = await findAllSuppliersWithVehicles()
   return suppliers
 }
 
