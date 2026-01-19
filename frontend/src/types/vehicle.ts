@@ -83,3 +83,5 @@ export type VehicleDetails = {
   createdAt: string
   updatedAt: string
 }
+
+export type UpdateVehiclePayload = Partial<Omit<CreateVehiclePayload, 'brand' | 'model'>>

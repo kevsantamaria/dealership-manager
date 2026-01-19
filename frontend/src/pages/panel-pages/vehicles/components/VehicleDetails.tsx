@@ -34,6 +34,7 @@ function VehicleDetails() {
   const navigate = useNavigate()
 
   const [openDelete, setOpenDelete] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false)
   const handleDelete = () => {
     if (!id) return
 
@@ -43,6 +44,10 @@ function VehicleDetails() {
         navigate('/dashboard/vehicles', { replace: true })
       },
     })
+  }
+
+  const handleEdit = () => {
+    
   }
 
   const formatDate = (dateString: string) => {
@@ -100,6 +105,7 @@ function VehicleDetails() {
                 variant="outline"
                 size="sm"
                 className="gap-2 bg-transparent"
+                onClick={() => set}
               >
                 <IconEdit className="h-4 w-4" />
                 Editar
