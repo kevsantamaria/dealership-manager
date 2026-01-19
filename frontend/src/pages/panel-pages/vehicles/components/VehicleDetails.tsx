@@ -1,4 +1,5 @@
 import DeleteModal from '@/components/modal/DeleteModal'
+import EditVehicleDialog from '@/components/modal/EditModal'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -11,7 +12,6 @@ import {
   IconBuilding,
   IconCalendar,
   IconCar4wd,
-  IconEdit,
   IconEngine,
   IconFileText,
   IconGasStation,
@@ -30,23 +30,19 @@ function VehicleDetails() {
   const { id } = useParams()
   const { getVehicleById, deleteVehicleById } = useVehicles(Number(id))
   const { isLoading, isError, data } = getVehicleById
-  const { mutate, isPending } = deleteVehicleById
   const navigate = useNavigate()
 
   const [openDelete, setOpenDelete] = useState(false)
-  const [openEdit, setOpenEdit] = useState(false)
   const handleDelete = () => {
     if (!id) return
 
-    mutate(Number(id), {
+    deleteVehicleById.mutate(Number(id), {
       onSuccess: () => {
         setOpenDelete(false)
         navigate('/dashboard/vehicles', { replace: true })
       },
     })
   }
-
-  const handleEdit = () => {}
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('es-ES', {
@@ -74,7 +70,7 @@ function VehicleDetails() {
       {/* Delete Dialog */}
       <DeleteModal
         open={openDelete}
-        loading={isPending}
+        loading={deleteVehicleById.isPending}
         title="¿Eliminar vehículo?"
         description="Esta acción no se puede deshacer. El vehículo será eliminado permanentemente del sistema."
         onCancel={() => setOpenDelete(false)}
@@ -99,24 +95,32 @@ function VehicleDetails() {
               </Link>
             </Button>
             <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-2 bg-transparent"
-                onClick={() => set}
-              >
-                <IconEdit className="h-4 w-4" />
-                Editar
-              </Button>
+              <EditVehicleDialog
+                vehicleId={Number(id)}
+                vehicle={{
+                  vin: vehicle.vin,
+                  licensePlate: vehicle.licensePlate,
+                  color: vehicle.color,
+                  mileage: Number(vehicle.mileage),
+                  arrivalDate: vehicle.arrivalDate,
+                  purchasePrice: Number(vehicle.purchasePrice),
+                  suggestedPrice: Number(vehicle.suggestedPrice),
+                  rateCondition: vehicle.rateCondition,
+                  stockStatus: vehicle.stockStatus,
+                  rateDescription: vehicle.rateDescription,
+                }}
+                suppliers={[]}
+                trims={[]}
+              />
               <Button
                 variant="destructive"
                 size="sm"
                 className="gap-2"
                 onClick={() => setOpenDelete(true)}
-                disabled={isPending}
+                disabled={deleteVehicleById.isPending}
               >
                 <IconTrash className="h-4 w-4" />
-                {isPending ? 'Eliminando...' : 'Eliminar'}
+                {deleteVehicleById.isPending ? 'Eliminando...' : 'Eliminar'}
               </Button>
             </div>
           </div>

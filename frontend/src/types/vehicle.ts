@@ -84,6 +84,17 @@ export type VehicleDetails = {
   updatedAt: string
 }
 
-export type UpdateVehiclePayload = Partial<
-  Omit<CreateVehiclePayload, 'brand' | 'model'>
->
+export type UpdateVehiclePayload = {
+  vin?: string
+  licensePlate?: string
+  arrivalDate?: string
+  stockStatus?: string
+  rateCondition?: string
+  rateDescription?: string
+  mileage?: number
+  color?: string
+  purchasePrice?: number
+  suggestedPrice?: number
+  supplierId?: number
+  trimId?: number
+}

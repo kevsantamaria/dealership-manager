@@ -1,8 +1,11 @@
-import { CalendarIcon, Pencil } from "lucide-react"
-import { format } from "date-fns"
-import { es } from "date-fns/locale"
+import { IconCalendar, IconLoader2, IconPencil } from '@tabler/icons-react'
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale'
+import { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
 import {
   Dialog,
   DialogContent,
@@ -11,84 +14,68 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
-import { cn } from "@/lib/utils"
-import type { UpdateVehiclePayload } from "@/types/vehicle"
-import { useEffect, useState } from "react"
-import { Field, FieldGroup } from "../ui/field"
+  mappedColors,
+  mappedConditions,
+  mappedStockStatusValues,
+} from '@/enums/vehicleFormEnums'
+import { useVehicles } from '@/hooks/useVehicles'
+import { cn } from '@/lib/utils'
+import type { UpdateVehiclePayload } from '@/types/vehicle'
+import { Field, FieldGroup } from '../ui/field'
 
 interface Props {
+  vehicleId: number
   vehicle: UpdateVehiclePayload
-  onSave: (vehicle: UpdateVehiclePayload) => void
   suppliers: { id: string; name: string }[]
   trims: { id: string; name: string }[]
 }
 
-
-export function AlertEditVehicleDialog({
-  vehicle,
-  onSave,
-  suppliers,
-  trims,
-}: Props) {
+function EditVehicleDialog({ vehicleId, vehicle }: Props) {
   const [open, setOpen] = useState(false)
-  const [formData, setFormData] = useState<UpdateVehiclePayload>(vehicle)
+  const { updateVehicleById } = useVehicles()
+  const { mutateAsync, isPending } = updateVehicleById
+
+  const { register, handleSubmit, control, reset } =
+    useForm<UpdateVehiclePayload>({
+      defaultValues: vehicle,
+    })
 
   useEffect(() => {
-    setFormData(vehicle)
-  }, [vehicle])
+    if (open) reset(vehicle)
+  }, [open, vehicle, reset])
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value, type } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "number" ? parseFloat(value) || 0 : value,
-    }))
-  }
-
-  const handleSelectChange = (name: keyof VehicleData, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
-
-  const handleDateChange = (date: Date | undefined) => {
-    setFormData((prev) => ({
-      ...prev,
-      arrivalDate: date || null,
-    }))
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    onSave(formData)
-    setOpen(false)
+  const onSubmit = async (data: UpdateVehiclePayload) => {
+    try {
+      console.log(data)
+      await mutateAsync({ id: vehicleId, vehicle: data })
+      setOpen(false)
+    } catch (err) {
+      console.error('Error al actualizar:', err)
+    }
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
-          <Pencil className="mr-2 size-4" />
+          <IconPencil className="mr-2 size-4" />
           Editar
         </Button>
       </DialogTrigger>
@@ -96,234 +83,165 @@ export function AlertEditVehicleDialog({
         <DialogHeader>
           <DialogTitle>Editar Vehículo</DialogTitle>
           <DialogDescription>
-            Modifica la información del vehículo. Haz clic en guardar cuando termines.
+            Modifica la información del vehículo.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <FieldGroup>
-            <FieldGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field className="space-y-2">
-                <Label htmlFor="vin">VIN</Label>
-                <Input
-                  id="vin"
-                  name="vin"
-                  value={formData.vin}
-                  onChange={handleInputChange}
-                  placeholder="1HGBH41JXMN109186"
-                />
-              </Field>
-              <Field className="space-y-2">
-                <Label htmlFor="licensePlate">Placa</Label>
-                <Input
-                  id="licensePlate"
-                  name="licensePlate"
-                  value={formData.licensePlate}
-                  onChange={handleInputChange}
-                  placeholder="ABC-123"
-                />
-              </Field>
-            </FieldGroup>
 
-            <FieldGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field className="space-y-2">
-                <Label htmlFor="color">Color</Label>
-                <Input
-                  id="color"
-                  name="color"
-                  value={formData.color}
-                  onChange={handleInputChange}
-                  placeholder="Negro"
-                />
-              </Field>
-              <Field className="space-y-2">
-                <Label htmlFor="mileage">Kilometraje</Label>
-                <Input
-                  id="mileage"
-                  name="mileage"
-                  type="number"
-                  value={formData.mileage}
-                  onChange={handleInputChange}
-                  placeholder="50000"
-                />
-              </Field>
-            </FieldGroup>
-            {/* Fecha de Llegada */}
-            <Field className="space-y-2">
-              <Label>Fecha de Llegada</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !formData.arrivalDate && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 size-4" />
-                    {formData.arrivalDate ? (
-                      format(formData.arrivalDate, "PPP", { locale: es })
-                    ) : (
-                      <span>Seleccionar fecha</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={formData.arrivalDate || undefined}
-                    onSelect={handleDateChange}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <FieldGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Field>
+              <Label>VIN</Label>
+              <Input {...register('vin')} placeholder="VIN de 17 caracteres" />
             </Field>
+            <Field>
+              <Label>Matrícula</Label>
+              <Input {...register('licensePlate')} placeholder="ABC-123" />
+            </Field>
+          </FieldGroup>
 
-            {/* Precios */}
-            <FieldGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field className="space-y-2">
-                <Label htmlFor="purchasePrice">Precio de Compra</Label>
-                <Input
-                  id="purchasePrice"
-                  name="purchasePrice"
-                  type="number"
-                  value={formData.purchasePrice}
-                  onChange={handleInputChange}
-                  placeholder="25000"
-                />
-              </Field>
-              <Field className="space-y-2">
-                <Label htmlFor="suggestedPrice">Precio Sugerido</Label>
-                <Input
-                  id="suggestedPrice"
-                  name="suggestedPrice"
-                  type="number"
-                  value={formData.suggestedPrice}
-                  onChange={handleInputChange}
-                  placeholder="30000"
-                />
-              </Field>
-            </FieldGroup>
-
-            {/* Condición */}
-            <FieldGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field className="space-y-2">
-                <Label htmlFor="rateCondition">Condición</Label>
-                <Select
-                  value={formData.rateCondition}
-                  onValueChange={(value) =>
-                    handleSelectChange("rateCondition", value)
-                  }
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Seleccionar condición" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {conditionOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </Field>
-              <Field className="space-y-2">
-                <Label htmlFor="stockStatus">Estado de Stock</Label>
-                <Select
-                  value={formData.stockStatus}
-                  onValueChange={(value) =>
-                    handleSelectChange("stockStatus", value)
-                  }
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Seleccionar estado" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {stockStatusOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </Field>
-            </FieldGroup>
-
-            {/* Descripción de Condición */}
-            <Field className="space-y-2">
-              <Label htmlFor="rateDescription">Descripción de Condición</Label>
-              <Textarea
-                id="rateDescription"
-                name="rateDescription"
-                value={formData.rateDescription}
-                onChange={handleInputChange}
-                placeholder="Describe el estado actual del vehículo..."
-                rows={3}
+          <FieldGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Field>
+              <Label>Color</Label>
+              <Controller
+                control={control}
+                name="color"
+                render={({ field }) => (
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(mappedColors).map(([k, v]) => (
+                        <SelectItem key={k} value={k}>
+                          {v}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
               />
             </Field>
+            <Field>
+              <Label>Kilometraje</Label>
+              <Input
+                type="number"
+                {...register('mileage', { valueAsNumber: true })}
+              />
+            </Field>
+          </FieldGroup>
 
-            {/* Proveedor y Trim */}
-            <FieldGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field className="space-y-2">
-                <Label htmlFor="supplierId">Proveedor</Label>
-                {suppliers.length > 0 ? (
+          <Field>
+            <Label>Fecha de Llegada</Label>
+            <Controller
+              control={control}
+              name="arrivalDate"
+              render={({ field }) => (
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        'w-full justify-start text-left font-normal',
+                        !field.value && 'text-muted-foreground'
+                      )}
+                    >
+                      <IconCalendar className="mr-2 size-4" />
+                      {field.value ? (
+                        format(new Date(field.value), 'PPP', { locale: es })
+                      ) : (
+                        <span>Seleccionar fecha</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={field.value ? new Date(field.value) : undefined}
+                      onSelect={(date) => field.onChange(date?.toISOString())}
+                    />
+                  </PopoverContent>
+                </Popover>
+              )}
+            />
+          </Field>
+
+          <FieldGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Field>
+              <Label>Precio de Compra</Label>
+              <Input
+                type="number"
+                {...register('purchasePrice', { valueAsNumber: true })}
+              />
+            </Field>
+            <Field>
+              <Label>Precio Sugerido</Label>
+              <Input
+                type="number"
+                {...register('suggestedPrice', { valueAsNumber: true })}
+              />
+            </Field>
+          </FieldGroup>
+
+          <FieldGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Field>
+              <Label>Condición</Label>
+              <Controller
+                control={control}
+                name="rateCondition"
+                render={({ field }) => (
                   <Select
-                    value={formData.supplierId}
-                    onValueChange={(value) =>
-                      handleSelectChange("supplierId", value)
-                    }
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
                   >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Seleccionar proveedor" />
+                    <SelectTrigger>
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {suppliers.map((supplier) => (
-                        <SelectItem key={supplier.id} value={supplier.id}>
-                          {supplier.name}
+                      {Object.entries(mappedConditions).map(([k, v]) => (
+                        <SelectItem key={k} value={k}>
+                          {v}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                ) : (
-                  <Input
-                    id="supplierId"
-                    name="supplierId"
-                    value={formData.supplierId}
-                    onChange={handleInputChange}
-                    placeholder="ID del proveedor"
-                  />
                 )}
-              </Field>
-              <Field className="space-y-2">
-                <Label htmlFor="trimId">Versión (Trim)</Label>
-                {trims.length > 0 ? (
+              />
+            </Field>
+            <Field>
+              <Label>Estado de Stock</Label>
+              <Controller
+                control={control}
+                name="stockStatus"
+                render={({ field }) => (
                   <Select
-                    value={formData.trimId}
-                    onValueChange={(value) =>
-                      handleSelectChange("trimId", value)
-                    }
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
                   >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Seleccionar versión" />
+                    <SelectTrigger>
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {trims.map((trim) => (
-                        <SelectItem key={trim.id} value={trim.id}>
-                          {trim.name}
-                        </SelectItem>
-                      ))}
+                      {Object.entries(mappedStockStatusValues).map(
+                        ([key, value]) => (
+                          <SelectItem key={key} value={key}>
+                            {value}
+                          </SelectItem>
+                        )
+                      )}
                     </SelectContent>
                   </Select>
-                ) : (
-                  <Input
-                    id="trimId"
-                    name="trimId"
-                    value={formData.trimId}
-                    onChange={handleInputChange}
-                    placeholder="ID de la versión"
-                  />
                 )}
-              </Field>
-            </FieldGroup>
+              />
+            </Field>
+          </FieldGroup>
+
+          <Field>
+            <Label>Descripción</Label>
+            <Textarea {...register('rateDescription')} rows={3} />
+          </Field>
 
           <DialogFooter>
             <Button
@@ -333,10 +251,17 @@ export function AlertEditVehicleDialog({
             >
               Cancelar
             </Button>
-            <Button type="submit">Guardar cambios</Button>
+            <Button type="submit" disabled={isPending}>
+              {isPending && (
+                <IconLoader2 className="mr@tabler/icons-react-4 animate-spin" />
+              )}
+              Guardar cambios
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
   )
 }
+
+export default EditVehicleDialog
