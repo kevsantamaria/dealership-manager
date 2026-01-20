@@ -5,22 +5,22 @@ import { HTTP_STATUS, HTTP_STATUS_MESSAGE } from '@/constants/httpStatus'
 import { env } from 'bun'
 
 export const login = async (req: Request, res: Response) => {
-    const user: LoginUser = req.body
+  const user: LoginUser = req.body
 
-    const { user: loggedUser, sessionId } = await loginService(user)
+  const { user: loggedUser, sessionId } = await loginService(user)
 
-    res.cookie('session_id', sessionId, {
-      httpOnly: true,
-      secure: env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 1000 * 60 * 60 * 24,
-    })
+  res.cookie('session_id', sessionId, {
+    httpOnly: true,
+    secure: env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 1000 * 60 * 60 * 24,
+  })
 
-    res.status(HTTP_STATUS.OK).json({
-      message: HTTP_STATUS_MESSAGE.OK,
-      data: loggedUser,
-    })
+  res.status(HTTP_STATUS.OK).json({
+    message: HTTP_STATUS_MESSAGE.OK,
+    data: loggedUser,
+  })
 }
 
 export const me = (req: Request, res: Response) => {

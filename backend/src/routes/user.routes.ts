@@ -14,16 +14,35 @@ import { Router } from 'express'
 
 const router = Router()
 
-router.post('/users', authenticate, requireAdmin,  dtoValidator(createUserDTO, 'body'), createUser)
+router.post(
+  '/users',
+  authenticate,
+  requireAdmin,
+  dtoValidator(createUserDTO, 'body'),
+  createUser
+)
 router.get('/users', authenticate, requireAdmin, getAllUsers)
-router.get('/users/:id', authenticate, requireAdmin, dtoValidator(idParamDTO, 'params'), getUserById)
+router.get(
+  '/users/:id',
+  authenticate,
+  requireAdmin,
+  dtoValidator(idParamDTO, 'params'),
+  getUserById
+)
 router.patch(
   '/users/:id',
-  authenticate, requireAdmin,
+  authenticate,
+  requireAdmin,
   dtoValidator(updateUserDTO, 'body'),
   dtoValidator(idParamDTO, 'params'),
   updateUser
 )
-router.delete('/users/:id', authenticate, requireAdmin, dtoValidator(idParamDTO, 'params'), deleteUser)
+router.delete(
+  '/users/:id',
+  authenticate,
+  requireAdmin,
+  dtoValidator(idParamDTO, 'params'),
+  deleteUser
+)
 
 export default router
