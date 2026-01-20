@@ -1,6 +1,8 @@
-import { fetchLogin, fetchLogout } from '@/api/endpoints/login'
+import { fetchLogin, fetchLogout, fetchMe } from '@/api/endpoints/login'
 import { useLoginStore } from '@/store/loginStore'
-import { useMutation } from '@tanstack/react-query'
+import type { User } from '@/types/user'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export const useLogin = () => {
@@ -9,7 +11,6 @@ export const useLogin = () => {
   const loginStore = useLoginStore((state) => state.loginStore)
   const logoutStore = useLoginStore((state) => state.logoutStore)
   const setUser = useLoginStore((state) => state.setUser)
-  const setUserRole = useLoginStore((state) => state.setUserRole)
 
   // Login
   const login = useMutation({
@@ -22,11 +23,14 @@ export const useLogin = () => {
     }) => {
       return fetchLogin(username, password)
     },
-    onSuccess: (user, variables) => {
+    onSuccess: (user: User) => {
       loginStore()
-      setUserRole(user.data.role)
-      setUser(variables.username)
-      navigate('/dashboard')
+      setUser(user)
+  if (user.role === 'admin') {
+    navigate('/admin-user');
+  } else {
+    navigate('/dashboard');
+  }
     },
   })
 
@@ -41,5 +45,19 @@ export const useLogin = () => {
       }
     },
   })
-  return { login, logout }
+
+  const me = useQuery({
+    queryKey: ['me'],
+    queryFn: fetchMe,
+   retry: false,
+    refetchOnWindowFocus: false,
+  })
+
+useEffect(() => {
+    if (me.data) {
+      setUser(me.data.data)
+    }
+  }, [me.data, setUser])
+
+  return { login, logout, me }
 }

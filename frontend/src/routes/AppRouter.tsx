@@ -1,3 +1,4 @@
+import AdminPage from '@/pages/admin-pages/AdminPage'
 import LoginPage from '@/pages/LoginPage'
 import NotFound from '@/pages/NotFound'
 import AddSupplier from '@/pages/panel-pages/add-supplier/AddSupplier'
@@ -9,6 +10,7 @@ import VehicleDetails from '@/pages/panel-pages/vehicles/components/VehicleDetai
 import Vehicles from '@/pages/panel-pages/vehicles/Vehicles'
 import PanelContainer from '@/pages/PanelContainer'
 import { Route, Routes } from 'react-router-dom'
+import { ProtectedRoute } from '@/routes/ProtectedRoute'
 
 function AppRouter() {
   return (
@@ -24,6 +26,11 @@ function AppRouter() {
       </Route>
 
       <Route path="vehicles/:id" element={<VehicleDetails />} />
+
+<Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+          <Route path="/admin-user" element={<AdminPage />} />
+          <Route path="users" element={<div>Lista de usuarios</div>} />
+        </Route>
 
       <Route path="/dashboard/*" element={<NotFound />} />
       <Route path="*" element={<LoginPage />} />

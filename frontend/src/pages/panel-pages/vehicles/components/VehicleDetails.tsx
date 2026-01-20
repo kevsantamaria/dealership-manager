@@ -63,7 +63,7 @@ function VehicleDetails() {
   if (isLoading) return <div>Cargando vehiculo...</div>
   if (!data) return <Navigate to="/dashboard/*" replace />
   if (isError) return <div>Error al cargar vehiculo</div>
-  const vehicle: VehicleDetails = data
+  const vehicle: VehicleDetailsType = data
 
   return (
     <>

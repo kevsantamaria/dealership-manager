@@ -1,14 +1,13 @@
+import type { User } from '@/types/user'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
 interface LoginState {
   isAuthenticated: boolean
-  user: string | null
-  userRole: string | null
+  user: User | null
   loginStore: () => void
   logoutStore: () => void
-  setUser: (user: string) => void
-  setUserRole: (role: string) => void
+  setUser: (user: User) => void
 }
 
 export const useLoginStore = create(
@@ -18,9 +17,8 @@ export const useLoginStore = create(
       user: null,
       userRole: null,
       loginStore: () => set({ isAuthenticated: true }),
-      logoutStore: () => set({ isAuthenticated: false, user: null, userRole: null }),
+      logoutStore: () => set({ isAuthenticated: false, user: null }),
       setUser: (user) => set({ user }),
-      setUserRole: (userRole) => set({userRole})
     }),
     {
       name: 'auth',
