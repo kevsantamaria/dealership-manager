@@ -3,8 +3,12 @@ import {
   deleteSupplier,
   fetchSuppliers,
   fetchSuppliersWithNameAndId,
+  updateSupplier,
 } from '@/api/endpoints/suppliers'
-import type { CreateSupplierPayload } from '@/types/supplier'
+import type {
+  CreateSupplierPayload,
+  UpdateSupplierPayload,
+} from '@/types/supplier'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useSuppliers = () => {
@@ -26,6 +30,24 @@ export const useSuppliers = () => {
     },
   })
 
+  const updateSupplierById = useMutation({
+      mutationFn: ({
+        id,
+        supplier,
+      }: {
+        id: number
+        supplier: UpdateSupplierPayload
+      }) => {
+        return updateSupplier(id, supplier)
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['suppliers'] })
+      },
+      onError: (error) => {
+        console.error('Error updating supplier:', error)
+      },
+    })
+
   const deleteSupplierById = useMutation({
     mutationFn: (id: number) => {
       return deleteSupplier(id)
@@ -42,6 +64,7 @@ export const useSuppliers = () => {
     getSuppliers,
     getSuppliersWithNameAndId,
     postSupplier,
+    updateSupplierById,
     deleteSupplierById,
   }
 }
