@@ -164,7 +164,7 @@ export const updateVehicle = async (id: number, vehicle: UpdateVehicle) => {
   }
 
   const dataToUpdate = Object.fromEntries(
-    Object.entries(rawData).filter(([_, value]) => value !== undefined)
+    Object.entries(rawData).filter(([value]) => value !== undefined)
   )
 
   const result = await pool`

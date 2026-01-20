@@ -1,13 +1,14 @@
 import { ErrorHandler } from '@/middlewares/errorHandler.middleware'
 import user from '@/routes/user.routes'
 import supplier from '@/routes/supplier.routes'
-import login from '@/routes/login.routes'
+import login from '@/routes/auth.routes'
 import vehicle from '@/routes/vehicle.routes'
 import brand from '@/routes/brand.routes'
 import dashboard from '@/routes/dashboard.routes'
 import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 const app = express()
 const PORT = 3000
@@ -22,6 +23,7 @@ app.use(
 
 app.use(morgan('dev'))
 app.use(express.json())
+app.use(cookieParser())
 
 app.use(user)
 app.use(login)
