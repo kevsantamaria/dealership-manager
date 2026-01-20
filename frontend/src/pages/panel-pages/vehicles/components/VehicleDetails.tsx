@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { useVehicles } from '@/hooks/useVehicles'
 import { cn } from '@/lib/utils'
-import type { VehicleDetails } from '@/types/vehicle'
+import type { VehicleDetailsType } from '@/types/vehicle'
 import {
   IconArrowLeft,
   IconAutomaticGearbox,

@@ -44,7 +44,7 @@ export type CreateVehiclePayload = {
   image?: string
 }
 
-export type VehicleDetails = {
+export type VehicleDetailsType = {
   vehicleId: number
 
   vin: string

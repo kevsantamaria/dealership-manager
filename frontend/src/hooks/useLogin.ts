@@ -9,6 +9,7 @@ export const useLogin = () => {
   const loginStore = useLoginStore((state) => state.loginStore)
   const logoutStore = useLoginStore((state) => state.logoutStore)
   const setUser = useLoginStore((state) => state.setUser)
+  const setUserRole = useLoginStore((state) => state.setUserRole)
 
   // Login
   const login = useMutation({
@@ -21,8 +22,9 @@ export const useLogin = () => {
     }) => {
       return fetchLogin(username, password)
     },
-    onSuccess: (_, variables) => {
+    onSuccess: (user, variables) => {
       loginStore()
+      setUserRole(user.data.role)
       setUser(variables.username)
       navigate('/dashboard')
     },

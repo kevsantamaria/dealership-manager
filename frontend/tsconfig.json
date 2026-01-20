@@ -1,4 +1,5 @@
 {
+  "typeRoots": ["./src/types", "./node_modules/@types"],
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
