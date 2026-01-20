@@ -1,4 +1,5 @@
 import DeleteModal from '@/components/modal/DeleteModal'
+import EditSupplierDialog from '@/components/modal/EditSupplierDialog'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useSuppliers } from '@/hooks/useSuppliers'
@@ -41,6 +42,7 @@ function SupplierCard({ supplier }: Props) {
         <CardHeader>
           <div className="flex items-start justify-between">
             <CardTitle className="text-2xl font-bold">{name}</CardTitle>
+            <EditSupplierDialog supplierId={id} supplier={supplier}/>
             <Button
               variant="ghost"
               size="sm"

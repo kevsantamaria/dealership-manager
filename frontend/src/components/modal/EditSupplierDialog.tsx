@@ -56,17 +56,16 @@ function EditSupplierDialog({ supplierId, supplier }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
-          <IconPencil className="mr-2 size-4" />
-          Editar
+          <IconPencil className="size-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl" >
         <DialogHeader>Editar Proveedor</DialogHeader>
         <DialogDescription>
           Modifica la información del proveedor.
         </DialogDescription>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FieldGroup>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <FieldGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field>
               <Label>Nombre</Label>
               <Input {...register('name')} placeholder="John Doe" />

@@ -109,8 +109,6 @@ function VehicleDetails() {
                   stockStatus: vehicle.stockStatus,
                   rateDescription: vehicle.rateDescription,
                 }}
-                suppliers={[]}
-                trims={[]}
               />
               <Button
                 variant="destructive"
