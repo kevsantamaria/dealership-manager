@@ -1,5 +1,5 @@
 import DeleteModal from '@/components/modal/DeleteModal'
-import EditVehicleDialog from '@/components/modal/EditModal'
+import EditVehicleDialog from '@/components/modal/EditVehicleDialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'

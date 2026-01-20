@@ -38,13 +38,13 @@ import {
 import { useVehicles } from '@/hooks/useVehicles'
 import { cn } from '@/lib/utils'
 import type { UpdateVehiclePayload } from '@/types/vehicle'
-import { Field, FieldGroup } from '../ui/field'
+import { Field, FieldGroup } from '@/components/ui/field'
 
 interface Props {
   vehicleId: number
   vehicle: UpdateVehiclePayload
-  suppliers: { id: string; name: string }[]
-  trims: { id: string; name: string }[]
+  // suppliers: { id: string; name: string }[]
+  // trims: { id: string; name: string }[]
 }
 
 function EditVehicleDialog({ vehicleId, vehicle }: Props) {
@@ -63,7 +63,6 @@ function EditVehicleDialog({ vehicleId, vehicle }: Props) {
 
   const onSubmit = async (data: UpdateVehiclePayload) => {
     try {
-      console.log(data)
       await mutateAsync({ id: vehicleId, vehicle: data })
       setOpen(false)
     } catch (err) {
