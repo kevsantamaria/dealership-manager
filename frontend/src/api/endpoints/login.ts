@@ -31,7 +31,7 @@ export const fetchLogout = async () => {
 
 export const fetchMe = async () => {
   return api
-  .get('/me')
-      .then((res) => res.data.data)
+    .get('/me')
+    .then((res) => res.data.data)
     .catch((error) => manageError(error))
 }

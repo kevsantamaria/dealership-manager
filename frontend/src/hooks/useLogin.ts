@@ -26,11 +26,11 @@ export const useLogin = () => {
     onSuccess: (user: User) => {
       loginStore()
       setUser(user)
-  if (user.role === 'admin') {
-    navigate('/admin-user');
-  } else {
-    navigate('/dashboard');
-  }
+      if (user.role === 'admin') {
+        navigate('/admin-user')
+      } else {
+        navigate('/dashboard')
+      }
     },
   })
 
@@ -49,11 +49,11 @@ export const useLogin = () => {
   const me = useQuery({
     queryKey: ['me'],
     queryFn: fetchMe,
-   retry: false,
+    retry: false,
     refetchOnWindowFocus: false,
   })
 
-useEffect(() => {
+  useEffect(() => {
     if (me.data) {
       setUser(me.data.data)
     }

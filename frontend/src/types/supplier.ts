@@ -20,3 +20,5 @@ export type CreateSupplierPayload = {
   type: string
   country: string
 }
+
+export type UpdateSupplierPayload = Partial<CreateSupplierPayload>

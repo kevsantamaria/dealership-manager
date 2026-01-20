@@ -1,5 +1,8 @@
 import api from '@/api/dealership'
-import type { CreateSupplierPayload } from '@/types/supplier'
+import type {
+  CreateSupplierPayload,
+  UpdateSupplierPayload,
+} from '@/types/supplier'
 import { manageError } from '../manageError'
 
 // Create supplier
@@ -33,6 +36,14 @@ export const fetchSuppliersWithNameAndId = async () => {
     .get('/suppliers/names-and-ids')
     .then((res) => res.data.data)
     .catch((error) => manageError(error))
+}
+
+// Update supplier
+export const updateSupplier = async (
+  id: number,
+  supplier: UpdateSupplierPayload
+) => {
+  return api.patch(`/suppliers/${id}`, supplier)
 }
 
 // Delete supplier

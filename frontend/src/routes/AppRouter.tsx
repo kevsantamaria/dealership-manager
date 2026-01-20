@@ -9,8 +9,8 @@ import Suppliers from '@/pages/panel-pages/suppliers/Suppliers'
 import VehicleDetails from '@/pages/panel-pages/vehicles/components/VehicleDetails'
 import Vehicles from '@/pages/panel-pages/vehicles/Vehicles'
 import PanelContainer from '@/pages/PanelContainer'
-import { Route, Routes } from 'react-router-dom'
 import { ProtectedRoute } from '@/routes/ProtectedRoute'
+import { Route, Routes } from 'react-router-dom'
 
 function AppRouter() {
   return (
@@ -27,10 +27,10 @@ function AppRouter() {
 
       <Route path="vehicles/:id" element={<VehicleDetails />} />
 
-<Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-          <Route path="/admin-user" element={<AdminPage />} />
-          <Route path="users" element={<div>Lista de usuarios</div>} />
-        </Route>
+      <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+        <Route path="/admin-user" element={<AdminPage />} />
+        <Route path="users" element={<div>Lista de usuarios</div>} />
+      </Route>
 
       <Route path="/dashboard/*" element={<NotFound />} />
       <Route path="*" element={<LoginPage />} />

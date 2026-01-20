@@ -1,5 +1,5 @@
-import { Navigate, Outlet } from 'react-router-dom'
 import { useLoginStore } from '@/store/loginStore'
+import { Navigate, Outlet } from 'react-router-dom'
 
 interface Props {
   allowedRoles?: string[]
