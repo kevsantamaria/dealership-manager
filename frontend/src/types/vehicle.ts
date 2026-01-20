@@ -98,3 +98,5 @@ export type UpdateVehiclePayload = {
   supplierId?: number
   trimId?: number
 }
+
+export type StockFilter = 'all' | 'in_stock' | 'reserved' | 'sold'
