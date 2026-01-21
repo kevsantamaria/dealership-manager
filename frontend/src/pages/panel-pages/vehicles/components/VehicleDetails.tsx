@@ -337,6 +337,12 @@ function VehicleDetails() {
                       </p>
                     </div>
                   </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Descripción</p>
+                    <p className="font-semibold capitalize">
+                      {vehicle.rateDescription}
+                    </p>
+                  </div>
 
                   <div className="flex items-start gap-3">
                     <div className="p-2 bg-secondary rounded-lg">

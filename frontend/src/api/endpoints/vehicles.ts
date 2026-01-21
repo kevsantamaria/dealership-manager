@@ -10,7 +10,6 @@ export const fetchVehicles = async () => {
   return api
     .get('/vehicles')
     .then((res) => {
-      console.log(res.data)
       return res.data.data
     })
     .catch((error) => {
