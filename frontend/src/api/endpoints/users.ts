@@ -1,5 +1,5 @@
 import api from '@/api/dealership'
-import type { CreateUserPayload } from '@/types/user'
+import type { CreateUserPayload, UpdateUserPayload } from '@/types/user'
 import { manageError } from '../manageError'
 
 export const fetchUsers = async () => {
@@ -22,6 +22,13 @@ export const addUser = async (user: CreateUserPayload) => {
     .catch((error) => {
       manageError(error)
     })
+}
+
+export const updateUser = async (
+  id: number,
+  user: UpdateUserPayload
+) => {
+  return api.patch(`/users/${id}`, user)
 }
 
 export const deleteUser = async (id: number) => {
