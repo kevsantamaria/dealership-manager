@@ -40,7 +40,6 @@ function AddSupplierForm() {
 
   const onSubmit = handleSubmit(async (values) => {
     try {
-      console.log('SUBMIT VALUES', values)
       await mutateAsync(values)
       reset()
     } catch (err) {
