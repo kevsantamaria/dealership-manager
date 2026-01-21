@@ -20,7 +20,7 @@ export const createUser = async (user: NewUser) => {
 }
 
 export const findAllUsers = async () => {
-  return await pool`SELECT * FROM users`
+  return await pool`SELECT * FROM users ORDER BY id DESC`
 }
 
 export const findUserById = async (id: number) => {
