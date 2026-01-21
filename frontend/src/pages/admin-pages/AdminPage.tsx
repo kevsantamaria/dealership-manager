@@ -1,7 +1,6 @@
 import { HeaderBar } from '@/components/nav/HeaderBar'
 import UserForm from './components/UserForm'
 
-
 function AdminPage() {
   return (
     <>

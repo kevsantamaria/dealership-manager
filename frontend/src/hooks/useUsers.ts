@@ -1,12 +1,17 @@
-import { addUser } from '@/api/endpoints/users'
+import { addUser, fetchUsers } from '@/api/endpoints/users'
 import type { CreateUserPayload } from '@/types/user'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 export const useUsers = () => {
+  const getUsers = useQuery({
+    queryKey: ['users'],
+    queryFn: fetchUsers,
+  })
+
   const postUser = useMutation({
     mutationFn: (user: CreateUserPayload) => {
       return addUser(user)
     },
   })
-  return { postUser }
+  return { postUser, getUsers }
 }
