@@ -1,8 +1,10 @@
-import { addUser, fetchUsers } from '@/api/endpoints/users'
+import { addUser, deleteUser, fetchUsers } from '@/api/endpoints/users'
 import type { CreateUserPayload } from '@/types/user'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useUsers = () => {
+  const queryClient = useQueryClient()
+
   const getUsers = useQuery({
     queryKey: ['users'],
     queryFn: fetchUsers,
@@ -13,5 +15,16 @@ export const useUsers = () => {
       return addUser(user)
     },
   })
-  return { postUser, getUsers }
+  const deleteUserById = useMutation({
+    mutationFn: (id: number) => {
+      return deleteUser(id)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] })
+    },
+    onError: (error) => {
+      console.error('Error deleting user:', error)
+    },
+  })
+  return { postUser, getUsers, deleteUserById }
 }
