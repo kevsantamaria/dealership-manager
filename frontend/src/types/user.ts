@@ -9,3 +9,5 @@ export type CreateUserPayload = {
   password: string
   role: string
 }
+
+export type UpdateUserPayload = Partial<CreateUserPayload>
