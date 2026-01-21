@@ -45,17 +45,10 @@ export const updateUserService = async (id: number, user: UpdateUserDTO) => {
   const existingUser = await findUserById(id)
   if (!existingUser) throw new Error('NOT_FOUND')
 
-  if (Object.keys(user).length === 0) throw new Error('NO_FIELDS_TO_UPDATE')
-
-  const { username, password } = user
+  const { username, password, role } = user
   const userToUpdate: Partial<User> = {}
 
-  // validate username
-  if (typeof username !== 'undefined') {
-    if (username.trim() === '') {
-      throw new Error('NO_FIELDS_TO_UPDATE')
-    }
-
+  if (username !== undefined && username.trim() !== '') {
     const userWithSameUsername = await findUserByUsername(username)
     if (userWithSameUsername && userWithSameUsername.id !== id) {
       throw new Error('USERNAME_ALREADY_EXISTS')
@@ -63,18 +56,20 @@ export const updateUserService = async (id: number, user: UpdateUserDTO) => {
     userToUpdate.username = username
   }
 
-  // validate password
-  if (typeof password !== 'undefined') {
-    if (password.trim() === '') {
-      throw new Error('PASSWORD_CANNOT_BE_EMPTY')
-    }
+  if (role !== undefined) {
+    userToUpdate.role = role
+  }
 
+  if (password && password.trim() !== '') {
     const hashedPassword = await bcrypt.hash(password, 10)
     userToUpdate.password = hashedPassword
   }
 
-  userToUpdate.updatedAt = new Date().toISOString()
+  if (Object.keys(userToUpdate).length === 0) {
+    throw new Error('NO_FIELDS_TO_UPDATE')
+  }
 
+  userToUpdate.updatedAt = new Date().toISOString()
   const updatedUser = await updateUser(id, userToUpdate)
   return updatedUser[0]
 }
