@@ -115,9 +115,7 @@ function EditSupplierDialog({ supplierId, supplier }: Props) {
               Cancelar
             </Button>
             <Button type="submit" disabled={isPending}>
-              {isPending && (
-                <IconLoader2 className="mr@tabler/icons-react-4 animate-spin" />
-              )}
+              {isPending && <IconLoader2 className="mr-4 animate-spin" />}
               Guardar cambios
             </Button>
           </DialogFooter>

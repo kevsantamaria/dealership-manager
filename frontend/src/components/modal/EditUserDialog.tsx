@@ -101,7 +101,7 @@ function EditUserDialog({ userId, user }: EditUserDialogProps) {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="admin">Administrador</SelectItem>
-                      <SelectItem value="user">Usuario Estándar</SelectItem>
+                      <SelectItem value="user">Usuario</SelectItem>
                     </SelectContent>
                   </Select>
                 )}

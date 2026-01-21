@@ -28,6 +28,9 @@ export const useSuppliers = () => {
     mutationFn: (supplier: CreateSupplierPayload) => {
       return addSupplier(supplier)
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['suppliers'] })
+    },
   })
 
   const updateSupplierById = useMutation({

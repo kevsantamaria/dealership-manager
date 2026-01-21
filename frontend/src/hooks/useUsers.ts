@@ -19,6 +19,9 @@ export const useUsers = () => {
     mutationFn: (user: CreateUserPayload) => {
       return addUser(user)
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] })
+    },
   })
 
   const updateUserById = useMutation({
