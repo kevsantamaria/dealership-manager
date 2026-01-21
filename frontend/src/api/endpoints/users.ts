@@ -23,3 +23,15 @@ export const addUser = async (user: CreateUserPayload) => {
       manageError(error)
     })
 }
+
+export const deleteUser = async (id: number) => {
+  return api
+    .delete(`/users/${id}`)
+    .then((res) => {
+      console.log(res.status)
+      return res.status
+    })
+    .catch((error) => {
+      manageError(error)
+    })
+}
