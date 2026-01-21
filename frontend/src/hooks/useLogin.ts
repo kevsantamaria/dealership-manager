@@ -26,7 +26,7 @@ export const useLogin = () => {
     onSuccess: (user: User) => {
       setUser(user)
       loginStore()
-      if (user?.role === 'admin') {
+      if (user.role === 'admin') {
         navigate('/admin-user')
       } else {
         navigate('/dashboard')
