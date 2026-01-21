@@ -1,8 +1,8 @@
 import api from '@/api/dealership'
-import { manageError } from '../manageError'
 import type { CreateUserPayload } from '@/types/user'
+import { manageError } from '../manageError'
 
-export const addSupplier = async (user: CreateUserPayload) => {
+export const addUser = async (user: CreateUserPayload) => {
   return api
     .post('/users', user)
     .then((res) => {
