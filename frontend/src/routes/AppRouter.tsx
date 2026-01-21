@@ -10,12 +10,19 @@ import VehicleDetails from '@/pages/panel-pages/vehicles/components/VehicleDetai
 import Vehicles from '@/pages/panel-pages/vehicles/Vehicles'
 import PanelContainer from '@/pages/PanelContainer'
 import { ProtectedRoute } from '@/routes/ProtectedRoute'
+import { useLoginStore } from '@/store/loginStore'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
 function AppRouter() {
+  const isAuthenticated = useLoginStore((state) => state.isAuthenticated)
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/login"
+        element={
+          isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />
+        }
+      />
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<PanelContainer />}>
           <Route index element={<Home />} />
@@ -29,8 +36,7 @@ function AppRouter() {
         </Route>
 
         <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-          <Route path="/admin-user" element={<AdminPage />} />
-          <Route path="users" element={<div>Lista de usuarios</div>} />
+          <Route path="admin-user" element={<AdminPage />} />
         </Route>
       </Route>
       <Route path="/" element={<Navigate to="/dashboard" replace />} />

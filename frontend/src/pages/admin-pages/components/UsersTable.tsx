@@ -1,3 +1,4 @@
+import EditUserDialog from '@/components/modal/EditUserDialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -12,7 +13,6 @@ import {
 import { useUsers } from '@/hooks/useUsers'
 import type { User } from '@/types/user'
 import {
-  IconPencil,
   IconShieldCheck,
   IconTrash,
   IconUser as UserIcon,
@@ -24,10 +24,7 @@ import {
   type ColumnDef,
 } from '@tanstack/react-table'
 
-const columns = (
-  onEdit: (user: User) => void,
-  onDelete: (user: User) => void
-): ColumnDef<User>[] => [
+const columns = (onDelete: (user: User) => void): ColumnDef<User>[] => [
   {
     accessorKey: 'username',
     header: 'Usuario',
@@ -63,14 +60,7 @@ const columns = (
       const user = row.original
       return (
         <div className="flex justify-end gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onEdit(user)}
-            className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-          >
-            <IconPencil className="h-4 w-4" />
-          </Button>
+          <EditUserDialog userId={user.id} user={user} />
           <Button
             variant="ghost"
             size="icon"
@@ -89,18 +79,13 @@ function UsersTable() {
   const { getUsers, deleteUserById } = useUsers()
   const { data, isLoading } = getUsers
 
-  const handleEdit = (user: User) => {
-    console.log('Editando a:', user.username)
-    // Aquí abrirías tu modal de edición
-  }
-
   const handleDelete = (user: User) => {
     deleteUserById.mutateAsync(user.id)
   }
 
   const table = useReactTable({
     data,
-    columns: columns(handleEdit, handleDelete),
+    columns: columns(handleDelete),
     getCoreRowModel: getCoreRowModel(),
   })
 

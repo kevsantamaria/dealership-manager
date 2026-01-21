@@ -1,6 +1,6 @@
+import { IconLoader2, IconPencil } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { IconLoader2, IconPencil } from '@tabler/icons-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -32,24 +32,27 @@ interface EditUserDialogProps {
 
 function EditUserDialog({ userId, user }: EditUserDialogProps) {
   const [open, setOpen] = useState(false)
-  
-  // Asumiendo que tu hook useUsers tiene una mutación similar a la de proveedores
-  const {  } = useUsers()
+
+  const { updateUserById } = useUsers()
   const { mutateAsync, isPending } = updateUserById
 
-  const { control, reset, register, handleSubmit } = useForm<UserData>({
-    defaultValues: user,
-  })
+  const { control, reset, register, handleSubmit } = useForm<UpdateUserPayload>(
+    {
+      defaultValues: user,
+    }
+  )
 
-  // Resetear el formulario cada vez que se abre con los datos actuales del usuario
   useEffect(() => {
     if (open) reset(user)
   }, [open, user, reset])
 
-  const onSubmit = async (data: UserData) => {
+  const onSubmit = async (data: UpdateUserPayload) => {
     try {
-      // Ajusta los parámetros según cómo reciba tu API la actualización
-      await mutateAsync({ id: userId, userData: data })
+      const payload = {
+        username: data.username,
+        role: data.role,
+      }
+      await mutateAsync({ id: userId, user: payload })
       setOpen(false)
     } catch (err) {
       console.error('Error al actualizar usuario:', err)
@@ -58,8 +61,12 @@ function EditUserDialog({ userId, user }: EditUserDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {/* El botón que dispara el modal (el lápiz de la tabla) */}
-      <Button variant="ghost" size="icon" onClick={() => setOpen(true)} className="h-8 w-8 text-blue-600">
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => setOpen(true)}
+        className="h-8 w-8 text-primary"
+      >
         <IconPencil className="size-4" />
       </Button>
 
@@ -75,10 +82,10 @@ function EditUserDialog({ userId, user }: EditUserDialogProps) {
           <FieldGroup className="grid grid-cols-1 gap-4">
             <Field>
               <Label htmlFor="username">Nombre de Usuario</Label>
-              <Input 
+              <Input
                 id="username"
-                {...register('username', { required: true })} 
-                placeholder="Ej. admin_sales" 
+                {...register('username', { required: true })}
+                placeholder="Ej. admin_sales"
               />
             </Field>
 
@@ -88,10 +95,7 @@ function EditUserDialog({ userId, user }: EditUserDialogProps) {
                 control={control}
                 name="role"
                 render={({ field }) => (
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecciona un rol" />
                     </SelectTrigger>

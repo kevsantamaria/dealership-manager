@@ -24,10 +24,7 @@ export const addUser = async (user: CreateUserPayload) => {
     })
 }
 
-export const updateUser = async (
-  id: number,
-  user: UpdateUserPayload
-) => {
+export const updateUser = async (id: number, user: UpdateUserPayload) => {
   return api.patch(`/users/${id}`, user)
 }
 
