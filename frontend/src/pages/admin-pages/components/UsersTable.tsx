@@ -10,7 +10,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { useUsers } from '@/hooks/useUsers'
-// Instalación recomendada: npm install lucide-react
+import type { User } from '@/types/user'
 import {
   IconPencil,
   IconShieldCheck,
@@ -24,16 +24,10 @@ import {
   type ColumnDef,
 } from '@tanstack/react-table'
 
-interface UserData {
-  username: string
-  role: 'admin' | 'user'
-}
-
-// 2. Definimos las columnas
 const columns = (
-  onEdit: (user: UserData) => void,
-  onDelete: (user: UserData) => void
-): ColumnDef<UserData>[] => [
+  onEdit: (user: User) => void,
+  onDelete: (user: User) => void
+): ColumnDef<User>[] => [
   {
     accessorKey: 'username',
     header: 'Usuario',
@@ -92,17 +86,16 @@ const columns = (
 ]
 
 function UsersTable() {
-  const { getUsers } = useUsers()
+  const { getUsers, deleteUserById } = useUsers()
   const { data, isLoading } = getUsers
-  // Handlers para las acciones
-  const handleEdit = (user: UserData) => {
+
+  const handleEdit = (user: User) => {
     console.log('Editando a:', user.username)
     // Aquí abrirías tu modal de edición
   }
 
-  const handleDelete = (user: UserData) => {
-    console.log('Eliminando a:', user.username)
-    // Aquí dispararías tu mutación de borrado
+  const handleDelete = (user: User) => {
+    deleteUserById.mutateAsync(user.id)
   }
 
   const table = useReactTable({
