@@ -10,30 +10,31 @@ import VehicleDetails from '@/pages/panel-pages/vehicles/components/VehicleDetai
 import Vehicles from '@/pages/panel-pages/vehicles/Vehicles'
 import PanelContainer from '@/pages/PanelContainer'
 import { ProtectedRoute } from '@/routes/ProtectedRoute'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 
 function AppRouter() {
   return (
     <Routes>
-      <Route path="/dashboard" element={<PanelContainer />}>
-        <Route index element={<Home />} />
-        <Route path="vehicles" element={<Vehicles />} />
-        <Route path="suppliers" element={<Suppliers />} />
-        <Route path="brands" element={<Brands />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/dashboard" element={<PanelContainer />}>
+          <Route index element={<Home />} />
+          <Route path="vehicles" element={<Vehicles />} />
+          <Route path="suppliers" element={<Suppliers />} />
+          <Route path="brands" element={<Brands />} />
+          <Route path="vehicles/:id" element={<VehicleDetails />} />
 
-        <Route path="admin/add-vehicle" element={<AddVehicle />} />
-        <Route path="admin/add-supplier" element={<AddSupplier />} />
+          <Route path="admin/add-vehicle" element={<AddVehicle />} />
+          <Route path="admin/add-supplier" element={<AddSupplier />} />
+        </Route>
+
+        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+          <Route path="/admin-user" element={<AdminPage />} />
+          <Route path="users" element={<div>Lista de usuarios</div>} />
+        </Route>
       </Route>
-
-      <Route path="vehicles/:id" element={<VehicleDetails />} />
-
-      <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-        <Route path="/admin-user" element={<AdminPage />} />
-        <Route path="users" element={<div>Lista de usuarios</div>} />
-      </Route>
-
-      <Route path="/dashboard/*" element={<NotFound />} />
-      <Route path="*" element={<LoginPage />} />
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }

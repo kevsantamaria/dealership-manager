@@ -46,7 +46,9 @@ export const HeaderBar = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>
+            <DropdownMenuLabel className="capitalize">
+              {user?.username}
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={handleLogout}

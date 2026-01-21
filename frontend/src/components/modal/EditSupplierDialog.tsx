@@ -59,7 +59,7 @@ function EditSupplierDialog({ supplierId, supplier }: Props) {
           <IconPencil className="size-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl" >
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader>Editar Proveedor</DialogHeader>
         <DialogDescription>
           Modifica la información del proveedor.

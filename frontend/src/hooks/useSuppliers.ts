@@ -31,22 +31,22 @@ export const useSuppliers = () => {
   })
 
   const updateSupplierById = useMutation({
-      mutationFn: ({
-        id,
-        supplier,
-      }: {
-        id: number
-        supplier: UpdateSupplierPayload
-      }) => {
-        return updateSupplier(id, supplier)
-      },
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['suppliers'] })
-      },
-      onError: (error) => {
-        console.error('Error updating supplier:', error)
-      },
-    })
+    mutationFn: ({
+      id,
+      supplier,
+    }: {
+      id: number
+      supplier: UpdateSupplierPayload
+    }) => {
+      return updateSupplier(id, supplier)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['suppliers'] })
+    },
+    onError: (error) => {
+      console.error('Error updating supplier:', error)
+    },
+  })
 
   const deleteSupplierById = useMutation({
     mutationFn: (id: number) => {

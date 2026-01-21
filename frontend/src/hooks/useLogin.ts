@@ -26,8 +26,6 @@ export const useLogin = () => {
     onSuccess: (user: User) => {
       setUser(user)
       loginStore()
-      console.log('Usuario completo:', user)
-      console.log("Rol recibido:", user.role)
       if (user?.role === 'admin') {
         navigate('/admin-user')
       } else {

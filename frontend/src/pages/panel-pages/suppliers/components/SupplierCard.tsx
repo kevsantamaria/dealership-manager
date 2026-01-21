@@ -42,7 +42,7 @@ function SupplierCard({ supplier }: Props) {
         <CardHeader>
           <div className="flex items-start justify-between">
             <CardTitle className="text-2xl font-bold">{name}</CardTitle>
-            <EditSupplierDialog supplierId={id} supplier={supplier}/>
+            <EditSupplierDialog supplierId={id} supplier={supplier} />
             <Button
               variant="ghost"
               size="sm"

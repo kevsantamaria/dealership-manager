@@ -89,7 +89,7 @@ function VehicleCard({ vehicle }: Props) {
             <span className="text-2xl font-bold">${price}</span>
           </div>
           <Button>
-            <Link to={`/vehicles/${vehicleId}`}>Ver Detalles</Link>
+            <Link to={`/dashboard/vehicles/${vehicleId}`}>Ver Detalles</Link>
           </Button>
         </CardFooter>
       </Card>
