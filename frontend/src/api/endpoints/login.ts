@@ -10,7 +10,7 @@ export const fetchLogin = async (username: string, password: string) => {
     })
     .then((res) => {
       console.log(res.data)
-      return res.data // token
+      return res.data.data
     })
     .catch((error) => {
       manageError(error)

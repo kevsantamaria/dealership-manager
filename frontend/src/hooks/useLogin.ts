@@ -24,9 +24,11 @@ export const useLogin = () => {
       return fetchLogin(username, password)
     },
     onSuccess: (user: User) => {
-      loginStore()
       setUser(user)
-      if (user.role === 'admin') {
+      loginStore()
+      console.log('Usuario completo:', user)
+      console.log("Rol recibido:", user.role)
+      if (user?.role === 'admin') {
         navigate('/admin-user')
       } else {
         navigate('/dashboard')
