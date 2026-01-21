@@ -20,7 +20,7 @@ function OldInventoryRecord({ data }: OldInventoryRecordProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="relative max-h-[300px] overflow-y-auto pr-3">
+        <div className="relative max-h-75 overflow-y-auto pr-3">
           <div className="space-y-2">
             {data.map((vehicle, index) => (
               <div

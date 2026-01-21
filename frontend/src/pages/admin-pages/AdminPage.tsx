@@ -1,5 +1,6 @@
 import { HeaderBar } from '@/components/nav/HeaderBar'
 import UserForm from './components/UserForm'
+import UsersTable from './components/UsersTable'
 
 function AdminPage() {
   return (
@@ -11,6 +12,7 @@ function AdminPage() {
 
       <main>
         <UserForm />
+        <UsersTable />
       </main>
     </>
   )
