@@ -1,5 +1,10 @@
-import { addUser, deleteUser, fetchUsers } from '@/api/endpoints/users'
-import type { CreateUserPayload } from '@/types/user'
+import {
+  addUser,
+  deleteUser,
+  fetchUsers,
+  updateUser,
+} from '@/api/endpoints/users'
+import type { CreateUserPayload, UpdateUserPayload } from '@/types/user'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useUsers = () => {
@@ -15,6 +20,19 @@ export const useUsers = () => {
       return addUser(user)
     },
   })
+
+  const updateUserById = useMutation({
+    mutationFn: ({ id, user }: { id: number; user: UpdateUserPayload }) => {
+      return updateUser(id, user)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] })
+    },
+    onError: (error) => {
+      console.error('Error updating user:', error)
+    },
+  })
+
   const deleteUserById = useMutation({
     mutationFn: (id: number) => {
       return deleteUser(id)
@@ -26,5 +44,5 @@ export const useUsers = () => {
       console.error('Error deleting user:', error)
     },
   })
-  return { postUser, getUsers, deleteUserById }
+  return { postUser, getUsers, deleteUserById, updateUserById }
 }
