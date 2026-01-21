@@ -41,21 +41,25 @@ function SupplierCard({ supplier }: Props) {
       <Card className="w-full max-w-xs h-full">
         <CardHeader>
           <div className="flex items-start justify-between">
-            <CardTitle className="text-2xl font-bold">{name}</CardTitle>
-            <EditSupplierDialog supplierId={id} supplier={supplier} />
-            <Button
-              variant="ghost"
-              size="sm"
-              className="gap-2 text-destructive hover:text-primary-foreground hover:bg-destructive"
-              onClick={() => setOpenDelete(true)}
-              disabled={numberOfVehicles > 0 || isPending}
-            >
-              {isPending ? (
-                <IconLoader2 className="animate-spin h-4 w-4" />
-              ) : (
-                <IconTrash className="h-4 w-4" />
-              )}
-            </Button>
+            <CardTitle className="text-2xl font-bold flex justify-between">
+              {name}
+            </CardTitle>
+            <div className="flex items-center gap-1">
+              <EditSupplierDialog supplierId={id} supplier={supplier} />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-2 text-destructive hover:text-primary-foreground hover:bg-destructive"
+                onClick={() => setOpenDelete(true)}
+                disabled={numberOfVehicles > 0 || isPending}
+              >
+                {isPending ? (
+                  <IconLoader2 className="animate-spin h-4 w-4" />
+                ) : (
+                  <IconTrash className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-3">

@@ -292,7 +292,11 @@ function AddVehicleForm() {
             <Controller
               name="mileage"
               control={control}
-              rules={{ required: 'Este campo es obligatorio', max: 9, min: 0 }}
+              rules={{
+                required: 'Este campo es obligatorio',
+                maxLength: 9,
+                min: 0,
+              }}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Kilometraje *</FieldLabel>

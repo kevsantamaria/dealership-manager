@@ -38,7 +38,7 @@ export const findAllSuppliersWithVehicles = async () => {
     FROM "suppliers" s
     LEFT JOIN "vehicles" v ON s."id" = v."supplier_id"
     GROUP BY s."id"
-    ORDER BY "numberOfVehicles" DESC;
+    ORDER BY id DESC;
   `
 }
 

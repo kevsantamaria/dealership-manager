@@ -55,7 +55,7 @@ function EditSupplierDialog({ supplierId, supplier }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button variant="ghost" size="sm">
           <IconPencil className="size-4" />
         </Button>
       </DialogTrigger>
