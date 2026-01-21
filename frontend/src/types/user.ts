@@ -3,3 +3,9 @@ export interface User {
   username: string
   role: 'admin' | 'user'
 }
+
+export type CreateUserPayload = {
+  username: string
+  password: string
+  role: string
+}
