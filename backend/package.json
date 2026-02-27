@@ -28,6 +28,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.3.0",
     "@prisma/extension-accelerate": "^3.0.1",
     "bcryptjs": "^3.0.3",
@@ -35,6 +36,7 @@
     "cors": "^2.8.5",
     "express": "^5.2.1",
     "morgan": "^1.10.1",
+    "pg": "^8.19.0",
     "zod": "^4.2.1"
   },
   "scripts": {
@@ -48,6 +50,11 @@
     "format:check": "prettier --check .",
     "test": "bun test",
     "test:watch": "bun test --watch",
-    "test:coverage": "bun test --coverage"
+    "test:coverage": "bun test --coverage",
+    "prisma-generate": "bunx --bun prisma generate",
+    "prisma-migrate": "bunx --bun prisma migrate dev",
+    "prisma-reset": "bunx --bun prisma migrate reset",
+    "prisma-seed": "bunx --bun prisma db seed",
+    "prisma-studio": "bunx --bun prisma studio"
   }
 }

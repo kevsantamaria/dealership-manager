@@ -5,12 +5,145 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider   = "prisma-client"
-  output     = "./generated"
-  engineType = "client"
-  runtime    = "bun"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  username   String   @unique @db.VarChar(255)
+  password   String
+  role       Role     @default(user)
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  updated_at DateTime @updatedAt @db.Timestamp(0)
+
+  @@map("users")
+}
+
+model Supplier {
+  id         Int          @id @default(autoincrement())
+  name       String       @db.VarChar(255)
+  contact    String?      @db.VarChar(255)
+  type       SupplierType @default(private)
+  country    String       @db.VarChar(255)
+  created_at DateTime     @default(now()) @db.Timestamp(0)
+  updated_at DateTime     @updatedAt @db.Timestamp(0)
+  vehicles   Vehicle[]
+
+  @@map("suppliers")
+}
+
+model Brand {
+  id             Int     @id @default(autoincrement())
+  name           String  @db.VarChar(255)
+  country_origin String  @db.VarChar(255)
+  models         Model[]
+
+  @@map("brands")
+}
+
+model Model {
+  id          Int    @id @default(autoincrement())
+  name        String @db.VarChar(255)
+  launch_year Int
+  brand_id    Int
+  brand       Brand  @relation(fields: [brand_id], references: [id])
+  trims       Trim[]
+
+  @@map("models")
+}
+
+model Trim {
+  id           Int          @id @default(autoincrement())
+  name         String       @db.VarChar(255)
+  engine_size  Decimal      @db.Decimal(8, 2)
+  horsepower   Int
+  engine_type  EngineType   @default(gasoline)
+  transmission Transmission @default(automatic)
+  drivetrain   Drivetrain   @default(fwd)
+  model_id     Int
+  model        Model        @relation(fields: [model_id], references: [id])
+  vehicles     Vehicle[]
+
+  @@map("trims")
+}
+
+model Vehicle {
+  id               Int           @id @default(autoincrement())
+  vin              String        @unique @db.VarChar(17)
+  license_plate    String?       @db.VarChar(255)
+  color            String        @db.VarChar(255)
+  mileage          Decimal?      @db.Decimal(8, 2)
+  arrival_date     DateTime      @db.Date
+  purchase_price   Decimal       @db.Decimal(8, 2)
+  suggested_price  Decimal       @db.Decimal(8, 2)
+  stock_status     StockStatus   @default(in_stock)
+  rate_condition   RateCondition @default(good)
+  rate_description String?       @db.VarChar(255)
+  created_at       DateTime      @default(now()) @db.Timestamp(0)
+  updated_at       DateTime      @updatedAt @db.Timestamp(0)
+  trim_id          Int
+  trim             Trim          @relation(fields: [trim_id], references: [id])
+  supplier_id      Int
+  supplier         Supplier      @relation(fields: [supplier_id], references: [id])
+  image            Image?
+
+  @@map("vehicles")
+}
+
+model Image {
+  id         Int     @id @default(autoincrement())
+  path       String  @db.VarChar(255)
+  vehicle_id Int     @unique
+  vehicle    Vehicle @relation(fields: [vehicle_id], references: [id])
+
+  @@map("images")
+}
+
+enum Role {
+  user
+  admin
+}
+
+enum SupplierType {
+  private
+  dealer
+  auction
+  importer
+  fleet
+}
+
+enum EngineType {
+  gasoline
+  diesel
+  hybrid
+  electric
+}
+
+enum Transmission {
+  automatic
+  manual
+  cvt
+}
+
+enum Drivetrain {
+  fwd // tracción delantera
+  rwd // tracción trasera
+  awd // tracción total
+}
+
+enum StockStatus {
+  in_stock
+  reserved
+  sold
+}
+
+enum RateCondition {
+  bad
+  regular
+  good
+  excellent
 }
