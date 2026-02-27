@@ -47,7 +47,7 @@ function UserForm() {
   })
 
   return (
-    <Card>
+    <Card className="w-150 max-w-full mx-auto">
       <CardHeader className="space-y-4">
         <div className="space-y-2">
           <div className="flex items-center justify-between">

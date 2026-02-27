@@ -10,7 +10,7 @@ function AdminPage() {
         <HeaderBar />
       </header>
 
-      <main className="p-4 flex gap-4 flex-col">
+      <main className="p-4 flex gap-4 flex-col max-w-300 mx-auto">
         <UserForm />
         <UsersTable />
       </main>
