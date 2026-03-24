@@ -52,7 +52,7 @@
     "test:watch": "bun test --watch",
     "test:coverage": "bun test --coverage",
     "prisma-generate": "bunx --bun prisma generate",
-    "prisma-migrate": "bunx --bun prisma migrate dev",
+    "prisma-migrate-dev": "bunx --bun prisma migrate dev",
     "prisma-reset": "bunx --bun prisma migrate reset",
     "prisma-seed": "bunx --bun prisma db seed",
     "prisma-studio": "bunx --bun prisma studio"
