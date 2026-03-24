@@ -8,11 +8,11 @@ export type SupplierType =
 export interface Supplier {
   id: number
   name: string
-  contact: string
+  contact: string | null
   type: SupplierType
   country: string
-  createdAt: string
-  updatedAt: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export type NewSupplier = Omit<Supplier, 'id'>
