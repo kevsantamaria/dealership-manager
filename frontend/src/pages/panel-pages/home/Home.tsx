@@ -36,17 +36,17 @@ function Home() {
     return <div>Loading...</div>
   }
   return (
-    <section className="flex flex-col gap-2">
+    <section className="flex flex-col gap-4">
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <VehiclesInStock data={getVehiclesStockSummary.data} />
         <FinancialCards data={getFinancialSummary.data} />
       </div>
       <MonthlyFinancialChart data={getMonthlyFinancialHistory.data} />
-      <div className="flex flex-col sm:flex-row gap-2 items-center justify-center">
+      <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
         <RecentActivityTable data={getRecentActivity.data} />
         <QuickActions />
       </div>
-      <div className="flex gap-2 flex-col sm:flex-row items-baseline justify-center">
+      <div className="flex gap-4 flex-col sm:flex-row justify-center">
         <OldInventoryRecord data={getOldInventoryReport.data} />
         <TopSellingModels data={getTopSellingQuarterly.data} />
       </div>

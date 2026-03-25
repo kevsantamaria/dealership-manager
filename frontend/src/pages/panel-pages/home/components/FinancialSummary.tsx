@@ -1,11 +1,16 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import type { FinancialSummaryData } from '@/types/dashboard'
-import { DollarSign, TrendingUp, Wallet } from 'lucide-react'
+import {
+  IconMoneybag,
+  IconTrendingUp,
+  IconWallet,
+  type Icon,
+} from '@tabler/icons-react'
 
 interface FinancialCardProps {
   title: string
   value: number
-  icon: React.ElementType
+  icon: Icon
   color: string
 }
 
@@ -22,15 +27,19 @@ function FinancialCard({
   }).format(value)
 
   return (
-    <Card className={`${color}`}>
-      <CardHeader className="flex text-sm justify-center gap-2 items-center">
-        <div className="rounded-full bg-muted p-2">
-          <Icon className="h-5 w-5" />
-        </div>
+    <Card
+      className={`outline outline-${color} relative hover:outline-2 transition-colors`}
+    >
+      <div className="rounded-full absolute -top-3 -left-3 bg-muted p-2.5">
+        <Icon className="w-6 h-6" />
+      </div>
+      <CardHeader className="flex justify-center font-medium gap-2 items-center mx-2 py-1 rounded">
         {title}
       </CardHeader>
-      <CardContent className="flex items-center justify-center">
-        <p className="text-4xl font-bold">{formattedValue}</p>
+      <CardContent className="flex items-center h-full justify-center">
+        <p className="text-4xl font-bold bg-muted p-3 rounded-lg">
+          {formattedValue}
+        </p>
       </CardContent>
     </Card>
   )
@@ -46,20 +55,20 @@ export function FinancialCards({ data }: FinancialCardsProps) {
       <FinancialCard
         title="Monto Invertido"
         value={data.purchasePriceTotal}
-        icon={Wallet}
-        color="bg-orange-600"
+        icon={IconWallet}
+        color="orange-500"
       />
       <FinancialCard
         title="Valor de Inventario"
         value={data.suggestedPriceTotal}
-        icon={DollarSign}
-        color="bg-blue-600"
+        icon={IconMoneybag}
+        color="blue-500"
       />
       <FinancialCard
         title="Margen de Ganancia"
         value={data.revenue}
-        icon={TrendingUp}
-        color="bg-green-600"
+        icon={IconTrendingUp}
+        color="green-500"
       />
     </div>
   )

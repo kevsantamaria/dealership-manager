@@ -8,7 +8,7 @@ type TopSellingModelsProps = {
 
 function TopSellingModels({ data }: TopSellingModelsProps) {
   return (
-    <Card className="w-sm">
+    <Card className="min-w-sm">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <IconTrophy className="h-5 w-5 text-yellow-500" />
