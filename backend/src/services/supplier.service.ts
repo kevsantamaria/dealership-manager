@@ -1,49 +1,39 @@
+import { prisma } from '@/lib/prisma'
 import type {
   CreateSupplierDTO,
   UpdateSupplierDTO,
 } from '@/models/dtos/supplier.dto'
 import type { Supplier } from '@/models/entities/supplier'
-import {
-  createSupplier,
-  deleteSupplier,
-  findAllSuppliersWithNameAndId,
-  findAllSuppliersWithVehicles,
-  findSupplierById,
-  findSupplierByName,
-  isSupplierNoVehicles,
-  updateSupplier,
-} from '@/repositories/supplier.repository'
 
 export const createSupplierService = async (supplier: CreateSupplierDTO) => {
-  const { name } = supplier
+  const { name, country, contact, type } = supplier
 
-  const validSupplier = await findSupplierByName(name)
+  const validSupplier = await prisma.supplier.findFirst({
+    where: { name },
+  })
   if (validSupplier) throw new Error('SUPPLIER_ALREADY_EXISTS')
 
-  const now = new Date().toISOString()
-  const supplierToCreate: Omit<Supplier, 'id'> = {
-    ...supplier,
-    createdAt: now,
-    updatedAt: now,
-  }
-
-  const createdSupplier: Supplier = await createSupplier(supplierToCreate)
+  const createdSupplier = await prisma.supplier.create({
+    data: {
+      name,
+      contact,
+      country,
+      type,
+    },
+  })
   return createdSupplier
 }
 
 export const getAllSuppliersService = async () => {
-  const suppliers: Supplier[] = await findAllSuppliersWithVehicles()
-  return suppliers
+  return await prisma.supplier.findMany()
 }
 
 export const getAllSuppliersWithNameAndIdService = async () => {
-  const suppliers: Supplier[] = await findAllSuppliersWithNameAndId()
-  return suppliers
+  return await prisma.supplier.findMany({ select: { id: true, name: true } })
 }
 
 export const getSupplierByIdService = async (id: number) => {
-  const supplier: Supplier = await findSupplierById(id)
-
+  const supplier = await prisma.supplier.findUnique({ where: { id } })
   if (!supplier) throw new Error('NOT_FOUND')
   return supplier
 }
@@ -52,7 +42,7 @@ export const updateSupplierService = async (
   id: number,
   supplier: UpdateSupplierDTO
 ) => {
-  const existingSupplier = await findSupplierById(id)
+  const existingSupplier = await prisma.supplier.findUnique({ where: { id } })
   if (!existingSupplier) throw new Error('NOT_FOUND')
 
   if (Object.keys(supplier).length === 0) throw new Error('NO_FIELDS_TO_UPDATE')
@@ -66,7 +56,9 @@ export const updateSupplierService = async (
       throw new Error('NO_FIELDS_TO_UPDATE')
     }
 
-    const supplierWithSameName = await findSupplierByName(name)
+    const supplierWithSameName = await prisma.supplier.findFirst({
+      where: { name: name },
+    })
     if (supplierWithSameName && supplierWithSameName.id !== id) {
       throw new Error('USERNAME_ALREADY_EXISTS')
     }
@@ -77,20 +69,25 @@ export const updateSupplierService = async (
   )
 
   Object.assign(supplierToUpdate, cleanFields)
-  supplierToUpdate.updatedAt = new Date().toISOString()
+  supplierToUpdate.updatedAt = new Date()
 
-  const updatedSupplier = await updateSupplier(id, supplierToUpdate)
-  return updatedSupplier[0]
+  const updatedSupplier = await prisma.supplier.update({
+    where: { id },
+    data: supplierToUpdate,
+  })
+  return updatedSupplier
 }
 
 export const deleteSupplierService = async (id: number) => {
-  const existingSupplier = await findSupplierById(id)
+  const existingSupplier = await prisma.supplier.findUnique({ where: { id } })
   if (!existingSupplier) throw new Error('NOT_FOUND')
 
-  const notHaveVehicles = await isSupplierNoVehicles(id)
+  const notHaveVehicles = await prisma.vehicle.findFirst({
+    where: { supplierId: id },
+  })
   if (!notHaveVehicles) {
     throw new Error('SUPPLIER_NOT_EMPTY')
   }
 
-  await deleteSupplier(id)
+  await prisma.supplier.delete({ where: { id } })
 }
