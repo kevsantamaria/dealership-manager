@@ -1,134 +1,203 @@
-import { pool } from '@/db/pool'
+import { prisma } from '@/lib/prisma'
 import type {
   CreateVehicleDTO,
   UpdateVehicleDTO,
 } from '@/models/dtos/vehicle.dto'
-import type { Brand } from '@/models/entities/brand'
-import type { Model } from '@/models/entities/model'
-import type { Supplier } from '@/models/entities/supplier'
-import type { Trim } from '@/models/entities/trim'
-import type { NewVehicle } from '@/models/entities/vehicle'
-import { createBrand, findBrandByName } from '@/repositories/brand.repository'
-import {
-  createModel,
-  findModelByNameAndBrand,
-} from '@/repositories/model.repository'
-import { findSupplierById } from '@/repositories/supplier.repository'
-import {
-  createTrim,
-  findTrimById,
-  findTrimByNameAndModel,
-} from '@/repositories/trim.repository'
-import {
-  createVehicle,
-  deleteVehicle,
-  findAllVehiclesDetails,
-  findVehicleById,
-  findVehicleByIdDetailed,
-  findVehicleByVin,
-  updateVehicle,
-} from '@/repositories/vehicle.repository'
 
 export const createVehicleService = async (vehicle: CreateVehicleDTO) => {
   const { vin, supplierId, brand, model, trim } = vehicle
 
-  const validVin = await findVehicleByVin(vin)
+  const validVin = await prisma.vehicle.findUnique({ where: { vin } })
   if (validVin) throw new Error('VEHICLE_ALREADY_EXISTS')
 
-  return await pool.transaction(async (tx) => {
-    const supplier: Supplier = await findSupplierById(supplierId, tx)
+  return await prisma.$transaction(async (tx) => {
+    const supplier = await tx.supplier.findUnique({
+      where: { id: supplierId },
+    })
     if (!supplier) throw new Error('NOT_FOUND')
 
-    let existingBrand: Brand = await findBrandByName(brand.name, tx)
+    let existingBrand = await tx.brand.findFirst({
+      where: { name: brand.name },
+    })
     if (!existingBrand) {
-      existingBrand = await createBrand(brand, tx)
+      existingBrand = await tx.brand.create({
+        data: { name: brand.name, countryOrigin: brand.countryOrigin },
+      })
     }
 
-    let existingModel: Model = await findModelByNameAndBrand(
-      model.name,
-      brand.name,
-      tx
-    )
+    let existingModel = await tx.model.findFirst({
+      where: { name: model.name, brandId: existingBrand.id },
+    })
     if (!existingModel) {
-      const brandId = existingBrand.id
-      existingModel = await createModel({ ...model, brandId }, tx)
+      existingModel = await tx.model.create({
+        data: {
+          name: model.name,
+          launchYear: model.launchYear,
+          brandId: existingBrand.id,
+        },
+      })
     }
 
-    let existingTrim: Trim = await findTrimByNameAndModel(
-      trim.name,
-      model.name,
-      tx
-    )
+    let existingTrim = await tx.trim.findFirst({
+      where: { name: trim.name, modelId: existingModel.id },
+    })
     if (!existingTrim) {
-      const modelId = existingModel.id
-      existingTrim = await createTrim({ ...trim, modelId }, tx)
+      existingTrim = await tx.trim.create({
+        data: {
+          name: trim.name,
+          drivetrain: trim.drivetrain,
+          engineSize: trim.engineSize,
+          engineType: trim.engineType,
+          horsepower: trim.horsepower,
+          transmission: trim.transmission,
+          modelId: existingModel.id,
+        },
+      })
     }
 
-    const newVehicle: NewVehicle = {
-      vin,
-      licensePlate: vehicle.licensePlate ?? null,
-      color: vehicle.color,
-      mileage: vehicle.mileage ?? null,
-      arrivalDate: vehicle.arrivalDate,
-      purchasePrice: vehicle.purchasePrice,
-      suggestedPrice: vehicle.suggestedPrice,
-      stockStatus: vehicle.stockStatus,
-      rateCondition: vehicle.rateCondition,
-      rateDescription: vehicle.rateDescription ?? null,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      trimId: existingTrim.id,
-      supplierId,
-    }
-
-    const createdVehicle = await createVehicle(newVehicle, tx)
-
-    return createdVehicle
+    return await tx.vehicle.create({
+      data: {
+        vin,
+        licensePlate: vehicle.licensePlate,
+        color: vehicle.color,
+        mileage: vehicle.mileage,
+        arrivalDate: vehicle.arrivalDate,
+        purchasePrice: vehicle.purchasePrice,
+        suggestedPrice: vehicle.suggestedPrice,
+        stockStatus: vehicle.stockStatus,
+        rateCondition: vehicle.rateCondition,
+        rateDescription: vehicle.rateDescription,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        trimId: existingTrim.id,
+        supplierId,
+      },
+    })
   })
 }
 
 export const getAllVehiclesService = async () => {
-  const vehicles = await findAllVehiclesDetails()
-
-  return vehicles
+  return await prisma.vehicle.findMany({
+    select: {
+      id: true,
+      color: true,
+      suggestedPrice: true,
+      stockStatus: true,
+      trim: {
+        select: {
+          name: true,
+          model: {
+            select: {
+              name: true,
+              launchYear: true,
+              brand: { select: { name: true } },
+            },
+          },
+        },
+      },
+    },
+  })
 }
 
 export const getVehicleByIdService = async (id: number) => {
-  const detailedVehicle = await findVehicleByIdDetailed(id)
+  const existingVehicle = await prisma.vehicle.findUnique({ where: { id } })
+  if (!existingVehicle) throw new Error('NOT_FOUND')
 
-  if (!detailedVehicle) throw new Error('NOT_FOUND')
-  return detailedVehicle
+  return await prisma.vehicle.findFirst({
+    where: { id },
+    select: {
+      id: true,
+      vin: true,
+      color: true,
+      arrivalDate: true,
+      licensePlate: true,
+      mileage: true,
+      purchasePrice: true,
+      suggestedPrice: true,
+      rateCondition: true,
+      rateDescription: true,
+      stockStatus: true,
+      image: true,
+      createdAt: true,
+      updatedAt: true,
+      supplier: {
+        select: {
+          id: true,
+          name: true,
+          type: true,
+          contact: true,
+          country: true,
+        },
+      },
+      trim: {
+        select: {
+          name: true,
+          drivetrain: true,
+          engineSize: true,
+          horsepower: true,
+          engineType: true,
+          transmission: true,
+          model: {
+            select: {
+              id: true,
+              name: true,
+              launchYear: true,
+              brand: { select: { id: true, name: true, countryOrigin: true } },
+            },
+          },
+        },
+      },
+    },
+  })
 }
 export const updateVehicleService = async (
   id: number,
   vehicle: UpdateVehicleDTO
 ) => {
-  const existingVehicle = await findVehicleById(id)
+  const existingVehicle = await prisma.vehicle.findUnique({ where: { id } })
   if (!existingVehicle) throw new Error('NOT_FOUND')
 
   if (Object.keys(vehicle).length === 0) throw new Error('NO_FIELDS_TO_UPDATE')
 
   if (vehicle.vin) {
-    const existingVin = await findVehicleByVin(vehicle.vin)
+    const existingVin = await prisma.vehicle.findUnique({
+      where: { vin: vehicle.vin },
+    })
     if (existingVin && existingVin.id !== id) throw new Error('ALREADY_EXISTS')
   }
 
   if (vehicle.supplierId) {
-    const supplier = await findSupplierById(vehicle.supplierId)
+    const supplier = await prisma.supplier.findUnique({
+      where: { id: vehicle.supplierId },
+    })
     if (!supplier) throw new Error('SUPPLIER_NOT_FOUND')
   }
 
   if (vehicle.trimId) {
-    const trim = await findTrimById(vehicle.trimId)
+    const trim = await prisma.trim.findUnique({ where: { id: vehicle.trimId } })
     if (!trim) throw new Error('TRIM_NOT_FOUND')
   }
 
-  await updateVehicle(id, vehicle)
+  await prisma.vehicle.update({
+    where: { id },
+    data: {
+      vin: vehicle.vin,
+      licensePlate: vehicle.licensePlate,
+      color: vehicle.color,
+      mileage: vehicle.mileage,
+      arrivalDate: vehicle.arrivalDate,
+      purchasePrice: vehicle.purchasePrice,
+      suggestedPrice: vehicle.suggestedPrice,
+      stockStatus: vehicle.stockStatus,
+      rateCondition: vehicle.rateCondition,
+      rateDescription: vehicle.rateDescription,
+    },
+  })
 }
 
 export const deleteVehicleService = async (id: number) => {
-  const existingVehicle = await findVehicleById(id)
+  const existingVehicle = await prisma.vehicle.findUnique({ where: { id } })
   if (!existingVehicle) throw new Error('NOT_FOUND')
 
-  await deleteVehicle(id)
+  await prisma.vehicle.delete({ where: { id } })
 }

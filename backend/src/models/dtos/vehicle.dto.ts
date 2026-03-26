@@ -8,7 +8,7 @@ export const createVehicleDTO = z.object({
   licensePlate: z.string().max(10).nullable().optional(),
   color: z.string(),
   mileage: z.number().max(999999).nonnegative().nullable().optional(),
-  arrivalDate: z.string(),
+  arrivalDate: z.date(),
   purchasePrice: z.number().min(0).max(999999.99).positive(),
   suggestedPrice: z.number().min(0).max(999999.99).positive(),
   stockStatus: z.enum(['in_stock', 'reserved', 'sold']).default('in_stock'),
