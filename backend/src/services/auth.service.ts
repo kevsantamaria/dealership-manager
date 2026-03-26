@@ -1,12 +1,12 @@
-import type { LoginUser, User } from '@/models/entities/user'
-import { findUserByUsername } from '@/repositories/user.repository'
+import { prisma } from '@/lib/prisma'
+import type { LoginUser } from '@/models/entities/user'
 import { createSession } from '@/sessions/session.store'
 import bcrypt from 'bcryptjs'
 
 export const loginService = async (user: LoginUser) => {
   const { username, password } = user
 
-  const validUser: User = await findUserByUsername(username)
+  const validUser = await prisma.user.findUnique({ where: { username } })
   if (!validUser) throw new Error('INVALID_CREDENTIALS')
 
   const match = await bcrypt.compare(password, validUser.password)
