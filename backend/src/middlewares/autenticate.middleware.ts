@@ -22,7 +22,6 @@ export const authenticate = (
     })
   }
 
-  // 🔑 inyectamos la sesión
   req.user = session
 
   next()
