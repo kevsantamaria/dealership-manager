@@ -20,7 +20,7 @@ export type MonthData = {
 export type RecentActivity = {
   vehicleName: string
   status: string
-  date: string
+  date: Date
 }
 
 export type TopSellingModel = {

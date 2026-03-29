@@ -1,12 +1,12 @@
 export type Vehicle = {
-  vehicleId: number
-  color: string
-  price: string
-  stockStatus: string
+  id: number
   brand: string
   model: string
-  launchYear: number
   trim: string
+  color: string
+  launchYear: number
+  suggestedPrice: string
+  stockStatus: string
 }
 
 export type CreateVehiclePayload = {
@@ -45,43 +45,46 @@ export type CreateVehiclePayload = {
 }
 
 export type VehicleDetailsType = {
-  vehicleId: number
-
+  id: number
   vin: string
-  brandName: string
-  brandCountryOrigin: string
-
-  modelName: string
-  trimName: string
-  modelLaunchYear: number
-
   color: string
-
-  engineType: string
-  engineSize: string
-  horsepower: number
-  transmission: string
-  drivetrain: string
-
-  mileage: string
+  arrivalDate: string
   licensePlate: string
-
+  mileage: string
   purchasePrice: string
   suggestedPrice: string
-
-  stockStatus: string
   rateCondition: string
   rateDescription: string
+  stockStatus: string
+  image: File | null
+  createdAt: Date
+  updatedAt: Date
 
-  arrivalDate: string
+  supplier: {
+    name: string
+    type: string
+    contact: string
+    country: string
+  }
 
-  supplierName: string
-  supplierType: string
-  supplierCountry: string
-  supplierContact: string
+  trim: {
+    name: string
+    drivetrain: string
+    engineSize: string
+    horsepower: number
+    engineType: string
+    transmission: string
 
-  createdAt: string
-  updatedAt: string
+    model: {
+      name: string
+      launchYear: number
+    }
+
+    brand: {
+      name: string
+      countryOrigin: string
+    }
+  }
 }
 
 export type UpdateVehiclePayload = {
