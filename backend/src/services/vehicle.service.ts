@@ -77,7 +77,7 @@ export const createVehicleService = async (vehicle: CreateVehicleDTO) => {
 }
 
 export const getAllVehiclesService = async () => {
-  return await prisma.vehicle.findMany({
+  const vehicles = await prisma.vehicle.findMany({
     select: {
       id: true,
       color: true,
@@ -96,7 +96,19 @@ export const getAllVehiclesService = async () => {
         },
       },
     },
+    orderBy: { arrivalDate: 'desc' },
   })
+
+  return vehicles.map((v) => ({
+    id: v.id,
+    brand: v.trim.model.brand.name,
+    model: v.trim.model.name,
+    trim: v.trim.name,
+    color: v.color,
+    launchYear: v.trim.model.launchYear,
+    suggestedPrice: v.suggestedPrice,
+    stockStatus: v.stockStatus,
+  }))
 }
 
 export const getVehicleByIdService = async (id: number) => {
