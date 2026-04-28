@@ -117,44 +117,13 @@ export const getVehicleByIdService = async (id: number) => {
 
   return await prisma.vehicle.findFirst({
     where: { id },
-    select: {
-      id: true,
-      vin: true,
-      color: true,
-      arrivalDate: true,
-      licensePlate: true,
-      mileage: true,
-      purchasePrice: true,
-      suggestedPrice: true,
-      rateCondition: true,
-      rateDescription: true,
-      stockStatus: true,
-      image: true,
-      createdAt: true,
-      updatedAt: true,
-      supplier: {
-        select: {
-          id: true,
-          name: true,
-          type: true,
-          contact: true,
-          country: true,
-        },
-      },
+    include: {
+      supplier: true,
       trim: {
-        select: {
-          name: true,
-          drivetrain: true,
-          engineSize: true,
-          horsepower: true,
-          engineType: true,
-          transmission: true,
+        include: {
           model: {
-            select: {
-              id: true,
-              name: true,
-              launchYear: true,
-              brand: { select: { id: true, name: true, countryOrigin: true } },
+            include: {
+              brand: true,
             },
           },
         },
@@ -162,6 +131,7 @@ export const getVehicleByIdService = async (id: number) => {
     },
   })
 }
+
 export const updateVehicleService = async (
   id: number,
   vehicle: UpdateVehicleDTO
