@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma'
 
 export const getAllBrandsService = async () => {
-  return await prisma.brand.findMany({
+  const brands = await prisma.brand.findMany({
     select: {
       id: true,
       name: true,
@@ -22,6 +22,12 @@ export const getAllBrandsService = async () => {
       name: 'asc',
     },
   })
+  return brands.map((b) => ({
+    id: b.id,
+    name: b.name,
+    countryOrigin: b.countryOrigin,
+    vehiclesCount: b.models.map((c) => c.trims[0]?._count.vehicles),
+  }))
 }
 
 export const deleteBrandService = async (id: number) => {
@@ -49,4 +55,12 @@ export const deleteBrandService = async (id: number) => {
     await tx.model.deleteMany({ where: { brandId: id } })
     await tx.brand.delete({ where: { id } })
   })
+}
+
+export const getNameAndIdBrandsService = async () => {
+  const brands = await prisma.brand.findMany({
+    select: { id: true, name: true },
+  })
+
+  return brands
 }

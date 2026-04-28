@@ -2,6 +2,7 @@ import { HTTP_STATUS, HTTP_STATUS_MESSAGE } from '@/constants/httpStatus'
 import {
   deleteBrandService,
   getAllBrandsService,
+  getNameAndIdBrandsService,
 } from '@/services/brand.service'
 import type { Request, Response } from 'express'
 
@@ -18,5 +19,13 @@ export const deleteBrand = async (req: Request, res: Response) => {
   await deleteBrandService(Number(id))
   res.status(HTTP_STATUS.OK).json({
     message: HTTP_STATUS_MESSAGE.OK,
+  })
+}
+
+export const getNameAndIdBrands = async (req: Request, res: Response) => {
+  const brands = await getNameAndIdBrandsService()
+  res.status(HTTP_STATUS.OK).json({
+    message: HTTP_STATUS_MESSAGE.OK,
+    data: brands,
   })
 }
