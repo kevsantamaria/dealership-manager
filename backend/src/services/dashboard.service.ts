@@ -8,7 +8,7 @@ export const getVehiclesStockSummaryService = async () => {
         COUNT(*) FILTER (WHERE stock_status = 'in_stock')::INT AS "inStock",
         COUNT(*) FILTER (WHERE stock_status = 'reserved')::INT AS "reserved",
         COUNT(*) FILTER (WHERE stock_status = 'sold')::INT AS "sold",
-        COUNT(*) AS "total"
+        COUNT(*)::INT AS "total"
       FROM vehicles;
     `
   return summaryVehicles[0]
