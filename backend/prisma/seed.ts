@@ -118,22 +118,22 @@ async function main() {
 
   for (const item of carData) {
     const brand = await prisma.brand.create({
-      data: { name: item.brand, country_origin: item.country },
+      data: { name: item.brand, countryOrigin: item.country },
     })
 
     for (const m of item.models) {
       const model = await prisma.model.create({
-        data: { name: m.name, launch_year: m.year, brand_id: brand.id },
+        data: { name: m.name, launchYear: m.year, brandId: brand.id },
       })
 
       for (const t of m.trims) {
         const trim = await prisma.trim.create({
           data: {
             name: t.name,
-            engine_size: t.engine,
+            engineSize: t.engine,
             horsepower: t.hp,
-            model_id: model.id,
-            engine_type: 'gasoline' as EngineType,
+            modelId: model.id,
+            engineType: 'gasoline' as EngineType,
             transmission: 'automatic' as Transmission,
             drivetrain: 'fwd' as Drivetrain,
           },
@@ -181,16 +181,16 @@ async function main() {
 
     return {
       vin: faker.vehicle.vin(),
-      license_plate: faker.vehicle.vrm(),
+      licensePlate: faker.vehicle.vrm(),
       color: colors[Math.floor(Math.random() * colors.length)],
       mileage: faker.number.int({ min: 0, max: 50000 }),
-      arrival_date: arrivalDate,
-      purchase_price: faker.number.int({ min: 15000, max: 40000 }),
-      suggested_price: faker.number.int({ min: 45000, max: 60000 }),
-      stock_status: status,
-      rate_condition: 'good' as RateCondition,
-      trim_id: randomTrim.id,
-      supplier_id: Number(randomSupplier.id),
+      arrivalDate,
+      purchasePrice: faker.number.int({ min: 15000, max: 40000 }),
+      suggestedPrice: faker.number.int({ min: 45000, max: 60000 }),
+      stockStatus: status,
+      rateCondition: 'good' as RateCondition,
+      trimId: randomTrim.id,
+      supplierId: Number(randomSupplier.id),
     }
   })
 
