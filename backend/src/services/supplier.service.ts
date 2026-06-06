@@ -3,7 +3,7 @@ import type {
   CreateSupplierDTO,
   UpdateSupplierDTO,
 } from '@/models/dtos/supplier.dto'
-import type { Supplier } from '@/models/entities/supplier'
+import type { Supplier } from '@prisma/client'
 
 export const createSupplierService = async (supplier: CreateSupplierDTO) => {
   const { name, country, contact, type } = supplier

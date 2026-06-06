@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import type { CreateUserDTO, UpdateUserDTO } from '@/models/dtos/user.dto'
-import type { User } from '@/models/entities/user'
+import type { User } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 
 export const createUserService = async (user: CreateUserDTO) => {
@@ -63,7 +63,7 @@ export const updateUserService = async (id: number, user: UpdateUserDTO) => {
     throw new Error('NO_FIELDS_TO_UPDATE')
   }
 
-  userToUpdate.updatedAt = new Date().toISOString()
+  userToUpdate.updatedAt = new Date()
   const updatedUser = await prisma.user.update({
     where: { id },
     data: userToUpdate,
