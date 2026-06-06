@@ -5,7 +5,4 @@ export const createBrandDTO = z.object({
   countryOrigin: z.string().min(1).max(60),
 })
 
-export const updateBrandDTO = createBrandDTO.partial()
-
 export type CreateBrandDTO = z.infer<typeof createBrandDTO>
-export type UpdateBrandDTO = z.infer<typeof updateBrandDTO>

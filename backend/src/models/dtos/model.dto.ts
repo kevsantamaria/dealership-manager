@@ -9,7 +9,4 @@ export const createModelDTO = z.object({
     .max(new Date().getFullYear() + 1),
 })
 
-export const updateModelDTO = createModelDTO.partial()
-
 export type CreateModelDTO = z.infer<typeof createModelDTO>
-export type UpdateModelDTO = z.infer<typeof updateModelDTO>

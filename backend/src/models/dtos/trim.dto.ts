@@ -12,7 +12,4 @@ export const createTrimDTO = z.object({
   drivetrain: z.enum(['fwd', 'rwd', 'awd']).default('fwd'),
 })
 
-export const updateTrimDTO = createTrimDTO.partial()
-
 export type CreateTrimDTO = z.infer<typeof createTrimDTO>
-export type UpdateTrimDTO = z.infer<typeof updateTrimDTO>
