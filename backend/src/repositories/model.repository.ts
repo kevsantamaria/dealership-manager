@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/config/prisma'
 import type { Model } from '@/models/entities/model.entity'
 import type { CreateModelDTO } from '@/models/schemas/model.schema'
 

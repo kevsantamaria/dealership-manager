@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/config/prisma'
 import type { SafeUser, User } from '@/models/entities/user.entity'
 import type { CreateUserDTO, UpdateUserDTO } from '@/models/schemas/user.schema'
 

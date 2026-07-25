@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/config/prisma'
 import type { CreateTrimDTO } from '@/models/schemas/trim.schema'
 
 export class TrimRepository {

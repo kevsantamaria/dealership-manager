@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/config/prisma'
 import type { Supplier } from '@/models/entities/supplier.entity'
 import type {
   CreateSupplierDTO,
