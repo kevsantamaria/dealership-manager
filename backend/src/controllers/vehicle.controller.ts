@@ -9,7 +9,7 @@ import type { Request, Response } from 'express'
 export class VehicleController {
   constructor(private vehicleService: VehicleService) {}
 
-  create = async (req: Request, res: Response) => {
+  async create(req: Request, res: Response) {
     const vehicle: CreateVehicleDTO = req.body
     const createdVehicle = await this.vehicleService.create(vehicle)
     res
@@ -17,7 +17,7 @@ export class VehicleController {
       .json({ message: HTTP_STATUS_MESSAGE.CREATED, data: createdVehicle })
   }
 
-  getAll = async (req: Request, res: Response) => {
+  async getAll(req: Request, res: Response) {
     const vehicles = await this.vehicleService.getAll()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
@@ -25,7 +25,7 @@ export class VehicleController {
     })
   }
 
-  getById = async (req: Request, res: Response) => {
+  async getById(req: Request, res: Response) {
     const { id } = req.params
     const vehicle = await this.vehicleService.getById(Number(id))
     res.status(HTTP_STATUS.OK).json({
@@ -34,7 +34,7 @@ export class VehicleController {
     })
   }
 
-  update = async (req: Request, res: Response) => {
+  async update(req: Request, res: Response) {
     const { id } = req.params
     const vehicle: UpdateVehicleDTO = req.body
     const updatedVehicle = await this.vehicleService.update(Number(id), vehicle)
@@ -44,7 +44,7 @@ export class VehicleController {
     })
   }
 
-  delete = async (req: Request, res: Response) => {
+  async delete(req: Request, res: Response) {
     const { id } = req.params
     await this.vehicleService.delete(Number(id))
     res.status(HTTP_STATUS.OK).json({

@@ -9,7 +9,7 @@ import type { Request, Response } from 'express'
 export class SupplierController {
   constructor(private supplierService: SupplierService) {}
 
-  create = async (req: Request, res: Response) => {
+  async create(req: Request, res: Response) {
     const supplier: CreateSupplierDTO = req.body
     const createdSupplier = await this.supplierService.create(supplier)
     res.status(HTTP_STATUS.CREATED).json({
@@ -18,7 +18,7 @@ export class SupplierController {
     })
   }
 
-  getAll = async (req: Request, res: Response) => {
+  async getAll(req: Request, res: Response) {
     const suppliers = await this.supplierService.getAll()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
@@ -26,7 +26,7 @@ export class SupplierController {
     })
   }
 
-  getAllNamesAndIds = async (req: Request, res: Response) => {
+  async getAllNamesAndIds(req: Request, res: Response) {
     const suppliers = await this.supplierService.getAllNamesAndIds()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
@@ -34,7 +34,7 @@ export class SupplierController {
     })
   }
 
-  getById = async (req: Request, res: Response) => {
+  async getById(req: Request, res: Response) {
     const { id } = req.params
     const supplier = await this.supplierService.getById(Number(id))
     res.status(HTTP_STATUS.OK).json({
@@ -43,17 +43,20 @@ export class SupplierController {
     })
   }
 
-  update = async (req: Request, res: Response) => {
+  async update(req: Request, res: Response) {
     const { id } = req.params
     const supplier: UpdateSupplierDTO = req.body
-    const updatedSupplier = await this.supplierService.update(Number(id), supplier)
+    const updatedSupplier = await this.supplierService.update(
+      Number(id),
+      supplier
+    )
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
       data: updatedSupplier,
     })
   }
 
-  delete = async (req: Request, res: Response) => {
+  async delete(req: Request, res: Response) {
     const { id } = req.params
     await this.supplierService.delete(Number(id))
     res.status(HTTP_STATUS.OK).json({

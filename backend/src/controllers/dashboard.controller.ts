@@ -5,7 +5,7 @@ import type { Request, Response } from 'express'
 export class DashboardController {
   constructor(private dashboardService: DashboardService) {}
 
-  getStockSummary = async (req: Request, res: Response) => {
+  async getStockSummary(req: Request, res: Response) {
     const summaryVehicles = await this.dashboardService.getStockSummary()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
@@ -13,7 +13,7 @@ export class DashboardController {
     })
   }
 
-  getFinancialSummary = async (req: Request, res: Response) => {
+  async getFinancialSummary(req: Request, res: Response) {
     const summary = await this.dashboardService.getFinancialSummary()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
@@ -21,7 +21,7 @@ export class DashboardController {
     })
   }
 
-  getMonthlyFinancialHistory = async (req: Request, res: Response) => {
+  async getMonthlyFinancialHistory(req: Request, res: Response) {
     const history = await this.dashboardService.getMonthlyFinancialHistory()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
@@ -29,7 +29,7 @@ export class DashboardController {
     })
   }
 
-  getTopSellingQuarterly = async (req: Request, res: Response) => {
+  async getTopSellingQuarterly(req: Request, res: Response) {
     const sells = await this.dashboardService.getTopSellingQuarterly()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
@@ -37,7 +37,7 @@ export class DashboardController {
     })
   }
 
-  getOldInventoryReport = async (req: Request, res: Response) => {
+  async getOldInventoryReport(req: Request, res: Response) {
     const oldInventory = await this.dashboardService.getOldInventoryReport()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
@@ -45,7 +45,7 @@ export class DashboardController {
     })
   }
 
-  getRecentActivity = async (req: Request, res: Response) => {
+  async getRecentActivity(req: Request, res: Response) {
     const recentActivity = await this.dashboardService.getRecentActivity()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,

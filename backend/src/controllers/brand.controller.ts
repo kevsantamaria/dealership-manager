@@ -5,7 +5,7 @@ import type { Request, Response } from 'express'
 export class BrandController {
   constructor(private brandService: BrandService) {}
 
-  getAll = async (req: Request, res: Response) => {
+  async getAll(req: Request, res: Response) {
     const brands = await this.brandService.getAll()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
@@ -13,7 +13,7 @@ export class BrandController {
     })
   }
 
-  getNamesAndIds = async (req: Request, res: Response) => {
+  async getNamesAndIds(req: Request, res: Response) {
     const brands = await this.brandService.getNamesAndIds()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
@@ -21,7 +21,7 @@ export class BrandController {
     })
   }
 
-  delete = async (req: Request, res: Response) => {
+  async delete(req: Request, res: Response) {
     const { id } = req.params
     await this.brandService.delete(Number(id))
     res.status(HTTP_STATUS.OK).json({

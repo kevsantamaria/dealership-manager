@@ -6,7 +6,7 @@ import type { Request, Response } from 'express'
 export class UserController {
   constructor(private userService: UserService) {}
 
-  create = async (req: Request, res: Response) => {
+  async create(req: Request, res: Response) {
     const user: CreateUserDTO = req.body
     const createdUser = await this.userService.create(user)
     res.status(HTTP_STATUS.CREATED).json({
@@ -15,7 +15,7 @@ export class UserController {
     })
   }
 
-  getAll = async (req: Request, res: Response) => {
+  async getAll(req: Request, res: Response) {
     const users = await this.userService.getAll()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
@@ -23,7 +23,7 @@ export class UserController {
     })
   }
 
-  getById = async (req: Request, res: Response) => {
+  async getById(req: Request, res: Response) {
     const { id } = req.params
     const user = await this.userService.getById(Number(id))
     res.status(HTTP_STATUS.OK).json({
@@ -32,7 +32,7 @@ export class UserController {
     })
   }
 
-  update = async (req: Request, res: Response) => {
+  async update(req: Request, res: Response) {
     const { id } = req.params
     const user: UpdateUserDTO = req.body
     const updatedUser = await this.userService.update(Number(id), user)
@@ -42,7 +42,7 @@ export class UserController {
     })
   }
 
-  delete = async (req: Request, res: Response) => {
+  async delete(req: Request, res: Response) {
     const { id } = req.params
     await this.userService.delete(Number(id))
     res.status(HTTP_STATUS.OK).json({
