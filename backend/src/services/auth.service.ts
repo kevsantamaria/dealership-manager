@@ -3,13 +3,13 @@ import { createSession } from '@/sessions/session.store'
 import { UserRepository } from '@/repositories/user.repository'
 import bcrypt from 'bcryptjs'
 
-const userRepository = new UserRepository()
-
 export class AuthService {
+  constructor(private userRepository: UserRepository) {}
+
   async login(user: LoginUser): Promise<{ user: SafeUser; sessionId: string }> {
     const { username, password } = user
 
-    const validUser = await userRepository.findWithPasswordByUsername(username)
+    const validUser = await this.userRepository.findWithPasswordByUsername(username)
     if (!validUser) throw new Error('INVALID_CREDENTIALS')
 
     const match = await bcrypt.compare(password, validUser.password)

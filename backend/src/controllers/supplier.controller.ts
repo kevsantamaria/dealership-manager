@@ -6,12 +6,12 @@ import type {
 import { SupplierService } from '@/services/supplier.service'
 import type { Request, Response } from 'express'
 
-const supplierService = new SupplierService()
-
 export class SupplierController {
+  constructor(private supplierService: SupplierService) {}
+
   create = async (req: Request, res: Response) => {
     const supplier: CreateSupplierDTO = req.body
-    const createdSupplier = await supplierService.create(supplier)
+    const createdSupplier = await this.supplierService.create(supplier)
     res.status(HTTP_STATUS.CREATED).json({
       message: HTTP_STATUS_MESSAGE.CREATED,
       data: createdSupplier,
@@ -19,7 +19,7 @@ export class SupplierController {
   }
 
   getAll = async (req: Request, res: Response) => {
-    const suppliers = await supplierService.getAll()
+    const suppliers = await this.supplierService.getAll()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
       data: suppliers,
@@ -27,7 +27,7 @@ export class SupplierController {
   }
 
   getAllNamesAndIds = async (req: Request, res: Response) => {
-    const suppliers = await supplierService.getAllNamesAndIds()
+    const suppliers = await this.supplierService.getAllNamesAndIds()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
       data: suppliers,
@@ -36,7 +36,7 @@ export class SupplierController {
 
   getById = async (req: Request, res: Response) => {
     const { id } = req.params
-    const supplier = await supplierService.getById(Number(id))
+    const supplier = await this.supplierService.getById(Number(id))
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
       data: supplier,
@@ -46,7 +46,7 @@ export class SupplierController {
   update = async (req: Request, res: Response) => {
     const { id } = req.params
     const supplier: UpdateSupplierDTO = req.body
-    const updatedSupplier = await supplierService.update(Number(id), supplier)
+    const updatedSupplier = await this.supplierService.update(Number(id), supplier)
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
       data: updatedSupplier,
@@ -55,7 +55,7 @@ export class SupplierController {
 
   delete = async (req: Request, res: Response) => {
     const { id } = req.params
-    await supplierService.delete(Number(id))
+    await this.supplierService.delete(Number(id))
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
     })

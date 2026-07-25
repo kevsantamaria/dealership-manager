@@ -5,9 +5,13 @@ import {
   createVehicleSchema,
   updateVehicleSchema,
 } from '@/models/schemas/vehicle.schema'
+import { VehicleRepository } from '@/repositories/vehicle.repository'
+import { VehicleService } from '@/services/vehicle.service'
 import { Router } from 'express'
 
-const vehicleController = new VehicleController()
+const vehicleRepository = new VehicleRepository()
+const vehicleService = new VehicleService(vehicleRepository)
+const vehicleController = new VehicleController(vehicleService)
 const router = Router()
 
 router.post(

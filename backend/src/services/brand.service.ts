@@ -1,28 +1,31 @@
-import type { Brand, BrandWithNameAndId, BrandWithVehicleCount } from '@/models/entities/brand.entity'
+import type {
+  Brand,
+  BrandWithNameAndId,
+  BrandWithVehicleCount,
+} from '@/models/entities/brand.entity'
 import { BrandRepository } from '@/repositories/brand.repository'
 
-const brandRepository = new BrandRepository()
-
 export class BrandService {
+  constructor(private brandRepository: BrandRepository) {}
   async getAll(): Promise<BrandWithVehicleCount[]> {
-    return await brandRepository.findAllWithVehicleCount()
+    return await this.brandRepository.findAllWithVehicleCount()
   }
 
   async getNamesAndIds(): Promise<BrandWithNameAndId[]> {
-    return await brandRepository.findNamesAndIds()
+    return await this.brandRepository.findNamesAndIds()
   }
 
   async delete(id: number): Promise<void> {
-    const existingBrand = await brandRepository.findById(id)
+    const existingBrand = await this.brandRepository.findById(id)
     if (!existingBrand) {
       throw new Error('NOT_FOUND')
     }
 
-    const hasVehicles = await brandRepository.hasVehicles(id)
+    const hasVehicles = await this.brandRepository.hasVehicles(id)
     if (hasVehicles) {
       throw new Error('BRAND_NOT_EMPTY')
     }
 
-    await brandRepository.deleteWithHierarchy(id)
+    await this.brandRepository.deleteWithHierarchy(id)
   }
 }

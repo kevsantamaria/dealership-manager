@@ -4,13 +4,13 @@ import type { LoginUser } from '@/models/entities/user.entity'
 import { HTTP_STATUS, HTTP_STATUS_MESSAGE } from '@/constants/httpStatus'
 import { env } from 'bun'
 
-const authService = new AuthService()
-
 export class AuthController {
+  constructor(private authService: AuthService) {}
+
   login = async (req: Request, res: Response) => {
     const user: LoginUser = req.body
 
-    const { user: loggedUser, sessionId } = await authService.login(user)
+    const { user: loggedUser, sessionId } = await this.authService.login(user)
 
     res.cookie('session_id', sessionId, {
       httpOnly: true,

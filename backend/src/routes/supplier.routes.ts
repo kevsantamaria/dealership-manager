@@ -5,9 +5,13 @@ import {
   createSupplierSchema,
   updateSupplierSchema,
 } from '@/models/schemas/supplier.schema'
+import { SupplierRepository } from '@/repositories/supplier.repository'
+import { SupplierService } from '@/services/supplier.service'
 import { Router } from 'express'
 
-const supplierController = new SupplierController()
+const supplierRepository = new SupplierRepository()
+const supplierService = new SupplierService(supplierRepository)
+const supplierController = new SupplierController(supplierService)
 const router = Router()
 
 router.post(

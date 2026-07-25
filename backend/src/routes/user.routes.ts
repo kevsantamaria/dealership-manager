@@ -4,9 +4,13 @@ import { dtoValidator } from '@/middlewares/dtoValidator.middleware'
 import { requireAdmin } from '@/middlewares/role.middleware'
 import { idParamSchema } from '@/models/schemas/idParam.schema'
 import { createUserSchema, updateUserSchema } from '@/models/schemas/user.schema'
+import { UserRepository } from '@/repositories/user.repository'
+import { UserService } from '@/services/user.service'
 import { Router } from 'express'
 
-const userController = new UserController()
+const userRepository = new UserRepository()
+const userService = new UserService(userRepository)
+const userController = new UserController(userService)
 const router = Router()
 
 router.post(

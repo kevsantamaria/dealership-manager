@@ -1,7 +1,11 @@
 import { DashboardController } from '@/controllers/dashboard.controller'
+import { DashboardRepository } from '@/repositories/dashboard.repository'
+import { DashboardService } from '@/services/dashboard.service'
 import { Router } from 'express'
 
-const dashboardController = new DashboardController()
+const dashboardRepository = new DashboardRepository()
+const dashboardService = new DashboardService(dashboardRepository)
+const dashboardController = new DashboardController(dashboardService)
 const router = Router()
 
 router.get('/dashboard/stock-summary', dashboardController.getStockSummary)

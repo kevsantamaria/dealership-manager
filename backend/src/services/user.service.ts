@@ -2,39 +2,39 @@ import type { CreateUserDTO, UpdateUserDTO } from '@/models/schemas/user.schema'
 import { UserRepository } from '@/repositories/user.repository'
 import bcrypt from 'bcryptjs'
 
-const userRepository = new UserRepository()
-
 export class UserService {
+  constructor(private userRepository: UserRepository) {}
+
   async getAll() {
-    return await userRepository.findAll()
+    return await this.userRepository.findAll()
   }
 
   async getById(id: number) {
-    const user = await userRepository.findById(id)
+    const user = await this.userRepository.findById(id)
     if (!user) throw new Error('NOT_FOUND')
     return user
   }
 
   async create(data: CreateUserDTO) {
-    const existingUser = await userRepository.findByUsername(data.username)
+    const existingUser = await this.userRepository.findByUsername(data.username)
     if (existingUser) throw new Error('USERNAME_ALREADY_EXISTS')
 
     const hashPassword = await bcrypt.hash(data.password, 10)
-    return await userRepository.create({
+    return await this.userRepository.create({
       ...data,
       password: hashPassword,
     })
   }
 
   async update(id: number, data: UpdateUserDTO) {
-    const existingUser = await userRepository.findById(id)
+    const existingUser = await this.userRepository.findById(id)
     if (!existingUser) throw new Error('NOT_FOUND')
 
     const { username, password, role } = data
     const userToUpdate: Record<string, unknown> = {}
 
     if (username !== undefined && username.trim() !== '') {
-      const userWithSameUsername = await userRepository.findByUsername(username)
+      const userWithSameUsername = await this.userRepository.findByUsername(username)
       if (userWithSameUsername && userWithSameUsername.id !== id) {
         throw new Error('USERNAME_ALREADY_EXISTS')
       }
@@ -54,13 +54,13 @@ export class UserService {
       throw new Error('NO_FIELDS_TO_UPDATE')
     }
 
-    return await userRepository.update(id, userToUpdate)
+    return await this.userRepository.update(id, userToUpdate)
   }
 
   async delete(id: number): Promise<void> {
-    const existingUser = await userRepository.findById(id)
+    const existingUser = await this.userRepository.findById(id)
     if (!existingUser) throw new Error('NOT_FOUND')
 
-    await userRepository.delete(id)
+    await this.userRepository.delete(id)
   }
 }

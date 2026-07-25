@@ -6,19 +6,19 @@ import type {
 import { VehicleService } from '@/services/vehicle.service'
 import type { Request, Response } from 'express'
 
-const vehicleService = new VehicleService()
-
 export class VehicleController {
+  constructor(private vehicleService: VehicleService) {}
+
   create = async (req: Request, res: Response) => {
     const vehicle: CreateVehicleDTO = req.body
-    const createdVehicle = await vehicleService.create(vehicle)
+    const createdVehicle = await this.vehicleService.create(vehicle)
     res
       .status(HTTP_STATUS.CREATED)
       .json({ message: HTTP_STATUS_MESSAGE.CREATED, data: createdVehicle })
   }
 
   getAll = async (req: Request, res: Response) => {
-    const vehicles = await vehicleService.getAll()
+    const vehicles = await this.vehicleService.getAll()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
       data: vehicles,
@@ -27,7 +27,7 @@ export class VehicleController {
 
   getById = async (req: Request, res: Response) => {
     const { id } = req.params
-    const vehicle = await vehicleService.getById(Number(id))
+    const vehicle = await this.vehicleService.getById(Number(id))
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
       data: vehicle,
@@ -37,7 +37,7 @@ export class VehicleController {
   update = async (req: Request, res: Response) => {
     const { id } = req.params
     const vehicle: UpdateVehicleDTO = req.body
-    const updatedVehicle = await vehicleService.update(Number(id), vehicle)
+    const updatedVehicle = await this.vehicleService.update(Number(id), vehicle)
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
       data: updatedVehicle,
@@ -46,7 +46,7 @@ export class VehicleController {
 
   delete = async (req: Request, res: Response) => {
     const { id } = req.params
-    await vehicleService.delete(Number(id))
+    await this.vehicleService.delete(Number(id))
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
     })

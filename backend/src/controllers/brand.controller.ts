@@ -2,11 +2,11 @@ import { HTTP_STATUS, HTTP_STATUS_MESSAGE } from '@/constants/httpStatus'
 import { BrandService } from '@/services/brand.service'
 import type { Request, Response } from 'express'
 
-const brandService = new BrandService()
-
 export class BrandController {
+  constructor(private brandService: BrandService) {}
+
   getAll = async (req: Request, res: Response) => {
-    const brands = await brandService.getAll()
+    const brands = await this.brandService.getAll()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
       data: brands,
@@ -14,7 +14,7 @@ export class BrandController {
   }
 
   getNamesAndIds = async (req: Request, res: Response) => {
-    const brands = await brandService.getNamesAndIds()
+    const brands = await this.brandService.getNamesAndIds()
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
       data: brands,
@@ -23,7 +23,7 @@ export class BrandController {
 
   delete = async (req: Request, res: Response) => {
     const { id } = req.params
-    await brandService.delete(Number(id))
+    await this.brandService.delete(Number(id))
     res.status(HTTP_STATUS.OK).json({
       message: HTTP_STATUS_MESSAGE.OK,
     })
