@@ -20,9 +20,10 @@ model User {
 model Supplier {
   id        Int          @id @default(autoincrement())
   name      String       @db.VarChar(255)
-  contact   String?      @db.VarChar(255)
+  email     String?      @db.VarChar(255)
+  telephone String?      @db.VarChar(255)
   type      SupplierType @default(private)
-  country   String       @db.VarChar(255)
+  country   String?      @db.VarChar(255)
   createdAt DateTime     @default(now()) @map("created_at") @db.Timestamp(0)
   updatedAt DateTime     @updatedAt @map("updated_at") @db.Timestamp(0)
   vehicles  Vehicle[]
@@ -31,20 +32,24 @@ model Supplier {
 }
 
 model Brand {
-  id            Int     @id @default(autoincrement())
-  name          String  @db.VarChar(255)
-  countryOrigin String  @map("country_origin") @db.VarChar(255)
+  id            Int      @id @default(autoincrement())
+  name          String   @db.VarChar(255)
+  countryOrigin String   @map("country_origin") @db.VarChar(255)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
   models        Model[]
 
   @@map("brands")
 }
 
 model Model {
-  id         Int    @id @default(autoincrement())
-  name       String @db.VarChar(255)
-  launchYear Int    @map("launch_year")
-  brandId    Int    @map("brand_id")
-  brand      Brand  @relation(fields: [brandId], references: [id])
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(255)
+  launchYear Int      @map("launch_year")
+  brandId    Int      @map("brand_id")
+  brand      Brand    @relation(fields: [brandId], references: [id])
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
   trims      Trim[]
 
   @@map("models")
@@ -53,12 +58,14 @@ model Model {
 model Trim {
   id           Int          @id @default(autoincrement())
   name         String       @db.VarChar(255)
-  engineSize   Decimal      @map("engine_size") @db.Decimal(8, 2)
+  engineSize   Int          @map("engine_size")
   horsepower   Int
   engineType   EngineType   @default(gasoline) @map("engine_type")
   transmission Transmission @default(automatic)
   drivetrain   Drivetrain   @default(fwd)
   modelId      Int          @map("model_id")
+  createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt    DateTime     @updatedAt @map("updated_at") @db.Timestamp(0)
   model        Model        @relation(fields: [modelId], references: [id])
   vehicles     Vehicle[]
 
@@ -70,10 +77,10 @@ model Vehicle {
   vin             String        @unique @db.VarChar(17)
   licensePlate    String?       @map("license_plate") @db.VarChar(255)
   color           String        @db.VarChar(255)
-  mileage         Decimal?      @db.Decimal(8, 2)
+  mileage         Int?
   arrivalDate     DateTime      @map("arrival_date") @db.Date
-  purchasePrice   Decimal       @map("purchase_price") @db.Decimal(8, 2)
-  suggestedPrice  Decimal       @map("suggested_price") @db.Decimal(8, 2)
+  purchasePrice   Int           @map("purchase_price")
+  suggestedPrice  Int           @map("suggested_price")
   stockStatus     StockStatus   @default(in_stock) @map("stock_status")
   rateCondition   RateCondition @default(good) @map("rate_condition")
   rateDescription String?       @map("rate_description") @db.VarChar(255)
