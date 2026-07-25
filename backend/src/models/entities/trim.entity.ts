@@ -4,16 +4,15 @@ export type Transmission = 'automatic' | 'manual' | 'cvt'
 
 export type Drivetrain = 'fwd' | 'rwd' | 'awd'
 
-export interface Trim {
+export type Trim = {
   id: number
   name: string
   engineSize: number
   horsepower: number
   engineType: EngineType
   transmission: Transmission
-  drivetrain?: Drivetrain | null
+  drivetrain: Drivetrain
   modelId: number
+  createdAt: Date
+  updatedAt: Date
 }
-
-export type NewTrim = Omit<Trim, 'id'>
-export type UpdateTrim = Partial<Omit<Trim, 'id'>>
