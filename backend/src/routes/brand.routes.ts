@@ -1,16 +1,17 @@
-import {
-  deleteBrand,
-  getAllBrands,
-  getNameAndIdBrands,
-} from '@/controllers/brand.controller'
+import { BrandController } from '@/controllers/brand.controller'
 import { dtoValidator } from '@/middlewares/dtoValidator.middleware'
-import { idParamDTO } from '@/models/dtos/idParam.dto'
+import { idParamSchema } from '@/models/schemas/idParam.schema'
 import { Router } from 'express'
 
+const brandController = new BrandController()
 const router = Router()
 
-router.get('/brands', getAllBrands)
-router.delete('/brands/:id', dtoValidator(idParamDTO, 'params'), deleteBrand)
-router.get('/brands-by-name-id', getNameAndIdBrands)
+router.get('/brands', brandController.getAll)
+router.delete(
+  '/brands/:id',
+  dtoValidator(idParamSchema, 'params'),
+  brandController.delete
+)
+router.get('/brands-by-name-id', brandController.getNamesAndIds)
 
 export default router

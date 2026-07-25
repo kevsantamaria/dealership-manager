@@ -2,56 +2,53 @@ import { HTTP_STATUS, HTTP_STATUS_MESSAGE } from '@/constants/httpStatus'
 import type {
   CreateVehicleDTO,
   UpdateVehicleDTO,
-} from '@/models/dtos/vehicle.dto'
-import {
-  createVehicleService,
-  deleteVehicleService,
-  getAllVehiclesService,
-  getVehicleByIdService,
-  updateVehicleService,
-} from '@/services/vehicle.service'
+} from '@/models/schemas/vehicle.schema'
+import { VehicleService } from '@/services/vehicle.service'
 import type { Request, Response } from 'express'
 
-export const createVehicle = async (req: Request, res: Response) => {
-  const vehicle: CreateVehicleDTO = req.body
-  const createdVehicle = await createVehicleService(vehicle)
-  res
-    .status(HTTP_STATUS.CREATED)
-    .json({ message: HTTP_STATUS_MESSAGE.CREATED, data: createdVehicle })
-}
+const vehicleService = new VehicleService()
 
-export const getAllVehicles = async (req: Request, res: Response) => {
-  const vehicles = await getAllVehiclesService()
-  res.status(HTTP_STATUS.OK).json({
-    message: HTTP_STATUS_MESSAGE.OK,
-    data: vehicles,
-  })
-}
+export class VehicleController {
+  create = async (req: Request, res: Response) => {
+    const vehicle: CreateVehicleDTO = req.body
+    const createdVehicle = await vehicleService.create(vehicle)
+    res
+      .status(HTTP_STATUS.CREATED)
+      .json({ message: HTTP_STATUS_MESSAGE.CREATED, data: createdVehicle })
+  }
 
-export const getVehicleById = async (req: Request, res: Response) => {
-  const { id } = req.params
-  const vehicle = await getVehicleByIdService(Number(id))
-  res.status(HTTP_STATUS.OK).json({
-    message: HTTP_STATUS_MESSAGE.OK,
-    data: vehicle,
-  })
-}
+  getAll = async (req: Request, res: Response) => {
+    const vehicles = await vehicleService.getAll()
+    res.status(HTTP_STATUS.OK).json({
+      message: HTTP_STATUS_MESSAGE.OK,
+      data: vehicles,
+    })
+  }
 
-export const updateVehicle = async (req: Request, res: Response) => {
-  const { id } = req.params
-  const vehicle: UpdateVehicleDTO = req.body
+  getById = async (req: Request, res: Response) => {
+    const { id } = req.params
+    const vehicle = await vehicleService.getById(Number(id))
+    res.status(HTTP_STATUS.OK).json({
+      message: HTTP_STATUS_MESSAGE.OK,
+      data: vehicle,
+    })
+  }
 
-  const updatedVehicle = await updateVehicleService(Number(id), vehicle)
-  res.status(HTTP_STATUS.OK).json({
-    message: HTTP_STATUS.OK,
-    data: updatedVehicle,
-  })
-}
+  update = async (req: Request, res: Response) => {
+    const { id } = req.params
+    const vehicle: UpdateVehicleDTO = req.body
+    const updatedVehicle = await vehicleService.update(Number(id), vehicle)
+    res.status(HTTP_STATUS.OK).json({
+      message: HTTP_STATUS_MESSAGE.OK,
+      data: updatedVehicle,
+    })
+  }
 
-export const deleteVehicle = async (req: Request, res: Response) => {
-  const { id } = req.params
-  await deleteVehicleService(Number(id))
-  res.status(HTTP_STATUS.OK).json({
-    message: HTTP_STATUS_MESSAGE.OK,
-  })
+  delete = async (req: Request, res: Response) => {
+    const { id } = req.params
+    await vehicleService.delete(Number(id))
+    res.status(HTTP_STATUS.OK).json({
+      message: HTTP_STATUS_MESSAGE.OK,
+    })
+  }
 }

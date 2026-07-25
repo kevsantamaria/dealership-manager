@@ -1,30 +1,36 @@
-import {
-  createVehicle,
-  deleteVehicle,
-  getAllVehicles,
-  getVehicleById,
-  updateVehicle,
-} from '@/controllers/vehicle.controller'
+import { VehicleController } from '@/controllers/vehicle.controller'
 import { dtoValidator } from '@/middlewares/dtoValidator.middleware'
-import { idParamDTO } from '@/models/dtos/idParam.dto'
-import { createVehicleDTO, updateVehicleDTO } from '@/models/dtos/vehicle.dto'
+import { idParamSchema } from '@/models/schemas/idParam.schema'
+import {
+  createVehicleSchema,
+  updateVehicleSchema,
+} from '@/models/schemas/vehicle.schema'
 import { Router } from 'express'
 
+const vehicleController = new VehicleController()
 const router = Router()
 
-router.post('/vehicles', dtoValidator(createVehicleDTO, 'body'), createVehicle)
-router.get('/vehicles', getAllVehicles)
-router.get('/vehicles/:id', dtoValidator(idParamDTO, 'params'), getVehicleById)
+router.post(
+  '/vehicles',
+  dtoValidator(createVehicleSchema, 'body'),
+  vehicleController.create
+)
+router.get('/vehicles', vehicleController.getAll)
+router.get(
+  '/vehicles/:id',
+  dtoValidator(idParamSchema, 'params'),
+  vehicleController.getById
+)
 router.patch(
   '/vehicles/:id',
-  dtoValidator(updateVehicleDTO, 'body'),
-  dtoValidator(idParamDTO, 'params'),
-  updateVehicle
+  dtoValidator(updateVehicleSchema, 'body'),
+  dtoValidator(idParamSchema, 'params'),
+  vehicleController.update
 )
 router.delete(
   '/vehicles/:id',
-  dtoValidator(idParamDTO, 'params'),
-  deleteVehicle
+  dtoValidator(idParamSchema, 'params'),
+  vehicleController.delete
 )
 
 export default router

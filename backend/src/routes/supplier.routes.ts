@@ -1,43 +1,37 @@
-import {
-  createSupplier,
-  deleteSupplier,
-  getAllSuppliers,
-  getAllSuppliersWithNameAndId,
-  getSupplierById,
-  updateSupplier,
-} from '@/controllers/supplier.controller'
+import { SupplierController } from '@/controllers/supplier.controller'
 import { dtoValidator } from '@/middlewares/dtoValidator.middleware'
-import { idParamDTO } from '@/models/dtos/idParam.dto'
+import { idParamSchema } from '@/models/schemas/idParam.schema'
 import {
-  createSupplierDTO,
-  updateSupplierDTO,
-} from '@/models/dtos/supplier.dto'
+  createSupplierSchema,
+  updateSupplierSchema,
+} from '@/models/schemas/supplier.schema'
 import { Router } from 'express'
 
+const supplierController = new SupplierController()
 const router = Router()
 
 router.post(
   '/suppliers',
-  dtoValidator(createSupplierDTO, 'body'),
-  createSupplier
+  dtoValidator(createSupplierSchema, 'body'),
+  supplierController.create
 )
-router.get('/suppliers', getAllSuppliers)
-router.get('/suppliers/names-and-ids', getAllSuppliersWithNameAndId)
+router.get('/suppliers', supplierController.getAll)
+router.get('/suppliers/names-and-ids', supplierController.getAllNamesAndIds)
 router.get(
   '/suppliers/:id',
-  dtoValidator(idParamDTO, 'params'),
-  getSupplierById
+  dtoValidator(idParamSchema, 'params'),
+  supplierController.getById
 )
 router.patch(
   '/suppliers/:id',
-  dtoValidator(updateSupplierDTO, 'body'),
-  dtoValidator(idParamDTO, 'params'),
-  updateSupplier
+  dtoValidator(updateSupplierSchema, 'body'),
+  dtoValidator(idParamSchema, 'params'),
+  supplierController.update
 )
 router.delete(
   '/suppliers/:id',
-  dtoValidator(idParamDTO, 'params'),
-  deleteSupplier
+  dtoValidator(idParamSchema, 'params'),
+  supplierController.delete
 )
 
 export default router

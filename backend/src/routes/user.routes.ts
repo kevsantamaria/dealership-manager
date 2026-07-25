@@ -1,48 +1,43 @@
-import {
-  createUser,
-  deleteUser,
-  getAllUsers,
-  getUserById,
-  updateUser,
-} from '@/controllers/user.controller'
-import { authenticate } from '@/middlewares/autenticate.meddleware'
+import { UserController } from '@/controllers/user.controller'
+import { authenticate } from '@/middlewares/autenticate.middleware'
 import { dtoValidator } from '@/middlewares/dtoValidator.middleware'
 import { requireAdmin } from '@/middlewares/role.middleware'
-import { idParamDTO } from '@/models/dtos/idParam.dto'
-import { createUserDTO, updateUserDTO } from '@/models/dtos/user.dto'
+import { idParamSchema } from '@/models/schemas/idParam.schema'
+import { createUserSchema, updateUserSchema } from '@/models/schemas/user.schema'
 import { Router } from 'express'
 
+const userController = new UserController()
 const router = Router()
 
 router.post(
   '/users',
   authenticate,
   requireAdmin,
-  dtoValidator(createUserDTO, 'body'),
-  createUser
+  dtoValidator(createUserSchema, 'body'),
+  userController.create
 )
-router.get('/users', authenticate, requireAdmin, getAllUsers)
+router.get('/users', authenticate, requireAdmin, userController.getAll)
 router.get(
   '/users/:id',
   authenticate,
   requireAdmin,
-  dtoValidator(idParamDTO, 'params'),
-  getUserById
+  dtoValidator(idParamSchema, 'params'),
+  userController.getById
 )
 router.patch(
   '/users/:id',
   authenticate,
   requireAdmin,
-  dtoValidator(updateUserDTO, 'body'),
-  dtoValidator(idParamDTO, 'params'),
-  updateUser
+  dtoValidator(updateUserSchema, 'body'),
+  dtoValidator(idParamSchema, 'params'),
+  userController.update
 )
 router.delete(
   '/users/:id',
   authenticate,
   requireAdmin,
-  dtoValidator(idParamDTO, 'params'),
-  deleteUser
+  dtoValidator(idParamSchema, 'params'),
+  userController.delete
 )
 
 export default router

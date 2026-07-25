@@ -1,79 +1,66 @@
-import { prisma } from '@/lib/prisma'
-import type { CreateUserDTO, UpdateUserDTO } from '@/models/dtos/user.dto'
-import type { User } from '@prisma/client'
+import type { CreateUserDTO, UpdateUserDTO } from '@/models/schemas/user.schema'
+import { UserRepository } from '@/repositories/user.repository'
 import bcrypt from 'bcryptjs'
 
-export const createUserService = async (user: CreateUserDTO) => {
-  const { username, password, role } = user
+const userRepository = new UserRepository()
 
-  const validUser = await prisma.user.findFirst({
-    where: { username: username },
-  })
-  if (validUser) throw new Error('USERNAME_ALREADY_EXISTS')
+export class UserService {
+  async getAll() {
+    return await userRepository.findAll()
+  }
 
-  const hashPassword = await bcrypt.hash(password, 10)
-  const createdUser = await prisma.user.create({
-    data: {
-      username,
+  async getById(id: number) {
+    const user = await userRepository.findById(id)
+    if (!user) throw new Error('NOT_FOUND')
+    return user
+  }
+
+  async create(data: CreateUserDTO) {
+    const existingUser = await userRepository.findByUsername(data.username)
+    if (existingUser) throw new Error('USERNAME_ALREADY_EXISTS')
+
+    const hashPassword = await bcrypt.hash(data.password, 10)
+    return await userRepository.create({
+      ...data,
       password: hashPassword,
-      role,
-    },
-  })
-  return createdUser
-}
-
-export const getAllUsersService = async () => {
-  return await prisma.user.findMany()
-}
-
-export const getUserByIdService = async (id: number) => {
-  const user = await prisma.user.findUnique({ where: { id: id } })
-  if (!user) throw new Error('NOT_FOUND')
-
-  return user
-}
-
-export const updateUserService = async (id: number, user: UpdateUserDTO) => {
-  const existingUser = await prisma.user.findUnique({ where: { id: id } })
-  if (!existingUser) throw new Error('NOT_FOUND')
-
-  const { username, password, role } = user
-  const userToUpdate: Partial<User> = {}
-
-  if (username !== undefined && username.trim() !== '') {
-    const userWithSameUsername = await prisma.user.findFirst({
-      where: { username: username },
     })
-    if (userWithSameUsername && userWithSameUsername.id !== id) {
-      throw new Error('USERNAME_ALREADY_EXISTS')
+  }
+
+  async update(id: number, data: UpdateUserDTO) {
+    const existingUser = await userRepository.findById(id)
+    if (!existingUser) throw new Error('NOT_FOUND')
+
+    const { username, password, role } = data
+    const userToUpdate: Record<string, unknown> = {}
+
+    if (username !== undefined && username.trim() !== '') {
+      const userWithSameUsername = await userRepository.findByUsername(username)
+      if (userWithSameUsername && userWithSameUsername.id !== id) {
+        throw new Error('USERNAME_ALREADY_EXISTS')
+      }
+      userToUpdate.username = username
     }
-    userToUpdate.username = username
+
+    if (role !== undefined) {
+      userToUpdate.role = role
+    }
+
+    if (password && password.trim() !== '') {
+      const hashedPassword = await bcrypt.hash(password, 10)
+      userToUpdate.password = hashedPassword
+    }
+
+    if (Object.keys(userToUpdate).length === 0) {
+      throw new Error('NO_FIELDS_TO_UPDATE')
+    }
+
+    return await userRepository.update(id, userToUpdate)
   }
 
-  if (role !== undefined) {
-    userToUpdate.role = role
+  async delete(id: number): Promise<void> {
+    const existingUser = await userRepository.findById(id)
+    if (!existingUser) throw new Error('NOT_FOUND')
+
+    await userRepository.delete(id)
   }
-
-  if (password && password.trim() !== '') {
-    const hashedPassword = await bcrypt.hash(password, 10)
-    userToUpdate.password = hashedPassword
-  }
-
-  if (Object.keys(userToUpdate).length === 0) {
-    throw new Error('NO_FIELDS_TO_UPDATE')
-  }
-
-  userToUpdate.updatedAt = new Date()
-  const updatedUser = await prisma.user.update({
-    where: { id },
-    data: userToUpdate,
-  })
-  return updatedUser
-}
-
-export const deleteUserService = async (id: number) => {
-  const existingUser = await prisma.user.findUnique({ where: { id: id } })
-  if (!existingUser) throw new Error('NOT_FOUND')
-
-  await prisma.user.delete({ where: { id } })
 }

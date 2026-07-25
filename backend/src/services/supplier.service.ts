@@ -1,93 +1,61 @@
-import { prisma } from '@/lib/prisma'
+import type { Supplier } from '@/models/entities/supplier.entity'
 import type {
   CreateSupplierDTO,
   UpdateSupplierDTO,
-} from '@/models/dtos/supplier.dto'
-import type { Supplier } from '@prisma/client'
+} from '@/models/schemas/supplier.schema'
+import { SupplierRepository } from '@/repositories/supplier.repository'
 
-export const createSupplierService = async (supplier: CreateSupplierDTO) => {
-  const { name, country, contact, type } = supplier
+const supplierRepository = new SupplierRepository()
 
-  const validSupplier = await prisma.supplier.findFirst({
-    where: { name },
-  })
-  if (validSupplier) throw new Error('SUPPLIER_ALREADY_EXISTS')
-
-  const createdSupplier = await prisma.supplier.create({
-    data: {
-      name,
-      contact,
-      country,
-      type,
-    },
-  })
-  return createdSupplier
-}
-
-export const getAllSuppliersService = async () => {
-  return await prisma.supplier.findMany()
-}
-
-export const getAllSuppliersWithNameAndIdService = async () => {
-  return await prisma.supplier.findMany({ select: { id: true, name: true } })
-}
-
-export const getSupplierByIdService = async (id: number) => {
-  const supplier = await prisma.supplier.findUnique({ where: { id } })
-  if (!supplier) throw new Error('NOT_FOUND')
-  return supplier
-}
-
-export const updateSupplierService = async (
-  id: number,
-  supplier: UpdateSupplierDTO
-) => {
-  const existingSupplier = await prisma.supplier.findUnique({ where: { id } })
-  if (!existingSupplier) throw new Error('NOT_FOUND')
-
-  if (Object.keys(supplier).length === 0) throw new Error('NO_FIELDS_TO_UPDATE')
-
-  const { name, ...restOfFields } = supplier
-  const supplierToUpdate: Partial<Supplier> = {}
-
-  // validate name
-  if (typeof name !== 'undefined') {
-    if (name.trim() === '') {
-      throw new Error('NO_FIELDS_TO_UPDATE')
-    }
-
-    const supplierWithSameName = await prisma.supplier.findFirst({
-      where: { name: name },
-    })
-    if (supplierWithSameName && supplierWithSameName.id !== id) {
-      throw new Error('USERNAME_ALREADY_EXISTS')
-    }
-    supplierToUpdate.name = name
-  }
-  const cleanFields = Object.fromEntries(
-    Object.entries(restOfFields).filter(([value]) => value !== undefined)
-  )
-
-  Object.assign(supplierToUpdate, cleanFields)
-  supplierToUpdate.updatedAt = new Date()
-
-  const updatedSupplier = await prisma.supplier.update({
-    where: { id },
-    data: supplierToUpdate,
-  })
-  return updatedSupplier
-}
-
-export const deleteSupplierService = async (id: number) => {
-  const existingSupplier = await prisma.supplier.findUnique({ where: { id } })
-  if (!existingSupplier) throw new Error('NOT_FOUND')
-
-  const notHaveVehicles = await prisma.vehicle.findFirst({
-    where: { supplierId: id },
-  })
-  if (!notHaveVehicles) {
-    throw new Error('SUPPLIER_NOT_EMPTY')
+export class SupplierService {
+  async getAll(): Promise<Supplier[]> {
+    return await supplierRepository.findAll()
   }
 
-  await prisma.supplier.delete({ where: { id } })
+  async getAllNamesAndIds() {
+    return await supplierRepository.findAllNamesAndIds()
+  }
+
+  async getById(id: number): Promise<Supplier> {
+    const supplier = await supplierRepository.findById(id)
+    if (!supplier) throw new Error('NOT_FOUND')
+    return supplier
+  }
+
+  async create(data: CreateSupplierDTO): Promise<Supplier> {
+    const existingSupplier = await supplierRepository.findByName(data.name)
+    if (existingSupplier) throw new Error('SUPPLIER_ALREADY_EXISTS')
+
+    return await supplierRepository.create(data)
+  }
+
+  async update(id: number, data: UpdateSupplierDTO): Promise<Supplier> {
+    const existingSupplier = await supplierRepository.findById(id)
+    if (!existingSupplier) throw new Error('NOT_FOUND')
+
+    if (Object.keys(data).length === 0) throw new Error('NO_FIELDS_TO_UPDATE')
+
+    if (data.name !== undefined) {
+      if (data.name.trim() === '') throw new Error('NO_FIELDS_TO_UPDATE')
+
+      const supplierWithSameName = await supplierRepository.findByName(
+        data.name
+      )
+      if (supplierWithSameName && supplierWithSameName.id !== id) {
+        throw new Error('SUPPLIER_ALREADY_EXISTS')
+      }
+    }
+
+    return await supplierRepository.update(id, data)
+  }
+
+  async delete(id: number): Promise<void> {
+    const existingSupplier = await supplierRepository.findById(id)
+    if (!existingSupplier) throw new Error('NOT_FOUND')
+
+    const hasVehicles = await supplierRepository.hasVehicles(id)
+    if (hasVehicles) throw new Error('SUPPLIER_NOT_EMPTY')
+
+    await supplierRepository.delete(id)
+  }
 }
