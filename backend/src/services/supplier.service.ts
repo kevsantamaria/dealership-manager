@@ -1,3 +1,7 @@
+import { BadRequestError } from '@/errors/BadRequest'
+import { ConflictError } from '@/errors/ConflictError'
+import { NotFoundError } from '@/errors/NotFound'
+import { UnauthorizedError } from '@/errors/UnauthorizedError'
 import type { Supplier } from '@/models/entities/supplier.entity'
 import type {
   CreateSupplierDTO,
@@ -18,31 +22,33 @@ export class SupplierService {
 
   async getById(id: number): Promise<Supplier> {
     const supplier = await this.supplierRepository.findById(id)
-    if (!supplier) throw new Error('NOT_FOUND')
+    if (!supplier) throw new NotFoundError('Supplier')
     return supplier
   }
 
   async create(data: CreateSupplierDTO): Promise<Supplier> {
     const existingSupplier = await this.supplierRepository.findByName(data.name)
-    if (existingSupplier) throw new Error('SUPPLIER_ALREADY_EXISTS')
+    if (existingSupplier) throw new ConflictError('Supplier already exists')
 
     return await this.supplierRepository.create(data)
   }
 
   async update(id: number, data: UpdateSupplierDTO): Promise<Supplier> {
     const existingSupplier = await this.supplierRepository.findById(id)
-    if (!existingSupplier) throw new Error('NOT_FOUND')
+    if (!existingSupplier) throw new NotFoundError('Supplier')
 
-    if (Object.keys(data).length === 0) throw new Error('NO_FIELDS_TO_UPDATE')
+    if (Object.keys(data).length === 0)
+      throw new BadRequestError('No fields to update')
 
     if (data.name !== undefined) {
-      if (data.name.trim() === '') throw new Error('NO_FIELDS_TO_UPDATE')
+      if (data.name.trim() === '')
+        throw new BadRequestError('Name cannot be empty')
 
       const supplierWithSameName = await this.supplierRepository.findByName(
         data.name
       )
       if (supplierWithSameName && supplierWithSameName.id !== id) {
-        throw new Error('SUPPLIER_ALREADY_EXISTS')
+        throw new ConflictError('Supplier with the same name already exists')
       }
     }
 
@@ -51,10 +57,13 @@ export class SupplierService {
 
   async delete(id: number): Promise<void> {
     const existingSupplier = await this.supplierRepository.findById(id)
-    if (!existingSupplier) throw new Error('NOT_FOUND')
+    if (!existingSupplier) throw new NotFoundError('Supplier')
 
     const hasVehicles = await this.supplierRepository.hasVehicles(id)
-    if (hasVehicles) throw new Error('SUPPLIER_NOT_EMPTY')
+    if (hasVehicles)
+      throw new UnauthorizedError(
+        'Supplier has associated vehicles and cannot be deleted'
+      )
 
     await this.supplierRepository.delete(id)
   }

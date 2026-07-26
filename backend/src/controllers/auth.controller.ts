@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express'
 import { AuthService } from '@/services/auth.service'
 import type { LoginUser } from '@/models/entities/user.entity'
-import { HTTP_STATUS, HTTP_STATUS_MESSAGE } from '@/constants/httpStatus'
 import { env } from 'bun'
 import { deleteSession } from '@/sessions/session.store'
+import { UnauthorizedError } from '@/errors/UnauthorizedError'
 
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -21,8 +21,8 @@ export class AuthController {
       maxAge: 1000 * 60 * 60 * 24,
     })
 
-    res.status(HTTP_STATUS.OK).json({
-      message: HTTP_STATUS_MESSAGE.OK,
+    res.status(200).json({
+      message: 'Login successfully',
       data: loggedUser,
     })
   }
@@ -44,13 +44,9 @@ export class AuthController {
   }
 
   async me(req: Request, res: Response) {
-    if (!req.user) {
-      return res.status(HTTP_STATUS.UNAUTHORIZED).json({
-        message: HTTP_STATUS_MESSAGE.UNAUTHORIZED,
-      })
-    }
+    if (!req.user) throw new UnauthorizedError('User not authenticated')
 
-    return res.status(HTTP_STATUS.OK).json({
+    return res.status(200).json({
       data: {
         id: req.user.userId,
         role: req.user.role,

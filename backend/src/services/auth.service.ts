@@ -2,6 +2,7 @@ import type { LoginUser, SafeUser } from '@/models/entities/user.entity'
 import { createSession } from '@/sessions/session.store'
 import { UserRepository } from '@/repositories/user.repository'
 import bcrypt from 'bcryptjs'
+import { UnauthorizedError } from '@/errors/UnauthorizedError'
 
 export class AuthService {
   constructor(private userRepository: UserRepository) {}
@@ -9,11 +10,12 @@ export class AuthService {
   async login(user: LoginUser): Promise<{ user: SafeUser; sessionId: string }> {
     const { username, password } = user
 
-    const validUser = await this.userRepository.findWithPasswordByUsername(username)
-    if (!validUser) throw new Error('INVALID_CREDENTIALS')
+    const validUser =
+      await this.userRepository.findWithPasswordByUsername(username)
+    if (!validUser) throw new UnauthorizedError('Invalid credentials')
 
     const match = await bcrypt.compare(password, validUser.password)
-    if (!match) throw new Error('INVALID_CREDENTIALS')
+    if (!match) throw new UnauthorizedError('Invalid credentials')
 
     const sessionId = createSession({
       userId: validUser.id,

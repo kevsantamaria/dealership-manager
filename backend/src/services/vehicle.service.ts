@@ -1,3 +1,6 @@
+import { BadRequestError } from '@/errors/BadRequest'
+import { ConflictError } from '@/errors/ConflictError'
+import { NotFoundError } from '@/errors/NotFound'
 import type {
   CreateVehicleDTO,
   UpdateVehicleDTO,
@@ -13,29 +16,31 @@ export class VehicleService {
 
   async getById(id: number) {
     const vehicle = await this.vehicleRepository.findById(id)
-    if (!vehicle) throw new Error('NOT_FOUND')
+    if (!vehicle) throw new NotFoundError('Vehicle')
     return vehicle
   }
 
   async create(data: CreateVehicleDTO) {
     const vinExists = await this.vehicleRepository.findByVin(data.vin)
-    if (vinExists) throw new Error('VEHICLE_ALREADY_EXISTS')
+    if (vinExists)
+      throw new ConflictError('Vehicle with the same VIN already exists')
 
     return await this.vehicleRepository.create(data)
   }
 
   async update(id: number, data: UpdateVehicleDTO) {
     const existingVehicle = await this.vehicleRepository.existsById(id)
-    if (!existingVehicle) throw new Error('NOT_FOUND')
+    if (!existingVehicle) throw new NotFoundError('Vehicle')
 
-    if (Object.keys(data).length === 0) throw new Error('NO_FIELDS_TO_UPDATE')
+    if (Object.keys(data).length === 0)
+      throw new BadRequestError('No fields to update')
 
     return await this.vehicleRepository.update(id, data)
   }
 
   async delete(id: number): Promise<void> {
     const existingVehicle = await this.vehicleRepository.existsById(id)
-    if (!existingVehicle) throw new Error('NOT_FOUND')
+    if (!existingVehicle) throw new NotFoundError('Vehicle')
 
     await this.vehicleRepository.delete(id)
   }

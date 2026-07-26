@@ -1,5 +1,7 @@
+import { ConflictError } from '@/errors/ConflictError'
+import { NotFoundError } from '@/errors/NotFound'
+import { UnauthorizedError } from '@/errors/UnauthorizedError'
 import type {
-  Brand,
   BrandWithNameAndId,
   BrandWithVehicleCount,
 } from '@/models/entities/brand.entity'
@@ -18,12 +20,14 @@ export class BrandService {
   async delete(id: number): Promise<void> {
     const existingBrand = await this.brandRepository.findById(id)
     if (!existingBrand) {
-      throw new Error('NOT_FOUND')
+      throw new NotFoundError('Brand')
     }
 
     const hasVehicles = await this.brandRepository.hasVehicles(id)
     if (hasVehicles) {
-      throw new Error('BRAND_NOT_EMPTY')
+      throw new UnauthorizedError(
+        'Brand has associated vehicles and cannot be deleted.'
+      )
     }
 
     await this.brandRepository.deleteWithHierarchy(id)

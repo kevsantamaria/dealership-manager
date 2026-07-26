@@ -1,3 +1,4 @@
+import { NotFoundError } from '@/errors/NotFound'
 import { prisma } from '@/config/prisma'
 import type {
   Vehicle,
@@ -71,7 +72,7 @@ export class VehicleRepository {
       const supplier = await tx.supplier.findUnique({
         where: { id: vehicleData.supplierId },
       })
-      if (!supplier) throw new Error('NOT_FOUND')
+      if (!supplier) throw new NotFoundError('Supplier')
 
       let existingBrand = await tx.brand.findFirst({
         where: { name: brand.name },

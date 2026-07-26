@@ -1,4 +1,3 @@
-import { HTTP_STATUS, HTTP_STATUS_MESSAGE } from '@/constants/httpStatus'
 import type {
   CreateVehicleDTO,
   UpdateVehicleDTO,
@@ -12,15 +11,13 @@ export class VehicleController {
   async create(req: Request, res: Response) {
     const vehicle: CreateVehicleDTO = req.body
     const createdVehicle = await this.vehicleService.create(vehicle)
-    res
-      .status(HTTP_STATUS.CREATED)
-      .json({ message: HTTP_STATUS_MESSAGE.CREATED, data: createdVehicle })
+    res.status(201).json({ message: 'CREATED', data: createdVehicle })
   }
 
   async getAll(req: Request, res: Response) {
     const vehicles = await this.vehicleService.getAll()
-    res.status(HTTP_STATUS.OK).json({
-      message: HTTP_STATUS_MESSAGE.OK,
+    res.status(200).json({
+      message: 'OK',
       data: vehicles,
     })
   }
@@ -28,8 +25,8 @@ export class VehicleController {
   async getById(req: Request, res: Response) {
     const { id } = req.params
     const vehicle = await this.vehicleService.getById(Number(id))
-    res.status(HTTP_STATUS.OK).json({
-      message: HTTP_STATUS_MESSAGE.OK,
+    res.status(200).json({
+      message: 'OK',
       data: vehicle,
     })
   }
@@ -38,8 +35,8 @@ export class VehicleController {
     const { id } = req.params
     const vehicle: UpdateVehicleDTO = req.body
     const updatedVehicle = await this.vehicleService.update(Number(id), vehicle)
-    res.status(HTTP_STATUS.OK).json({
-      message: HTTP_STATUS_MESSAGE.OK,
+    res.status(200).json({
+      message: 'OK',
       data: updatedVehicle,
     })
   }
@@ -47,8 +44,8 @@ export class VehicleController {
   async delete(req: Request, res: Response) {
     const { id } = req.params
     await this.vehicleService.delete(Number(id))
-    res.status(HTTP_STATUS.OK).json({
-      message: HTTP_STATUS_MESSAGE.OK,
+    res.status(200).json({
+      message: 'OK',
     })
   }
 }
