@@ -10,10 +10,19 @@ import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
 import session from 'express-session'
+import pgSession from 'connect-pg-simple'
 import { env } from './config/env'
+import { pool } from './config/prisma'
 
 const app = express()
 const PORT = 3000
+
+const PgSession = pgSession(session)
+
+const store = new PgSession({
+  pool,
+  createTableIfMissing: true,
+})
 
 app.use(
   cors({
@@ -30,6 +39,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     name: 'dealership-manager.sid',
+    store: store,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 24h
       secure: process.env.NODE_ENV === 'production',
