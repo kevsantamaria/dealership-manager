@@ -23,6 +23,15 @@ const prisma = new PrismaClient({ adapter })
 async function main() {
   console.log('🌱 Initializing seeding...')
 
+  // Clean existing data (respect foreign keys)
+  await prisma.image.deleteMany()
+  await prisma.vehicle.deleteMany()
+  await prisma.trim.deleteMany()
+  await prisma.model.deleteMany()
+  await prisma.brand.deleteMany()
+  await prisma.supplier.deleteMany()
+  await prisma.user.deleteMany()
+
   // 1. Users
   await prisma.user.createMany({
     data: [
@@ -53,7 +62,8 @@ async function main() {
       prisma.supplier.create({
         data: {
           name: faker.company.name(),
-          contact: faker.internet.email(),
+          email: faker.internet.email(),
+          telephone: faker.phone.number(),
           type: supplierTypes[i % supplierTypes.length],
           country: faker.location.country(),
         },

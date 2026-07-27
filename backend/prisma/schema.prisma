@@ -58,7 +58,7 @@ model Model {
 model Trim {
   id           Int          @id @default(autoincrement())
   name         String       @db.VarChar(255)
-  engineSize   Int          @map("engine_size")
+  engineSize   Float        @map("engine_size")
   horsepower   Int
   engineType   EngineType   @default(gasoline) @map("engine_type")
   transmission Transmission @default(automatic)
