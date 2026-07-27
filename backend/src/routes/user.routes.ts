@@ -1,9 +1,12 @@
 import { UserController } from '@/controllers/user.controller'
-import { authenticate } from '@/middlewares/autenticate.middleware'
+import { authenticate } from '@/middlewares/authenticate.middleware'
 import { dtoValidator } from '@/middlewares/dtoValidator.middleware'
 import { requireAdmin } from '@/middlewares/role.middleware'
 import { idParamSchema } from '@/models/schemas/idParam.schema'
-import { createUserSchema, updateUserSchema } from '@/models/schemas/user.schema'
+import {
+  createUserSchema,
+  updateUserSchema,
+} from '@/models/schemas/user.schema'
 import { UserRepository } from '@/repositories/user.repository'
 import { UserService } from '@/services/user.service'
 import { Router } from 'express'

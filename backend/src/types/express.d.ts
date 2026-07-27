@@ -1,8 +1,8 @@
-declare namespace Express {
-  interface Request {
-    user?: {
-      userId: number
-      role: 'admin' | 'user'
-    }
+import 'express-session'
+
+declare module 'express-session' {
+  interface SessionData {
+    userId: number
+    role: 'admin' | 'user'
   }
 }

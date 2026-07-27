@@ -8,7 +8,8 @@ import dashboard from '@/routes/dashboard.routes'
 import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
-import cookieParser from 'cookie-parser'
+import session from 'express-session'
+import { env } from './config/env'
 
 const app = express()
 const PORT = 3000
@@ -22,8 +23,21 @@ app.use(
 )
 
 app.use(morgan('dev'))
+app.use(
+  session({
+    secret: env.SESSION_KEY!,
+    resave: false,
+    saveUninitialized: false,
+    name: 'dealership-manager.sid',
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24, // 24h
+      secure: process.env.NODE_ENV === 'production',
+    },
+  })
+)
+
 app.use(express.json())
-app.use(cookieParser())
+app.use(express.urlencoded({ extended: true }))
 
 app.use(user)
 app.use(login)
