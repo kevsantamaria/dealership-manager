@@ -5,7 +5,7 @@ import type { Request, Response } from 'express'
 export class UserController {
   constructor(private userService: UserService) {}
 
-  async create(req: Request, res: Response) {
+  create = async (req: Request, res: Response) => {
     const user: CreateUserDTO = req.body
     const createdUser = await this.userService.create(user)
     res.status(201).json({
@@ -14,7 +14,7 @@ export class UserController {
     })
   }
 
-  async getAll(req: Request, res: Response) {
+  getAll = async (req: Request, res: Response) => {
     const users = await this.userService.getAll()
     res.status(200).json({
       message: 'OK',
@@ -22,7 +22,7 @@ export class UserController {
     })
   }
 
-  async getById(req: Request, res: Response) {
+  getById = async (req: Request, res: Response) => {
     const { id } = req.params
     const user = await this.userService.getById(Number(id))
     res.status(200).json({
@@ -31,7 +31,7 @@ export class UserController {
     })
   }
 
-  async update(req: Request, res: Response) {
+  update = async (req: Request, res: Response) => {
     const { id } = req.params
     const user: UpdateUserDTO = req.body
     const updatedUser = await this.userService.update(Number(id), user)
@@ -41,7 +41,7 @@ export class UserController {
     })
   }
 
-  async delete(req: Request, res: Response) {
+  delete = async (req: Request, res: Response) => {
     const { id } = req.params
     await this.userService.delete(Number(id))
     res.status(200).json({

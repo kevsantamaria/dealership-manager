@@ -8,7 +8,7 @@ import type { Request, Response } from 'express'
 export class SupplierController {
   constructor(private supplierService: SupplierService) {}
 
-  async create(req: Request, res: Response) {
+  create = async (req: Request, res: Response) => {
     const supplier: CreateSupplierDTO = req.body
     const createdSupplier = await this.supplierService.create(supplier)
     res.status(201).json({
@@ -17,7 +17,7 @@ export class SupplierController {
     })
   }
 
-  async getAll(req: Request, res: Response) {
+  getAll = async (req: Request, res: Response) => {
     const suppliers = await this.supplierService.getAll()
     res.status(200).json({
       message: 'OK',
@@ -25,7 +25,7 @@ export class SupplierController {
     })
   }
 
-  async getAllNamesAndIds(req: Request, res: Response) {
+  getAllNamesAndIds = async (req: Request, res: Response) => {
     const suppliers = await this.supplierService.getAllNamesAndIds()
     res.status(200).json({
       message: 'OK',
@@ -33,7 +33,7 @@ export class SupplierController {
     })
   }
 
-  async getById(req: Request, res: Response) {
+  getById = async (req: Request, res: Response) => {
     const { id } = req.params
     const supplier = await this.supplierService.getById(Number(id))
     res.status(200).json({
@@ -42,7 +42,7 @@ export class SupplierController {
     })
   }
 
-  async update(req: Request, res: Response) {
+  update = async (req: Request, res: Response) => {
     const { id } = req.params
     const supplier: UpdateSupplierDTO = req.body
     const updatedSupplier = await this.supplierService.update(
@@ -55,7 +55,7 @@ export class SupplierController {
     })
   }
 
-  async delete(req: Request, res: Response) {
+  delete = async (req: Request, res: Response) => {
     const { id } = req.params
     await this.supplierService.delete(Number(id))
     res.status(200).json({
