@@ -7,7 +7,7 @@ export const authenticate = (
 ) => {
   const { userId } = req.session
 
-  if (!userId || typeof userId !== 'string') {
+  if (!userId) {
     console.warn('[Auth] Unauthorized request from:', req.ip)
     return res.status(401).json({
       message: 'NOT_AUTHENTICATED',

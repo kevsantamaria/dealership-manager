@@ -1,7 +1,8 @@
 import { ErrorHandler } from '@/middlewares/errorHandler.middleware'
+import { authenticate } from '@/middlewares/authenticate.middleware'
 import user from '@/routes/user.routes'
 import supplier from '@/routes/supplier.routes'
-import login from '@/routes/auth.routes'
+import auth from '@/routes/auth.routes'
 import vehicle from '@/routes/vehicle.routes'
 import brand from '@/routes/brand.routes'
 import dashboard from '@/routes/dashboard.routes'
@@ -39,8 +40,11 @@ app.use(
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+app.use(auth)
+
+app.use(authenticate)
+
 app.use(user)
-app.use(login)
 app.use(supplier)
 app.use(vehicle)
 app.use(brand)

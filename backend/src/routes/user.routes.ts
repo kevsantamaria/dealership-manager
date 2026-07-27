@@ -18,7 +18,6 @@ const router = Router()
 
 router.post(
   '/users',
-  authenticate,
   requireAdmin,
   dtoValidator(createUserSchema, 'body'),
   userController.create
@@ -26,14 +25,12 @@ router.post(
 router.get('/users', authenticate, requireAdmin, userController.getAll)
 router.get(
   '/users/:id',
-  authenticate,
   requireAdmin,
   dtoValidator(idParamSchema, 'params'),
   userController.getById
 )
 router.patch(
   '/users/:id',
-  authenticate,
   requireAdmin,
   dtoValidator(updateUserSchema, 'body'),
   dtoValidator(idParamSchema, 'params'),
@@ -41,7 +38,6 @@ router.patch(
 )
 router.delete(
   '/users/:id',
-  authenticate,
   requireAdmin,
   dtoValidator(idParamSchema, 'params'),
   userController.delete
