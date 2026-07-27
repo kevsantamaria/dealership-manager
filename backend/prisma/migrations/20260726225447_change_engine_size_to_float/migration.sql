@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "trims" ALTER COLUMN "engine_size" SET DATA TYPE DOUBLE PRECISION;
