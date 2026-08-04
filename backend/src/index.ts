@@ -22,6 +22,7 @@ const PgSession = pgSession(session)
 const store = new PgSession({
   pool,
   createTableIfMissing: true,
+  tableName: 'sessions',
 })
 
 app.use(

@@ -11,8 +11,9 @@ export class AuthController {
 
     const { loggedUser } = await this.authService.login(user)
 
-    req.session.regenerate((err) => {
+    req.session.regenerate(() => {
       req.session.userId = loggedUser.id
+      req.session.username = loggedUser.username
       req.session.role = loggedUser.role
 
       res.status(200).json({
@@ -41,6 +42,7 @@ export class AuthController {
     return res.status(200).json({
       data: {
         id: req.session.userId,
+        username: req.session.username,
         role: req.session.role,
       },
     })
