@@ -5,20 +5,17 @@ import type { CreateModelDTO } from '@/models/schemas/model.schema'
 export class ModelRepository {
   constructor() {}
 
-  async findByNameAndBrand(
-    name: string,
-    brandId: number
-  ): Promise<Model | null> {
+  async findByNameAndBrand(name: string, brandId: number) {
     return await prisma.model.findFirst({
       where: { name, brandId },
     })
   }
 
-  async create(data: CreateModelDTO): Promise<Model> {
+  async create(data: CreateModelDTO) {
     return await prisma.model.create({ data })
   }
 
-  async deleteManyByBrandId(brandId: number): Promise<void> {
+  async deleteManyByBrandId(brandId: number) {
     await prisma.model.deleteMany({ where: { brandId } })
   }
 }

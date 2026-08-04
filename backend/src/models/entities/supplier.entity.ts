@@ -15,3 +15,7 @@ export type Supplier = {
   createdAt: Date
   updatedAt: Date
 }
+
+export type SupplierWithVehicleCount = Supplier & {
+  vehiclesCount: number
+}

@@ -28,23 +28,14 @@ export type TopSellingQuarterly = {
 export type OldStockVehicle = {
   arrivalDate: Date
   suggestedPrice: number
-  trim: {
-    name: string
-    model: {
-      name: string
-      brand: { name: string }
-    }
-  }
+  trim: string
+  model: string
+  brand: string
+  daysInStock: number
 }
 
 export type RecentActivity = {
-  stockStatus: string
-  updatedAt: Date
-  trim: {
-    name: string
-    model: {
-      name: string
-      brand: { name: string }
-    }
-  }
+  vehicleName: string
+  status: string
+  date: Date
 }

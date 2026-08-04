@@ -13,7 +13,7 @@ import type {
 export class VehicleRepository {
   constructor() {}
 
-  async findAll(): Promise<VehicleListItem[]> {
+  async findAll() {
     return await prisma.vehicle.findMany({
       select: {
         id: true,
@@ -39,7 +39,7 @@ export class VehicleRepository {
     })
   }
 
-  async findById(id: number): Promise<VehicleWithDetails | null> {
+  async findById(id: number) {
     return await prisma.vehicle.findFirst({
       where: { id },
       include: {
@@ -57,15 +57,15 @@ export class VehicleRepository {
     })
   }
 
-  async existsById(id: number): Promise<boolean> {
+  async existsById(id: number) {
     return (await prisma.vehicle.findUnique({ where: { id } })) !== null
   }
 
-  async findByVin(vin: string): Promise<boolean> {
+  async findByVin(vin: string) {
     return (await prisma.vehicle.findUnique({ where: { vin } })) !== null
   }
 
-  async create(data: CreateVehicleDTO): Promise<Vehicle> {
+  async create(data: CreateVehicleDTO) {
     const { brand, model, trim, ...vehicleData } = data
 
     return await prisma.$transaction(async (tx) => {
@@ -132,14 +132,14 @@ export class VehicleRepository {
     })
   }
 
-  async update(id: number, data: UpdateVehicleDTO): Promise<void> {
+  async update(id: number, data: UpdateVehicleDTO) {
     await prisma.vehicle.update({
       where: { id },
       data,
     })
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: number) {
     await prisma.vehicle.delete({ where: { id } })
   }
 }

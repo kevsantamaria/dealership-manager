@@ -10,7 +10,7 @@ import type {
 export class DashboardRepository {
   constructor() {}
 
-  async getStockSummary(): Promise<StockSummary> {
+  async getStockSummary() {
     const result = await prisma.$queryRaw<
       [{ inStock: number; reserved: number; sold: number; total: number }]
     >`
@@ -24,11 +24,8 @@ export class DashboardRepository {
     return result[0]
   }
 
-  async getFinancialSummary(): Promise<{
-    purchasePrice: number | null
-    suggestedPrice: number | null
-  }> {
-    const aggregate = await prisma.vehicle.aggregate({
+  async getFinancialSummary() {
+    return await prisma.vehicle.aggregate({
       where: {
         stockStatus: {
           not: 'sold',
@@ -39,13 +36,9 @@ export class DashboardRepository {
         suggestedPrice: true,
       },
     })
-    return {
-      purchasePrice: aggregate._sum.purchasePrice,
-      suggestedPrice: aggregate._sum.suggestedPrice,
-    }
   }
 
-  async getMonthlyFinancialHistory(): Promise<MonthlyFinancialHistory[]> {
+  async getMonthlyFinancialHistory() {
     return await prisma.$queryRaw<Array<MonthlyFinancialHistory>>`
       SELECT
         to_char(mes, 'YYYY-MM') AS "month",
@@ -66,7 +59,7 @@ export class DashboardRepository {
     `
   }
 
-  async getTopSellingQuarterly(): Promise<TopSellingQuarterly[]> {
+  async getTopSellingQuarterly() {
     return await prisma.$queryRaw<Array<TopSellingQuarterly>>`
       SELECT
         b.name AS "brand",
@@ -90,7 +83,7 @@ export class DashboardRepository {
     `
   }
 
-  async getOldStockVehicles(ninetyDaysAgo: Date): Promise<OldStockVehicle[]> {
+  async getOldStockVehicles(ninetyDaysAgo: Date) {
     return await prisma.vehicle.findMany({
       where: {
         stockStatus: 'in_stock',
@@ -121,7 +114,7 @@ export class DashboardRepository {
     })
   }
 
-  async getRecentActivities(limit: number = 5): Promise<RecentActivity[]> {
+  async getRecentActivities(limit: number = 5) {
     return await prisma.vehicle.findMany({
       take: limit,
       orderBy: {

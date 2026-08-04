@@ -2,7 +2,10 @@ import { BadRequestError } from '@/errors/BadRequest'
 import { ConflictError } from '@/errors/ConflictError'
 import { NotFoundError } from '@/errors/NotFound'
 import { UnauthorizedError } from '@/errors/UnauthorizedError'
-import type { Supplier } from '@/models/entities/supplier.entity'
+import type {
+  Supplier,
+  SupplierWithVehicleCount,
+} from '@/models/entities/supplier.entity'
 import type {
   CreateSupplierDTO,
   UpdateSupplierDTO,
@@ -12,11 +15,15 @@ import { SupplierRepository } from '@/repositories/supplier.repository'
 export class SupplierService {
   constructor(private supplierRepository: SupplierRepository) {}
 
-  async getAll(): Promise<Supplier[]> {
-    return await this.supplierRepository.findAll()
+  async getAll(): Promise<SupplierWithVehicleCount[]> {
+    const suppliers = await this.supplierRepository.findAllWithVehicleCount()
+    return suppliers.map(({ _count, ...supplier }) => ({
+      ...supplier,
+      vehiclesCount: _count.vehicles,
+    }))
   }
 
-  async getAllNamesAndIds() {
+  async getAllNamesAndIds(): Promise<Pick<Supplier, 'id' | 'name'>[]> {
     return await this.supplierRepository.findAllNamesAndIds()
   }
 

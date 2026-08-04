@@ -7,7 +7,7 @@ export type Brand = {
 }
 
 export type BrandWithVehicleCount = Brand & {
-  vehiclesCount: (number | undefined)[]
+  vehiclesCount: number | undefined
 }
 
 export type BrandWithNameAndId = Pick<Brand, 'id' | 'name'>

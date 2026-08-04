@@ -33,11 +33,9 @@ export type VehicleListItem = Pick<
   | 'stockStatus'
   | 'rateCondition'
 > & {
-  trim: Pick<Trim, 'name'> & {
-    model: Pick<Model, 'name' | 'launchYear'> & {
-      brand: Pick<Brand, 'name'>
-    }
-  }
+  trim: string
+  model: string
+  brand: string
 }
 
 export type VehicleWithDetails = Vehicle & {

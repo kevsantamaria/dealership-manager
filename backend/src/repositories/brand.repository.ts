@@ -9,8 +9,8 @@ import type { CreateBrandDTO } from '@/models/schemas/brand.schema'
 export class BrandRepository {
   constructor() {}
 
-  async findAllWithVehicleCount(): Promise<BrandWithVehicleCount[]> {
-    const brands = await prisma.brand.findMany({
+  async findAllWithVehicleCount() {
+    return await prisma.brand.findMany({
       include: {
         models: {
           select: {
@@ -28,33 +28,25 @@ export class BrandRepository {
         name: 'asc',
       },
     })
-    return brands.map((b) => ({
-      id: b.id,
-      name: b.name,
-      countryOrigin: b.countryOrigin,
-      vehiclesCount: b.models.map((c) => c.trims[0]?._count.vehicles),
-      createdAt: b.createdAt,
-      updatedAt: b.updatedAt,
-    }))
   }
 
-  async findById(id: number): Promise<Brand | null> {
+  async findById(id: number) {
     return await prisma.brand.findUnique({ where: { id } })
   }
 
-  async findByName(name: string): Promise<boolean> {
+  async findByName(name: string) {
     return (await prisma.brand.findFirst({ where: { name } })) !== null
   }
 
-  async create(data: CreateBrandDTO): Promise<Brand> {
+  async create(data: CreateBrandDTO) {
     return await prisma.brand.create({ data })
   }
 
-  async findNamesAndIds(): Promise<BrandWithNameAndId[]> {
+  async findNamesAndIds() {
     return await prisma.brand.findMany({ select: { id: true, name: true } })
   }
 
-  async hasVehicles(id: number): Promise<boolean> {
+  async hasVehicles(id: number) {
     const vehicle = await prisma.vehicle.findFirst({
       where: {
         trim: {
@@ -68,7 +60,7 @@ export class BrandRepository {
     return vehicle !== null
   }
 
-  async deleteWithHierarchy(id: number): Promise<void> {
+  async deleteWithHierarchy(id: number) {
     await prisma.$transaction(async (tx) => {
       await tx.trim.deleteMany({ where: { model: { brandId: id } } })
       await tx.model.deleteMany({ where: { brandId: id } })

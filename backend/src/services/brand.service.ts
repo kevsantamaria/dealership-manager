@@ -9,8 +9,18 @@ import { BrandRepository } from '@/repositories/brand.repository'
 
 export class BrandService {
   constructor(private brandRepository: BrandRepository) {}
+
   async getAll(): Promise<BrandWithVehicleCount[]> {
-    return await this.brandRepository.findAllWithVehicleCount()
+    const brands = await this.brandRepository.findAllWithVehicleCount()
+
+    return brands.map((b) => ({
+      id: b.id,
+      name: b.name,
+      countryOrigin: b.countryOrigin,
+      vehiclesCount: b.models.map((c) => c.trims[0]?._count.vehicles)[0] || 0,
+      createdAt: b.createdAt,
+      updatedAt: b.updatedAt,
+    }))
   }
 
   async getNamesAndIds(): Promise<BrandWithNameAndId[]> {
