@@ -11,7 +11,6 @@ export const createTrimSchema = z.object({
   engineType: engineTypeSchema.default('gasoline'),
   transmission: transmissionSchema.default('automatic'),
   drivetrain: drivetrainSchema.default('fwd'),
-  modelId: z.number().int().min(1),
 })
 
 export type CreateTrimDTO = z.infer<typeof createTrimSchema>

@@ -10,10 +10,19 @@ import type {
   CreateVehicleDTO,
   UpdateVehicleDTO,
 } from '@/models/schemas/vehicle.schema'
+import { BrandRepository } from '@/repositories/brand.repository'
+import { ModelRepository } from '@/repositories/model.repository'
+import { TrimRepository } from '@/repositories/trim.repository'
 import { VehicleRepository } from '@/repositories/vehicle.repository'
+import { prisma } from '@/config/prisma'
 
 export class VehicleService {
-  constructor(private vehicleRepository: VehicleRepository) {}
+  constructor(
+    private vehicleRepository: VehicleRepository,
+    private brandRepository: BrandRepository,
+    private modelRepository: ModelRepository,
+    private trimRepository: TrimRepository
+  ) {}
 
   async getAll(): Promise<VehicleListItem[]> {
     const vehicles = await this.vehicleRepository.findAll()
@@ -42,7 +51,68 @@ export class VehicleService {
     if (vinExists)
       throw new ConflictError('Vehicle with the same VIN already exists')
 
-    return await this.vehicleRepository.create(data)
+    const { brand, model, trim, ...vehicleData } = data
+
+    return await prisma.$transaction(async (tx) => {
+      let existingBrand = await this.brandRepository.findByName(brand.name, tx)
+      if (!existingBrand) {
+        existingBrand = await this.brandRepository.create(
+          { name: brand.name, countryOrigin: brand.countryOrigin },
+          tx
+        )
+      }
+
+      let existingModel = await this.modelRepository.findByNameAndBrand(
+        model.name,
+        existingBrand.id,
+        tx
+      )
+      if (!existingModel) {
+        existingModel = await this.modelRepository.create(
+          { name: model.name, launchYear: model.launchYear },
+          existingBrand.id,
+          tx
+        )
+      }
+
+      let existingTrim = await this.trimRepository.findByNameAndModel(
+        trim.name,
+        existingModel.id,
+        tx
+      )
+      if (!existingTrim) {
+        existingTrim = await this.trimRepository.create(
+          {
+            name: trim.name,
+            drivetrain: trim.drivetrain,
+            engineSize: trim.engineSize,
+            engineType: trim.engineType,
+            horsepower: trim.horsepower,
+            transmission: trim.transmission,
+          },
+          existingModel.id,
+          tx
+        )
+      }
+
+      return await this.vehicleRepository.create(
+        {
+          vin: vehicleData.vin,
+          licensePlate: vehicleData.licensePlate,
+          color: vehicleData.color,
+          mileage: vehicleData.mileage,
+          arrivalDate: vehicleData.arrivalDate,
+          purchasePrice: vehicleData.purchasePrice,
+          suggestedPrice: vehicleData.suggestedPrice,
+          stockStatus: vehicleData.stockStatus,
+          rateCondition: vehicleData.rateCondition,
+          rateDescription: vehicleData.rateDescription,
+          supplierId: vehicleData.supplierId,
+          trimId: existingTrim.id,
+        },
+        tx
+      )
+    })
   }
 
   async update(id: number, data: UpdateVehicleDTO): Promise<void> {

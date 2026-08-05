@@ -6,7 +6,6 @@ export const createModelSchema = z.object({
     .int()
     .min(1886)
     .max(new Date().getFullYear() + 1),
-  brandId: z.number().int().min(1),
 })
 
 export const updateModelSchema = createModelSchema.partial()

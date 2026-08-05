@@ -16,3 +16,5 @@ export type Trim = {
   createdAt: Date
   updatedAt: Date
 }
+
+export type TrimWithNameAndId = Pick<Trim, 'id' | 'name'>

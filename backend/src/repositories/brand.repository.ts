@@ -5,6 +5,7 @@ import type {
   BrandWithVehicleCount,
 } from '@/models/entities/brand.entity'
 import type { CreateBrandDTO } from '@/models/schemas/brand.schema'
+import type { Prisma } from '@prisma/client'
 
 export class BrandRepository {
   constructor() {}
@@ -34,12 +35,12 @@ export class BrandRepository {
     return await prisma.brand.findUnique({ where: { id } })
   }
 
-  async findByName(name: string) {
-    return (await prisma.brand.findFirst({ where: { name } })) !== null
+  async findByName(name: string, tx: Prisma.TransactionClient = prisma) {
+    return await tx.brand.findFirst({ where: { name } })
   }
 
-  async create(data: CreateBrandDTO) {
-    return await prisma.brand.create({ data })
+  async create(data: CreateBrandDTO, tx: Prisma.TransactionClient = prisma) {
+    return await tx.brand.create({ data })
   }
 
   async findNamesAndIds() {

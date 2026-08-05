@@ -5,7 +5,7 @@ export const dtoValidator =
   (dto: ZodType, target: 'body' | 'params' | 'query' = 'body') =>
   (req: Request, res: Response, next: NextFunction) => {
     try {
-      dto.parse(req[target])
+      req[target] = dto.parse(req[target])
       next()
     } catch (error) {
       if (error instanceof ZodError) {

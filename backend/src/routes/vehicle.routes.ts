@@ -5,12 +5,23 @@ import {
   createVehicleSchema,
   updateVehicleSchema,
 } from '@/models/schemas/vehicle.schema'
+import { BrandRepository } from '@/repositories/brand.repository'
+import { ModelRepository } from '@/repositories/model.repository'
+import { TrimRepository } from '@/repositories/trim.repository'
 import { VehicleRepository } from '@/repositories/vehicle.repository'
 import { VehicleService } from '@/services/vehicle.service'
 import { Router } from 'express'
 
 const vehicleRepository = new VehicleRepository()
-const vehicleService = new VehicleService(vehicleRepository)
+const brandRepository = new BrandRepository()
+const modelRepository = new ModelRepository()
+const trimRepository = new TrimRepository()
+const vehicleService = new VehicleService(
+  vehicleRepository,
+  brandRepository,
+  modelRepository,
+  trimRepository
+)
 const vehicleController = new VehicleController(vehicleService)
 const router = Router()
 

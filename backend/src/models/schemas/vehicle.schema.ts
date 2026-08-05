@@ -11,7 +11,7 @@ export const createVehicleSchema = z.object({
   licensePlate: z.string().max(10).nullable(),
   color: z.string(),
   mileage: z.number().max(999999).nonnegative().nullable(),
-  arrivalDate: z.date(),
+  arrivalDate: z.coerce.date(),
   purchasePrice: z.number().min(0).max(999999.99).positive(),
   suggestedPrice: z.number().min(0).max(999999.99).positive(),
   stockStatus: stockStatusSchema.default('in_stock'),

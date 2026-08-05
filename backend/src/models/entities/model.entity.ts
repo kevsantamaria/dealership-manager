@@ -6,3 +6,5 @@ export type Model = {
   createdAt: Date
   updatedAt: Date
 }
+
+export type ModelWithNameAndId = Pick<Model, 'id' | 'name'>

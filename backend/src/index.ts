@@ -5,6 +5,8 @@ import supplier from '@/routes/supplier.routes'
 import auth from '@/routes/auth.routes'
 import vehicle from '@/routes/vehicle.routes'
 import brand from '@/routes/brand.routes'
+import model from '@/routes/model.routes'
+import trim from '@/routes/trim.routes'
 import dashboard from '@/routes/dashboard.routes'
 import express from 'express'
 import morgan from 'morgan'
@@ -59,6 +61,8 @@ app.use(user)
 app.use(supplier)
 app.use(vehicle)
 app.use(brand)
+app.use(model)
+app.use(trim)
 app.use(dashboard)
 
 app.use(ErrorHandler)

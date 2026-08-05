@@ -74,7 +74,7 @@ export class DashboardRepository {
       JOIN brands b ON m.brand_id = b.id
       WHERE
         v.stock_status = 'sold'
-        AND v.arrival_date >= CURRENT_DATE - INTERVAL '3 months'
+        AND v.updated_at >= CURRENT_DATE - INTERVAL '3 months'
       GROUP BY
         b.id, b.name, m.id, m.name, t.id, t.name
       ORDER BY
