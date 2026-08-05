@@ -1,33 +1,63 @@
-# dealership-manager
+# Dealership Manager
 
-Dealership Manager is a web-based application designed to manage an automobile dealership's inventory, allowing administrators to handle vehicles for sale, their specifications, and availability. The system follows a frontend–backend architecture, built with React and Tailwind CSS on the frontend, Express on the backend, and a PostgreSQL database, and it also uses direct SQL queries (no ORM) for database access.
+Web application for managing an automobile dealership's inventory. Built with React, Express, and PostgreSQL.
 
-## Run backend
+## Features
 
-To install dependencies:
+- **Dashboard** — Financial overview with charts, recent activity, top-selling vehicles, and old inventory alerts.
+- **Vehicle management** — Multi-step form for adding vehicles with brand/model/trim auto-linking, detailed view with specs and supplier info.
+- **Supplier management** — CRUD for suppliers.
+- **User administration** — Role-based access control (admin/user) with session-based authentication.
+
+## Screenshots
+
+![Add Vehicle](screenshots/screenshot04.png)
+
+![Login](screenshots/screenshot01.webp)
+
+![Vehicle Details](screenshots/screenshot03.png)
+
+![Dashboard](screenshots/screenshot02.png)
+
+![Admin Panel](screenshots/screenshot05.png)
+
+## Tech Stack
+
+**Frontend:** React, TypeScript, Tailwind CSS v4, shadcn/ui, Zustand, React Query, react-hook-form, react-router-dom
+
+**Backend:** Express, TypeScript, Prisma ORM, PostgreSQL, Zod, bcryptjs, express-session
+
+**Runtime:** Bun
+
+## Run Backend
 
 ```bash
+cd backend
 bun install
+bun run dev
 ```
 
-To run:
+## Run Frontend
 
 ```bash
-bun run index.ts
-```
-
-## Run frontend
-
-To install dependencies:
-
-```bash
+cd frontend
 bun install
-```
-
-To start a development server:
-
-```bash
 bun dev
 ```
 
-This project was created using `bun init` in bun v1.3.5. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+## Database
+
+Requires PostgreSQL. Create a `.env` file in `backend/`:
+
+```
+DATABASE_URL="postgresql://user:password@localhost:5432/dealership_manager_db"
+SESSION_KEY="your-session-secret"
+```
+
+Then run migrations:
+
+```bash
+cd backend
+bun prisma-migrate-dev
+bun prisma-seed
+```
